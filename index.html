@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Road To Pro — نظام إدارة اللياقة والإنتاجية</title>
+  
+  <!-- PWA & Mobile Meta Tags -->
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="theme-color" content="#eab308">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Tailwind CSS & FontAwesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            pitch: { 400: '#4ade80', 500: '#22c55e', 600: '#16a34a' },
+            gold: { 400: '#facc15', 500: '#eab308', 600: '#ca8a04' }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-slate-100 min-h-full font-sans antialiased pb-20 md:pb-0">
+
+  <!-- Top Navigation Header -->
+  <header class="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/80 backdrop-blur-md px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-xl bg-gold-500 text-black flex items-center justify-center font-black text-sm">
+        RTP
+      </div>
+      <div>
+        <h1 class="text-sm font-black tracking-wider uppercase text-white">Road To Pro</h1>
+        <p class="text-[10px] font-mono text-gold-400" id="userLevelDisplay">المستوى 1</p>
+      </div>
+    </div>
+
+    <!-- Header Stats & Audio Toggle -->
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono">
+        <i class="fa-solid fa-bolt text-gold-400"></i>
+        <span id="userXPDisplay" class="font-bold text-white">0</span>
+        <span class="text-slate-500">XP</span>
+      </div>
+
+      <button onclick="window.audioFX.toggleAudio()" class="p-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-all" title="كتم/تفعيل الصوت">
+        <i id="audioToggleIcon" class="fa-solid fa-volume-high text-gold-400 text-xs"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Viewport -->
+  <main class="max-w-7xl mx-auto p-4 sm:p-6 space-y-8">
+    
+    <!-- 1. TASK ENGINE SECTION -->
+    <section id="view-tasks" class="space-y-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-700/60 pb-4">
+        <div>
+          <h2 class="text-xl font-black text-white flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-gold-400"></i>
+            مركز العمليات والمهام اليومية
+          </h2>
+          <p class="text-xs text-slate-400">إدارة المهام الأساسية والفرعية واكتساب نقاط XP</p>
+        </div>
+
+        <button onclick="document.getElementById('modalAddTask').classList.remove('hidden')" 
+                class="px-4 py-2 rounded-xl bg-gold-500 hover:bg-gold-400 text-black font-mono font-bold text-xs transition-all flex items-center gap-2">
+          <i class="fa-solid fa-plus"></i>
+          <span>إضافة إنجاز / مهمة</span>
+        </button>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="glass-panel p-4 rounded-2xl space-y-2">
+        <div class="flex justify-between items-center text-xs font-mono">
+          <span class="text-slate-400">نسبة إنجاز المهام اليومية</span>
+          <span id="dailyProgressText" class="text-gold-400 font-bold">0% (0/0)</span>
+        </div>
+        <div class="w-full h-3 rounded-full bg-slate-900 overflow-hidden border border-slate-700">
+          <div id="dailyProgressBar" class="h-full bg-gradient-to-r from-gold-500 to-pitch-500 transition-all duration-500" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Tasks Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass-panel p-5 rounded-2xl space-y-4">
+          <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-pitch-400 flex items-center gap-2 border-b border-slate-700/60 pb-2">
+            <i class="fa-solid fa-star"></i>
+            المهام الأساسية (Primary)
+          </h3>
+          <div id="primaryTasksContainer" class="space-y-2.5"></div>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl space-y-4">
+          <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-sky-400 flex items-center gap-2 border-b border-slate-700/60 pb-2">
+            <i class="fa-solid fa-layer-group"></i>
+            المهام الثانوية والعادات (Secondary)
+          </h3>
+          <div id="secondaryTasksContainer" class="space-y-2.5"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. FOOTBALL MATRIX SECTION -->
+    <section id="view-football" class="space-y-6">
+      <div class="border-b border-slate-700/60 pb-4">
+        <h2 class="text-xl font-black text-white flex items-center gap-2">
+          <i class="fa-solid fa-futbol text-gold-400"></i>
+          مصفوفة الأداء الكروي (FIFA Radar)
+        </h2>
+        <p class="text-xs text-slate-400">مخطط رادار المهارات وتسجيل أداء المباريات</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="glass-panel p-6 rounded-2xl flex flex-col items-center justify-center relative">
+          <div class="absolute top-4 right-4 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-700 text-center">
+            <span class="text-[10px] font-mono text-slate-400 uppercase">التقييم العام OVR</span>
+            <p id="footballOvrDisplay" class="text-xl font-black text-gold-400 font-mono">79</p>
+          </div>
+          <canvas id="fifaRadarChart" width="300" height="300" class="max-w-full"></canvas>
+        </div>
+
+        <div class="lg:col-span-2 glass-panel p-6 rounded-2xl space-y-4">
+          <h3 class="text-xs font-mono font-bold uppercase tracking-wider text-gold-400 border-b border-slate-700/60 pb-2">
+            تسجيل مباراة جديدة
+          </h3>
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+            <input id="inputOpponent" type="text" placeholder="الخصم" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white">
+            <select id="inputMatchResult" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white">
+              <option value="WIN">فوز</option>
+              <option value="DRAW">تعادل</option>
+              <option value="LOSS">خسارة</option>
+            </select>
+            <input id="inputGoals" type="number" placeholder="الأهداف" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white">
+            <input id="inputAssists" type="number" placeholder="صناعة" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white">
+            <input id="inputRating" type="number" step="0.1" placeholder="التقييم (1-10)" class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white">
+          </div>
+          <button onclick="window.footballMatrix.logMatch(document.getElementById('inputOpponent').value, document.getElementById('inputMatchResult').value, document.getElementById('inputGoals').value, document.getElementById('inputAssists').value, document.getElementById('inputRating').value)" 
+                  class="w-full py-2 rounded-xl bg-pitch-500 text-black font-mono font-bold text-xs hover:brightness-110 transition-all">
+            حفظ سجل المباراة
+          </button>
+          <div id="matchHistoryContainer" class="space-y-2 pt-2 max-h-48 overflow-y-auto"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. FITNESS & PR VAULT SECTION -->
+    <section id="view-fitness" class="space-y-6">
+      <div class="border-b border-slate-700/60 pb-4">
+        <h2 class="text-xl font-black text-white flex items-center gap-2">
+          <i class="fa-solid fa-dumbbell text-gold-400"></i>
+          خزينة الأرقام القياسية (PR Vault)
+        </h2>
+        <p class="text-xs text-slate-400">متابعة التمارين السويدية وتحديث أفضل الأرقام الشخصية</p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div class="glass-panel p-4 rounded-xl text-center">
+          <p class="text-[10px] font-mono text-slate-400 uppercase">الضغط (Push-ups)</p>
+          <p id="prPushups" class="text-lg font-black text-gold-400 font-mono mt-1">0 تكرار</p>
+        </div>
+        <div class="glass-panel p-4 rounded-xl text-center">
+          <p class="text-[10px] font-mono text-slate-400 uppercase">السكوات (Squats)</p>
+          <p id="prSquats" class="text-lg font-black text-pitch-400 font-mono mt-1">0 تكرار</p>
+        </div>
+        <div class="glass-panel p-4 rounded-xl text-center">
+          <p class="text-[10px] font-mono text-slate-400 uppercase">العقلة (Pull-ups)</p>
+          <p id="prPullups" class="text-lg font-black text-sky-400 font-mono mt-1">0 تكرار</p>
+        </div>
+        <div class="glass-panel p-4 rounded-xl text-center">
+          <p class="text-[10px] font-mono text-slate-400 uppercase">الجري (Running)</p>
+          <p id="prRunning" class="text-lg font-black text-purple-400 font-mono mt-1">0.0 كم</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: ADD TASK -->
+  <div id="modalAddTask" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+    <div class="glass-panel p-6 rounded-2xl w-full max-w-md space-y-4">
+      <div class="flex justify-between items-center border-b border-slate-700 pb-3">
+        <h3 class="text-sm font-mono font-bold text-gold-400 uppercase">إضافة مهمة جديدة</h3>
+        <button onclick="document.getElementById('modalAddTask').classList.add('hidden')" class="text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 font-mono text-xs">
+        <div>
+          <label class="block text-slate-400 mb-1">عنوان المهمة</label>
+          <input id="inputTaskTitle" type="text" placeholder="مثال: تمارين الميولينج 20 دقيقة" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white focus:outline-none focus:border-gold-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 mb-1">نوع الأولوية</label>
+            <select id="inputTaskType" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white">
+              <option value="PRIMARY">أساسية (PRIMARY)</option>
+              <option value="SECONDARY" selected>ثانوية (SECONDARY)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">الفئة</label>
+            <select id="inputTaskCategory" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white">
+              <option value="WORKOUT">تمارين</option>
+              <option value="FOOTBALL">كرة قدم</option>
+              <option value="HEALTHY_MEAL">تغذية</option>
+              <option value="STUDY">دراسة</option>
+              <option value="ENGLISH">إنجليزية</option>
+              <option value="CUSTOM" selected>مخصص</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-400 mb-1">نقاط XP المكافأة</label>
+          <input id="inputTaskXP" type="number" value="30" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white">
+        </div>
+      </div>
+
+      <div class="flex gap-2 pt-2">
+        <button onclick="submitCustomTask()" class="flex-1 py-2.5 rounded-xl bg-gold-500 hover:bg-gold-400 text-black font-mono font-bold text-xs transition-all">
+          حفظ المهمة
+        </button>
+        <button onclick="document.getElementById('modalAddTask').classList.add('hidden')" class="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-mono text-xs">
+          إلغاء
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function submitCustomTask() {
+      const title = document.getElementById('inputTaskTitle').value;
+      const type = document.getElementById('inputTaskType').value;
+      const category = document.getElementById('inputTaskCategory').value;
+      const xp = document.getElementById('inputTaskXP').value;
+
+      if (window.taskManager && window.taskManager.addTask(title, category, type, xp)) {
+        document.getElementById('inputTaskTitle').value = '';
+        document.getElementById('modalAddTask').classList.add('hidden');
+      }
+    }
+
+    // Register PWA Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('SW Registered:', reg.scope))
+          .catch(err => console.error('SW Error:', err));
+      });
+    }
+
+    // Sound effect on click
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('button') || e.target.closest('a')) {
+        if (window.audioFX) window.audioFX.playButtonClick();
+      }
+    });
+  </script>
+
+  <!-- Load Modules -->
+  <script src="./phase2_sync_engine.js"></script>
+  <script src="./phase3_core_modules.js"></script>
+  <script src="./phase4_audio_engine.js"></script>
+</body>
+</html>
