@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Road To Pro — منصة الانضباط وتطوير اللاعبين الاحترافية</title>
+    <title>Road To Pro — نظام الانضباط وتطوير اللاعبين الاحترافي</title>
     
     <!-- PWA & Theme Settings -->
     <link rel="manifest" href="manifest.webmanifest">
@@ -23,26 +23,26 @@
         
         /* Glassmorphism & UI Consistency */
         .card-premium {
-            background: rgba(15, 23, 42, 0.82);
+            background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .card-premium:hover {
-            border-color: rgba(250, 204, 21, 0.3);
+            border-color: rgba(250, 204, 21, 0.35);
             box-shadow: 0 12px 35px -5px rgba(250, 204, 21, 0.15);
         }
 
         .streak-badge {
             background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
             color: #ffffff;
-            box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
         }
 
         .xp-badge {
-            background: rgba(250, 204, 21, 0.1);
-            border: 1px solid rgba(250, 204, 21, 0.3);
+            background: rgba(250, 204, 21, 0.12);
+            border: 1px solid rgba(250, 204, 21, 0.35);
             color: #facc15;
         }
 
@@ -54,7 +54,7 @@
             background-color: #facc15;
             color: #020617;
             font-weight: 800;
-            box-shadow: 0 4px 14px rgba(250, 204, 21, 0.3);
+            box-shadow: 0 4px 14px rgba(250, 204, 21, 0.35);
         }
 
         /* Custom Scrollbar */
@@ -67,36 +67,36 @@
 <body class="p-3 sm:p-6 md:p-8 pb-24">
 
     <!-- Header & Top Navigation Bar -->
-    <header class="max-w-7xl mx-auto mb-6 flex flex-wrap justify-between items-center gap-4 border-b border-slate-800/80 pb-4">
+    <header class="max-w-7xl mx-auto mb-6 flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
         <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
-            <button id="soundToggleBtn" onclick="toggleAudio()" class="p-2 bg-slate-800/80 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-sm" title="كتم/تشغيل الصوت">
+            <button id="soundToggleBtn" onclick="toggleAudio()" class="p-2.5 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-sm text-slate-200" title="كتم/تشغيل الصوت">
                 🔊
             </button>
-            <button onclick="exportUserData()" class="p-2 bg-slate-800/80 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs font-bold text-slate-300 flex items-center gap-1">
-                📥 تصدير
+            <button onclick="exportUserData()" class="px-3 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5">
+                📥 تصدير البيانات
             </button>
-            <label class="p-2 bg-slate-800/80 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs font-bold text-slate-300 flex items-center gap-1 cursor-pointer">
+            <label class="px-3 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5 cursor-pointer">
                 📤 استيراد
                 <input type="file" id="importFileInput" accept=".json" onchange="importUserData(event)" class="hidden">
             </label>
             
-            <div class="xp-badge px-3 py-1 rounded-2xl font-extrabold flex items-center gap-1 text-xs">
+            <div class="xp-badge px-3.5 py-1.5 rounded-2xl font-extrabold flex items-center gap-1.5 text-xs sm:text-sm">
                 <span>XP</span>
                 <span id="xpValue">120</span>
                 <span>⚡</span>
             </div>
 
-            <div class="streak-badge px-3 py-1 rounded-2xl font-extrabold text-xs flex items-center gap-1">
+            <div class="streak-badge px-3.5 py-1.5 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center gap-1.5">
                 🔥 <span id="streakCount">3</span> أيام متتالية
             </div>
         </div>
 
         <div class="flex items-center gap-3">
             <div class="text-left">
-                <h1 class="text-lg sm:text-xl font-black tracking-wider text-white">ROAD TO PRO</h1>
-                <p class="text-[11px] text-yellow-400 font-bold">المستوى <span id="levelValue">2</span> — <span id="headerPlayerName">اللاعب المحترف</span></p>
+                <h1 class="text-xl sm:text-2xl font-black tracking-wider text-white">ROAD TO PRO</h1>
+                <p class="text-xs text-yellow-400 font-bold">المستوى <span id="levelValue">2</span> — <span id="headerPlayerName">اللاعب المحترف</span></p>
             </div>
-            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-yellow-500 to-amber-300 font-black text-slate-950 flex items-center justify-center text-base shadow-lg shadow-yellow-500/20 border border-yellow-200/30">
+            <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-yellow-500 to-amber-300 font-black text-slate-950 flex items-center justify-center text-lg shadow-lg shadow-yellow-500/20 border border-yellow-200/40">
                 RTP
             </div>
         </div>
@@ -104,17 +104,17 @@
 
     <!-- Main Tab Navigation -->
     <nav class="max-w-7xl mx-auto mb-6 overflow-x-auto pb-2">
-        <div class="flex items-center gap-1.5 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 w-max sm:w-full min-w-full">
-            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-400 hover:text-white">📊 الرئيسية</button>
-            <button onclick="switchTab('sessions')" id="tab-sessions" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-400 hover:text-white">⚽ التمارين والسجلات</button>
-            <button onclick="switchTab('library')" id="tab-library" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-400 hover:text-white">📚 مكتبة التمارين</button>
-            <button onclick="switchTab('matches')" id="tab-matches" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-400 hover:text-white">🏆 المباريات والرادار</button>
-            <button onclick="switchTab('planner')" id="tab-planner" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-400 hover:text-white">📅 الجدول الأسبوعي</button>
-            <button onclick="switchTab('goals')" id="tab-goals" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-400 hover:text-white">🔥 العادات والأهداف</button>
-            <button onclick="switchTab('nutrition')" id="tab-nutrition" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-400 hover:text-white">💧 التغذية والجسم</button>
-            <button onclick="switchTab('reports')" id="tab-reports" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-400 hover:text-white">📈 التقارير</button>
-            <button onclick="switchTab('ai')" id="tab-ai" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-400 hover:text-white">🤖 المدرب الذكي</button>
-            <button onclick="switchTab('profile')" id="tab-profile" class="tab-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-400 hover:text-white">👤 الملف الشخصي</button>
+        <div class="flex items-center gap-2 bg-slate-900/90 p-2 rounded-2xl border border-slate-800 w-max sm:w-full min-w-full">
+            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">📊 الرئيسية</button>
+            <button onclick="switchTab('sessions')" id="tab-sessions" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">⚽ التمارين والسجلات</button>
+            <button onclick="switchTab('library')" id="tab-library" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">📚 مكتبة التمارين</button>
+            <button onclick="switchTab('matches')" id="tab-matches" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">🏆 المباريات والرادار</button>
+            <button onclick="switchTab('planner')" id="tab-planner" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">📅 الجدول الأسبوعي</button>
+            <button onclick="switchTab('goals')" id="tab-goals" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">🔥 العادات والأهداف</button>
+            <button onclick="switchTab('nutrition')" id="tab-nutrition" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">💧 التغذية والجسم</button>
+            <button onclick="switchTab('reports')" id="tab-reports" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">📈 التقارير</button>
+            <button onclick="switchTab('ai')" id="tab-ai" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">🤖 المدرب الذكي</button>
+            <button onclick="switchTab('profile')" id="tab-profile" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">👤 الملف الشخصي</button>
         </div>
     </nav>
 
@@ -123,86 +123,86 @@
         <!-- TAB 1: DASHBOARD -->
         <div id="view-dashboard" class="tab-view space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
+                <div class="flex flex-wrap justify-between items-center gap-4 mb-5">
                     <div>
-                        <span id="currentDateText" class="text-xs font-bold text-yellow-400 block mb-1">الخميس، 1 أكتوبر</span>
-                        <h2 class="text-lg sm:text-xl font-bold text-white" id="dashboardGreeting">مرحباً بك! جاهز لتحقيق إنجازات اليوم؟</h2>
+                        <span id="currentDateText" class="text-xs sm:text-sm font-bold text-yellow-400 block mb-1">...</span>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white" id="dashboardGreeting">مرحباً بك! جاهز للانضباط اليوم؟</h2>
                     </div>
-                    <button onclick="openModal('taskModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-4 py-2 rounded-2xl shadow-lg shadow-yellow-500/20 text-xs sm:text-sm transition">
+                    <button onclick="openModal('taskModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-2xl shadow-lg shadow-yellow-500/20 text-xs sm:text-sm transition hover:scale-105 active:scale-95">
                         + إضافة مهمة يومية
                     </button>
                 </div>
 
-                <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 mb-6">
-                    <div class="flex justify-between text-xs font-bold text-slate-300 mb-2">
+                <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 mb-6">
+                    <div class="flex justify-between text-xs sm:text-sm font-bold text-slate-200 mb-2">
                         <span>نسبة الإنجاز اليومي العام</span>
                         <span id="progressText">(0/0) 0%</span>
                     </div>
-                    <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden p-0.5 border border-slate-700/50">
+                    <div class="w-full bg-slate-800 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-700/60">
                         <div id="progressBar" class="bg-gradient-to-r from-yellow-500 via-amber-400 to-emerald-400 h-full w-0 rounded-full transition-all duration-500"></div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <div class="bg-slate-900/50 border border-slate-800 p-3.5 rounded-2xl">
-                        <span class="text-[11px] text-slate-400 block mb-1">تمارين هذا الشهر</span>
-                        <span id="statMonthlySessions" class="text-lg font-extrabold text-white">0 جلسات</span>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                    <div class="bg-slate-900/70 border border-slate-800 p-4 rounded-2xl">
+                        <span class="text-xs text-slate-400 block mb-1">تمارين هذا الشهر</span>
+                        <span id="statMonthlySessions" class="text-lg sm:text-xl font-extrabold text-white">0 جلسات</span>
                     </div>
-                    <div class="bg-slate-900/50 border border-slate-800 p-3.5 rounded-2xl">
-                        <span class="text-[11px] text-slate-400 block mb-1">المهام المكتملة اليوم</span>
-                        <span id="statCompletedTasks" class="text-lg font-extrabold text-emerald-400">0</span>
+                    <div class="bg-slate-900/70 border border-slate-800 p-4 rounded-2xl">
+                        <span class="text-xs text-slate-400 block mb-1">المهام المكتملة اليوم</span>
+                        <span id="statCompletedTasks" class="text-lg sm:text-xl font-extrabold text-emerald-400">0</span>
                     </div>
-                    <div class="bg-slate-900/50 border border-slate-800 p-3.5 rounded-2xl">
-                        <span class="text-[11px] text-slate-400 block mb-1">شرب الماء اليوم</span>
-                        <span id="statWaterDrunk" class="text-lg font-extrabold text-cyan-400">0 / 3000 مل</span>
+                    <div class="bg-slate-900/70 border border-slate-800 p-4 rounded-2xl">
+                        <span class="text-xs text-slate-400 block mb-1">شرب الماء اليوم</span>
+                        <span id="statWaterDrunk" class="text-lg sm:text-xl font-extrabold text-cyan-400">0 / 3000 مل</span>
                     </div>
-                    <div class="bg-slate-900/50 border border-slate-800 p-3.5 rounded-2xl">
-                        <span class="text-[11px] text-slate-400 block mb-1">النشاط القادم</span>
-                        <span id="statNextActivity" class="text-xs font-bold text-amber-400 truncate block">لا يوجد</span>
+                    <div class="bg-slate-900/70 border border-slate-800 p-4 rounded-2xl">
+                        <span class="text-xs text-slate-400 block mb-1">النشاط القادم</span>
+                        <span id="statNextActivity" class="text-xs sm:text-sm font-bold text-amber-400 truncate block">لا يوجد</span>
                     </div>
                 </div>
             </section>
 
             <!-- Today's Tasks -->
             <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-base font-bold text-white flex items-center gap-2"><span>📋</span> مهام الانضباط اليومية</h3>
-                    <div class="flex items-center gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800 text-[11px]">
-                        <button onclick="setFilter('ALL')" id="filterBtnALL" class="px-2.5 py-1 rounded-lg font-bold bg-yellow-500 text-slate-950">الكل</button>
-                        <button onclick="setFilter('PRIMARY')" id="filterBtnPRIMARY" class="px-2.5 py-1 rounded-lg font-bold text-slate-400">أساسية ⭐</button>
-                        <button onclick="setFilter('SECONDARY')" id="filterBtnSECONDARY" class="px-2.5 py-1 rounded-lg font-bold text-slate-400">ثانوية 🗳️</button>
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2"><span>📋</span> مهام الانضباط اليومية</h3>
+                    <div class="flex items-center gap-1 bg-slate-900 p-1.5 rounded-xl border border-slate-800 text-xs">
+                        <button onclick="setFilter('ALL')" id="filterBtnALL" class="px-3 py-1.5 rounded-lg font-bold bg-yellow-500 text-slate-950">الكل</button>
+                        <button onclick="setFilter('PRIMARY')" id="filterBtnPRIMARY" class="px-3 py-1.5 rounded-lg font-bold text-slate-300 hover:text-white">أساسية ⭐</button>
+                        <button onclick="setFilter('SECONDARY')" id="filterBtnSECONDARY" class="px-3 py-1.5 rounded-lg font-bold text-slate-300 hover:text-white">ثانوية 🗳️</button>
                     </div>
                 </div>
-                <div id="tasksContainer" class="space-y-2.5"></div>
+                <div id="tasksContainer" class="space-y-3"></div>
             </section>
         </div>
 
         <!-- TAB 2: TRAINING SESSIONS -->
         <div id="view-sessions" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-lg font-bold text-white flex items-center gap-2"><span>⚽</span> سجل الجلسات التدريبية الميدانية</h2>
-                        <p class="text-xs text-slate-400">وثّق جميع تمارينك الفردية والجماعية لتقييم كفاءتك البدنية والفنية.</p>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>⚽</span> سجل الجلسات التدريبية الميدانية</h2>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">وثّق جميع تمارينك الفردية والجماعية لتقييم كفاءتك البدنية والفنية بانتظام.</p>
                     </div>
-                    <button onclick="openModal('sessionModal')" class="bg-yellow-500 text-slate-950 font-extrabold px-4 py-2 rounded-xl text-xs sm:text-sm shadow-lg shadow-yellow-500/20">
+                    <button onclick="openModal('sessionModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow-lg shadow-yellow-500/20 transition hover:scale-105">
                         + تسجيل جلسة جديدة
                     </button>
                 </div>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-right text-xs sm:text-sm text-slate-300">
-                        <thead class="bg-slate-900/80 text-xs text-slate-400 border-b border-slate-800">
+                <div class="overflow-x-auto rounded-2xl border border-slate-800">
+                    <table class="w-full text-right text-xs sm:text-sm text-slate-200">
+                        <thead class="bg-slate-900/90 text-slate-300 border-b border-slate-800 font-bold">
                             <tr>
-                                <th class="p-3">التاريخ</th>
-                                <th class="p-3">نوع التدريب</th>
-                                <th class="p-3">المدة</th>
-                                <th class="p-3">التمارين المنجزة</th>
-                                <th class="p-3">الكثافة</th>
-                                <th class="p-3 text-center">إجراءات</th>
+                                <th class="p-3.5">التاريخ</th>
+                                <th class="p-3.5">نوع التدريب</th>
+                                <th class="p-3.5">المدة</th>
+                                <th class="p-3.5">التمارين المنجزة</th>
+                                <th class="p-3.5">الكثافة</th>
+                                <th class="p-3.5 text-center">إجراءات</th>
                             </tr>
                         </thead>
-                        <tbody id="sessionsTableBody" class="divide-y divide-slate-800/60">
+                        <tbody id="sessionsTableBody" class="divide-y divide-slate-800/80 bg-slate-950/40">
                             <!-- Populated dynamically -->
                         </tbody>
                     </table>
@@ -212,18 +212,18 @@
 
         <!-- TAB 3: EXERCISE LIBRARY -->
         <div id="view-library" class="tab-view hidden space-y-6">
-            <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-4">
+            <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-5">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
-                        <h2 class="text-lg font-bold text-yellow-400 flex items-center gap-2"><span>📚</span> مكتبة التمارين الكروية والبدنية</h2>
-                        <p class="text-xs text-slate-400">تمارين موجهة لتطوير التحكم، التمرير، التسديد، والسرعة</p>
+                        <h2 class="text-xl font-bold text-yellow-400 flex items-center gap-2"><span>📚</span> مكتبة التمارين الكروية والبدنية</h2>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-0.5">تمارين موجهة ومجربة لتطوير التحكم، التمرير، التسديد، والسرعة</p>
                     </div>
-                    <div class="w-full md:w-72">
-                        <input type="text" id="librarySearch" oninput="renderLibrary()" placeholder="بحث باسم التمرين..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-yellow-500">
+                    <div class="w-full md:w-80">
+                        <input type="text" id="librarySearch" oninput="renderLibrary()" placeholder="بحث باسم التمرين..." class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-yellow-500 placeholder-slate-400">
                     </div>
                 </div>
 
-                <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-3" id="categoryFilters">
+                <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-4" id="categoryFilters">
                     <!-- Dynamic Category Pills -->
                 </div>
 
@@ -236,96 +236,96 @@
         <!-- TAB 4: MATCHES & FIFA RADAR -->
         <div id="view-matches" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-lg font-bold text-white flex items-center gap-2"><span>🏆</span> مصفوفة التقييم وسجل المباريات Official Match Tracker</h2>
-                        <p class="text-xs text-slate-400">سجل نتائج مبارياتك وتقييم مهاراتك الفردية على مخطط الرادار</p>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>🏆</span> مصفوفة التقييم وسجل المباريات Official Match Tracker</h2>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">سجل نتائج مبارياتك وتقييم مهاراتك الفردية على مخطط الرادار</p>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="openModal('assessmentModal')" class="bg-yellow-500 text-slate-950 font-bold px-3 py-1.5 rounded-xl text-xs">
+                        <button onclick="openModal('assessmentModal')" class="bg-yellow-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs sm:text-sm hover:bg-yellow-400 transition">
                             ⚙️ تقييم المهارات
                         </button>
-                        <button onclick="openModal('matchModal')" class="bg-emerald-500 text-slate-950 font-bold px-3 py-1.5 rounded-xl text-xs">
+                        <button onclick="openModal('matchModal')" class="bg-emerald-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs sm:text-sm hover:bg-emerald-400 transition">
                             + تسجيل مباراة
                         </button>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center mb-6">
-                    <div class="lg:col-span-5 flex flex-col items-center justify-center bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
-                        <span class="text-xs text-slate-400 mb-1">تقييم المهارات الست الكبرى (Radar Chart)</span>
-                        <div class="w-full max-w-[260px] h-[260px]">
+                    <div class="lg:col-span-5 flex flex-col items-center justify-center bg-slate-900/80 p-5 rounded-2xl border border-slate-800">
+                        <span class="text-xs sm:text-sm font-bold text-slate-300 mb-2">تقييم المهارات الست الكبرى (Radar Chart)</span>
+                        <div class="w-full max-w-[280px] h-[280px]">
                             <canvas id="fifaRadarChart"></canvas>
                         </div>
                     </div>
 
-                    <div class="lg:col-span-7 space-y-3">
-                        <h3 class="text-xs font-bold text-slate-300">إحصائيات المباريات التراكمية:</h3>
+                    <div class="lg:col-span-7 space-y-4">
+                        <h3 class="text-xs sm:text-sm font-bold text-slate-200">إحصائيات المباريات التراكمية:</h3>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            <div class="bg-slate-900/60 border border-slate-800 p-3 rounded-2xl">
-                                <span class="text-[10px] text-slate-400 block">المباريات</span>
-                                <span id="matchStatTotal" class="text-base font-extrabold text-white">0</span>
+                            <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl">
+                                <span class="text-xs text-slate-400 block">المباريات</span>
+                                <span id="matchStatTotal" class="text-lg font-extrabold text-white">0</span>
                             </div>
-                            <div class="bg-slate-900/60 border border-slate-800 p-3 rounded-2xl">
-                                <span class="text-[10px] text-slate-400 block">الدقائق</span>
-                                <span id="matchStatMinutes" class="text-base font-extrabold text-cyan-400">0 دقيقة</span>
+                            <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl">
+                                <span class="text-xs text-slate-400 block">الدقائق</span>
+                                <span id="matchStatMinutes" class="text-lg font-extrabold text-cyan-400">0 دقيقة</span>
                             </div>
-                            <div class="bg-slate-900/60 border border-slate-800 p-3 rounded-2xl">
-                                <span class="text-[10px] text-slate-400 block">الأهداف / صناعة</span>
-                                <span id="matchStatGoals" class="text-base font-extrabold text-yellow-400">0 / 0</span>
+                            <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl">
+                                <span class="text-xs text-slate-400 block">الأهداف / صناعة</span>
+                                <span id="matchStatGoals" class="text-lg font-extrabold text-yellow-400">0 / 0</span>
                             </div>
-                            <div class="bg-slate-900/60 border border-slate-800 p-3 rounded-2xl">
-                                <span class="text-[10px] text-slate-400 block">معدل التقييم</span>
-                                <span id="matchStatAvgRating" class="text-base font-extrabold text-emerald-400">N/A</span>
+                            <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl">
+                                <span class="text-xs text-slate-400 block">معدل التقييم</span>
+                                <span id="matchStatAvgRating" class="text-lg font-extrabold text-emerald-400">N/A</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div id="matchLogContainer" class="space-y-2.5 max-h-80 overflow-y-auto"></div>
+                <div id="matchLogContainer" class="space-y-3 max-h-80 overflow-y-auto pr-1"></div>
             </section>
         </div>
 
         <!-- TAB 5: WEEKLY PLANNER -->
         <div id="view-planner" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                <div class="flex flex-wrap justify-between items-center gap-4 mb-5">
                     <div>
-                        <h2 class="text-lg font-bold text-white flex items-center gap-2"><span>📅</span> الجدول والمخطط الأسبوعي للأنشطة</h2>
-                        <p class="text-xs text-slate-400">نظّم مواعيد تمارينك ومبارياتك ودراستك لتفادي التعارض</p>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📅</span> الجدول والمخطط الأسبوعي للأنشطة</h2>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">نظّم مواعيد تمارينك ومبارياتك ودراستك لتفادي التعارض وزيادة الانضباط</p>
                     </div>
-                    <button onclick="openModal('plannerModal')" class="bg-yellow-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs">
+                    <button onclick="openModal('plannerModal')" class="bg-yellow-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm hover:bg-yellow-400 transition">
                         + إضافة نشاط مجدول
                     </button>
                 </div>
 
-                <div id="plannerConflictWarning" class="hidden mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-xs text-red-400 flex items-center gap-2">
-                    <span>⚠️</span> <span>تنبيه: يوجد تداخل في الأوقات المجدولة في نفس اليوم! يرجى مراجعة الجدول.</span>
+                <div id="plannerConflictWarning" class="hidden mb-5 p-3.5 bg-red-500/10 border border-red-500/30 rounded-xl text-xs sm:text-sm text-red-300 flex items-center gap-2 font-bold">
+                    <span>⚠️</span> <span>تنبيه: يوجد تداخل في الأوقات المجدولة في نفس اليوم! يرجى مراجعة المواعيد.</span>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-7 gap-3" id="plannerDaysGrid"></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3" id="plannerDaysGrid"></div>
             </section>
         </div>
 
         <!-- TAB 6: HABITS & GOALS -->
         <div id="view-goals" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold text-white flex items-center gap-2"><span>🎯</span> الأهداف الكبيرة المستهدفة</h2>
-                    <button onclick="openModal('goalModal')" class="bg-yellow-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs">
+                <div class="flex justify-between items-center mb-5">
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>🎯</span> الأهداف الكبيرة المستهدفة</h2>
+                    <button onclick="openModal('goalModal')" class="bg-yellow-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs sm:text-sm hover:bg-yellow-400 transition">
                         + هدف جديد
                     </button>
                 </div>
-                <div id="goalsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                <div id="goalsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
             </section>
 
             <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <div class="flex justify-between items-center mb-4">
+                <div class="flex justify-between items-center mb-5">
                     <div>
-                        <h2 class="text-lg font-bold text-white flex items-center gap-2"><span>🔥</span> العادات اليومية وحساب السلسلة</h2>
-                        <p class="text-xs text-slate-400">حافظ على الالتزام اليومي وبناء العادات الرياضية والشخصية</p>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>🔥</span> العادات اليومية وحساب السلسلة</h2>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">حافظ على الالتزام اليومي وبناء العادات الرياضية والشخصية</p>
                     </div>
-                    <button onclick="openModal('habitModal')" class="bg-cyan-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs">
+                    <button onclick="openModal('habitModal')" class="bg-cyan-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs sm:text-sm hover:bg-cyan-400 transition">
                         + عادة جديدة
                     </button>
                 </div>
@@ -333,51 +333,51 @@
             </section>
 
             <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><span>🏆</span> الأوسمة والإنجازات المفتوحة</h2>
-                <div id="achievementsContainer" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+                <h2 class="text-xl font-bold text-white mb-5 flex items-center gap-2"><span>🏆</span> الأوسمة والإنجازات المفتوحة</h2>
+                <div id="achievementsContainer" class="grid grid-cols-2 sm:grid-cols-4 gap-4"></div>
             </section>
         </div>
 
         <!-- TAB 7: NUTRITION & BODY MEASUREMENTS -->
         <div id="view-nutrition" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><span>💧</span> متابعة شرب الماء والتغذية</h2>
+                <h2 class="text-xl font-bold text-white mb-5 flex items-center gap-2"><span>💧</span> متابعة شرب الماء والتغذية</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                     <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 text-center">
-                        <span class="text-xs text-slate-400 block mb-1">الهدف اليومي للماء</span>
+                        <span class="text-xs sm:text-sm text-slate-300 block mb-1">الهدف اليومي للماء</span>
                         <span id="waterTargetDisplay" class="text-xl font-extrabold text-cyan-400">3000 مل</span>
                     </div>
                     <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 text-center">
-                        <span class="text-xs text-slate-400 block mb-1">الكمية المستهلكة</span>
+                        <span class="text-xs sm:text-sm text-slate-300 block mb-1">الكمية المستهلكة</span>
                         <span id="waterDrunkDisplay" class="text-xl font-extrabold text-emerald-400">0 مل</span>
                     </div>
                     <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 flex items-center justify-center gap-2">
-                        <button onclick="addWater(250)" class="bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 px-3 py-2 rounded-xl font-bold text-xs hover:bg-cyan-500/30">+ 250 مل 🥛</button>
-                        <button onclick="addWater(500)" class="bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 px-3 py-2 rounded-xl font-bold text-xs hover:bg-cyan-500/30">+ 500 مل 🍾</button>
-                        <button onclick="resetWater()" class="bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-2 rounded-xl font-bold text-xs">تصفير</button>
+                        <button onclick="addWater(250)" class="bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-3.5 py-2 rounded-xl font-bold text-xs sm:text-sm hover:bg-cyan-500/30 transition">+ 250 مل 🥛</button>
+                        <button onclick="addWater(500)" class="bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-3.5 py-2 rounded-xl font-bold text-xs sm:text-sm hover:bg-cyan-500/30 transition">+ 500 مل 🍾</button>
+                        <button onclick="resetWater()" class="bg-red-500/10 text-red-300 border border-red-500/30 px-3 py-2 rounded-xl font-bold text-xs sm:text-sm hover:bg-red-500/20 transition">تصفير</button>
                     </div>
                 </div>
             </section>
 
             <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold text-white flex items-center gap-2"><span>⚖️</span> قياسات الوزن والياقة البدنية</h2>
-                    <button onclick="openModal('fitnessModal')" class="bg-emerald-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs">
+                <div class="flex justify-between items-center mb-5">
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>⚖️</span> قياسات الوزن واللياقة البدنية</h2>
+                    <button onclick="openModal('fitnessModal')" class="bg-emerald-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs sm:text-sm hover:bg-emerald-400 transition">
                         + تسجيل قياس بدني
                     </button>
                 </div>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-right text-xs sm:text-sm text-slate-300">
-                        <thead class="bg-slate-900/80 text-xs text-slate-400 border-b border-slate-800">
+                <div class="overflow-x-auto rounded-2xl border border-slate-800">
+                    <table class="w-full text-right text-xs sm:text-sm text-slate-200">
+                        <thead class="bg-slate-900/90 text-slate-300 border-b border-slate-800 font-bold">
                             <tr>
-                                <th class="p-3">التاريخ</th>
-                                <th class="p-3">اسم القياس / الاختبار</th>
-                                <th class="p-3">النتيجة والوحدة</th>
-                                <th class="p-3 text-center">حذف</th>
+                                <th class="p-3.5">التاريخ</th>
+                                <th class="p-3.5">اسم القياس / الاختبار</th>
+                                <th class="p-3.5">النتيجة والوحدة</th>
+                                <th class="p-3.5 text-center">حذف</th>
                             </tr>
                         </thead>
-                        <tbody id="fitnessTableBody" class="divide-y divide-slate-800/60">
+                        <tbody id="fitnessTableBody" class="divide-y divide-slate-800/80 bg-slate-950/40">
                             <!-- Populated dynamically -->
                         </tbody>
                     </table>
@@ -389,40 +389,40 @@
         <div id="view-reports" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
                 <div class="mb-6">
-                    <h2 class="text-lg font-bold text-white flex items-center gap-2"><span>📈</span> التقرير التراكمي الفعلي</h2>
-                    <p class="text-xs text-slate-400">ملخص شامل وموثق لجميع تمارينك ومبارياتك وعاداتك المسجلة</p>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📈</span> التقرير التراكمي الفعلي</h2>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1">ملخص شامل وموثق لجميع تمارينك ومبارياتك وعاداتك المسجلة</p>
                 </div>
 
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 mb-6">
-                    <div class="bg-slate-900/60 border border-slate-800 p-3 rounded-2xl text-center">
-                        <span class="text-[10px] text-slate-400 block">المهام المنجزة</span>
-                        <span id="repTasksDone" class="text-base font-extrabold text-emerald-400">0</span>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4 mb-6">
+                    <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl text-center">
+                        <span class="text-xs text-slate-400 block mb-1">المهام المنجزة</span>
+                        <span id="repTasksDone" class="text-lg font-extrabold text-emerald-400">0</span>
                     </div>
-                    <div class="bg-slate-900/60 border border-slate-800 p-3 rounded-2xl text-center">
-                        <span class="text-[10px] text-slate-400 block">ساعات التدريب</span>
-                        <span id="repTrainingHours" class="text-base font-extrabold text-yellow-400">0 س</span>
+                    <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl text-center">
+                        <span class="text-xs text-slate-400 block mb-1">ساعات التدريب</span>
+                        <span id="repTrainingHours" class="text-lg font-extrabold text-yellow-400">0 س</span>
                     </div>
-                    <div class="bg-slate-900/60 border border-slate-800 p-3 rounded-2xl text-center">
-                        <span class="text-[10px] text-slate-400 block">المباريات المسجلة</span>
-                        <span id="repMatchesCount" class="text-base font-extrabold text-cyan-400">0</span>
+                    <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl text-center">
+                        <span class="text-xs text-slate-400 block mb-1">المباريات المسجلة</span>
+                        <span id="repMatchesCount" class="text-lg font-extrabold text-cyan-400">0</span>
                     </div>
-                    <div class="bg-slate-900/60 border border-slate-800 p-3 rounded-2xl text-center">
-                        <span class="text-[10px] text-slate-400 block">الأهداف الكروية</span>
-                        <span id="repGoalsCount" class="text-base font-extrabold text-emerald-400">0</span>
+                    <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl text-center">
+                        <span class="text-xs text-slate-400 block mb-1">الأهداف الكروية</span>
+                        <span id="repGoalsCount" class="text-lg font-extrabold text-emerald-400">0</span>
                     </div>
-                    <div class="bg-slate-900/60 border border-slate-800 p-3 rounded-2xl text-center">
-                        <span class="text-[10px] text-slate-400 block">نسبة العادات</span>
-                        <span id="repHabitRate" class="text-base font-extrabold text-amber-400">0%</span>
+                    <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl text-center">
+                        <span class="text-xs text-slate-400 block mb-1">نسبة العادات</span>
+                        <span id="repHabitRate" class="text-lg font-extrabold text-amber-400">0%</span>
                     </div>
-                    <div class="bg-slate-900/60 border border-slate-800 p-3 rounded-2xl text-center">
-                        <span class="text-[10px] text-slate-400 block">أيام الالتزام</span>
-                        <span id="repStreakDays" class="text-base font-extrabold text-red-400">0 يوم</span>
+                    <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl text-center">
+                        <span class="text-xs text-slate-400 block mb-1">أيام الالتزام</span>
+                        <span id="repStreakDays" class="text-lg font-extrabold text-red-400">0 يوم</span>
                     </div>
                 </div>
 
-                <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
-                    <h3 class="text-xs font-bold text-slate-300 mb-3">رسم بياني لتحليل الأنشطة</h3>
-                    <div class="w-full h-64">
+                <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800">
+                    <h3 class="text-xs sm:text-sm font-bold text-slate-200 mb-4">رسم بياني لتحليل الأنشطة</h3>
+                    <div class="w-full h-72">
                         <canvas id="weeklyReportChart"></canvas>
                     </div>
                 </div>
@@ -432,31 +432,31 @@
         <!-- TAB 9: AI COACH -->
         <div id="view-ai" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+                <div class="flex flex-wrap justify-between items-center gap-4 mb-5">
                     <div>
-                        <h2 class="text-lg font-bold text-white flex items-center gap-2"><span>🤖</span> المدرب والمساعد الذكي (AI Coach)</h2>
-                        <p class="text-xs text-slate-400">تحليل الملاحظات والأنشطة بناءً على بياناتك الفعلية</p>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>🤖</span> المدرب والمساعد الذكي (AI Coach)</h2>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">تحليل الملاحظات والأنشطة بناءً على بياناتك الفعلية</p>
                     </div>
-                    <button onclick="openModal('aiKeyModal')" class="bg-slate-800 hover:bg-slate-700 text-yellow-400 border border-yellow-500/30 px-3 py-1.5 rounded-xl text-xs font-bold">
+                    <button onclick="openModal('aiKeyModal')" class="bg-slate-800 hover:bg-slate-700 text-yellow-400 border border-yellow-500/40 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition">
                         🔑 إعدادات مفتاح API
                     </button>
                 </div>
 
-                <div id="aiChatBox" class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 h-72 overflow-y-auto space-y-3 mb-4 text-xs">
-                    <div class="bg-slate-900 border border-slate-800 p-3 rounded-2xl text-slate-300 max-w-xl">
+                <div id="aiChatBox" class="bg-slate-950/90 border border-slate-800 rounded-2xl p-4 sm:p-5 h-80 overflow-y-auto space-y-3.5 mb-4 text-xs sm:text-sm">
+                    <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-2xl text-slate-200 max-w-xl leading-relaxed">
                         👋 أهلاً بك! أنا مدربك الشخصي في **Road To Pro**. كيف يمكنني مساعدتك في تحليل تمارينك ومبارياتك اليوم؟
                     </div>
                 </div>
 
-                <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-3 text-xs">
-                    <button onclick="sendQuickPrompt('تلخيص أسبوعي')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl whitespace-nowrap border border-slate-700">📊 تلخيص أسبوعي</button>
-                    <button onclick="sendQuickPrompt('تحليل أهدافي')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl whitespace-nowrap border border-slate-700">🎯 تحليل أهدافي</button>
-                    <button onclick="sendQuickPrompt('تقييم أحدث مباراة')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl whitespace-nowrap border border-slate-700">⚽ تقييم أحدث مباراة</button>
+                <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-4 text-xs sm:text-sm">
+                    <button onclick="sendQuickPrompt('تلخيص أسبوعي')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl whitespace-nowrap border border-slate-700 transition">📊 تلخيص أسبوعي</button>
+                    <button onclick="sendQuickPrompt('تحليل أهدافي')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl whitespace-nowrap border border-slate-700 transition">🎯 تحليل أهدافي</button>
+                    <button onclick="sendQuickPrompt('تقييم أحدث مباراة')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl whitespace-nowrap border border-slate-700 transition">⚽ تقييم أحدث مباراة</button>
                 </div>
 
                 <div class="flex gap-2">
-                    <input type="text" id="aiInputPrompt" placeholder="اسأل المدرب الذكي..." onkeydown="if(event.key==='Enter') processAiChat()" class="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:outline-none focus:border-yellow-500">
-                    <button onclick="processAiChat()" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-5 py-3 rounded-xl transition text-xs sm:text-sm">
+                    <input type="text" id="aiInputPrompt" placeholder="اسأل المدرب الذكي..." onkeydown="if(event.key==='Enter') processAiChat()" class="flex-1 bg-slate-800/90 border border-slate-700 rounded-xl p-3.5 text-xs sm:text-sm text-white focus:outline-none focus:border-yellow-500 placeholder-slate-400">
+                    <button onclick="processAiChat()" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-6 py-3.5 rounded-xl transition text-xs sm:text-sm shadow-lg shadow-yellow-500/20">
                         إرسال
                     </button>
                 </div>
@@ -466,18 +466,18 @@
         <!-- TAB 10: PROFILE -->
         <div id="view-profile" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <h2 class="text-lg font-bold text-white mb-1 flex items-center gap-2"><span>👤</span> الملف الشخصي للاعب</h2>
-                <p class="text-xs text-slate-400 mb-6">تحديث بيانات مركزك والمهارات المستهدفة</p>
+                <h2 class="text-xl font-bold text-white mb-1 flex items-center gap-2"><span>👤</span> الملف الشخصي للاعب</h2>
+                <p class="text-xs sm:text-sm text-slate-300 mb-6">تحديث بيانات مركزك والمهارات المستهدفة لتخصيص التجربة</p>
 
                 <form id="profileForm" onsubmit="saveProfile(event)" class="space-y-4 max-w-2xl">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="text-xs text-slate-300 block mb-1">اسم اللاعب / اللقب</label>
-                            <input type="text" id="profName" placeholder="أدخل اسمك" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none">
+                            <label class="text-xs sm:text-sm font-bold text-slate-300 block mb-1">اسم اللاعب / اللقب</label>
+                            <input type="text" id="profName" placeholder="أدخل اسمك" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none">
                         </div>
                         <div>
-                            <label class="text-xs text-slate-300 block mb-1">مركز اللعب الرئيسي</label>
-                            <select id="profPosition" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none">
+                            <label class="text-xs sm:text-sm font-bold text-slate-300 block mb-1">مركز اللعب الرئيسي</label>
+                            <select id="profPosition" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none">
                                 <option value="صانع ألعاب (CAM)">صانع ألعاب (CAM)</option>
                                 <option value="مهاجم (ST)">مهاجم (ST)</option>
                                 <option value="جناح (LW/RW)">جناح (LW/RW)</option>
@@ -490,27 +490,27 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="text-xs text-slate-300 block mb-1">القدم المفضلة</label>
-                            <select id="profFoot" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none">
+                            <label class="text-xs sm:text-sm font-bold text-slate-300 block mb-1">القدم المفضلة</label>
+                            <select id="profFoot" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none">
                                 <option value="يمنى">اليمنى 🦶</option>
                                 <option value="يسرى">اليسرى 🦶</option>
                                 <option value="كلتا القدمين">كلتا القدمين ⚡</option>
                             </select>
                         </div>
                         <div>
-                            <label class="text-xs text-slate-300 block mb-1">نقاط القوة الحالية</label>
-                            <input type="text" id="profStrengths" placeholder="مثال: المراوغة، التمريرات الحادّة" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none">
+                            <label class="text-xs sm:text-sm font-bold text-slate-300 block mb-1">نقاط القوة الحالية</label>
+                            <input type="text" id="profStrengths" placeholder="مثال: المراوغة، التمريرات الحادّة" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none">
                         </div>
                     </div>
 
                     <div>
-                        <label class="text-xs text-slate-300 block mb-1">المهارات المستهدفة للتطوير</label>
-                        <input type="text" id="profSkillsToImprove" placeholder="مثال: اللمسة الأولى، القدم الضعيفة" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none">
+                        <label class="text-xs sm:text-sm font-bold text-slate-300 block mb-1">المهارات المستهدفة للتطوير</label>
+                        <input type="text" id="profSkillsToImprove" placeholder="مثال: اللمسة الأولى، القدم الضعيفة" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none">
                     </div>
 
                     <div>
-                        <label class="text-xs text-slate-300 block mb-1">هدف الكروي الرئيسي</label>
-                        <textarea id="profGoals" rows="3" placeholder="أكتب هدفك الأكبر هنا..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none"></textarea>
+                        <label class="text-xs sm:text-sm font-bold text-slate-300 block mb-1">هدف الكروي الرئيسي</label>
+                        <textarea id="profGoals" rows="3" placeholder="أكتب هدفك الأكبر هنا..." class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none"></textarea>
                     </div>
 
                     <button type="submit" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-6 py-3 rounded-xl transition text-xs sm:text-sm shadow-lg shadow-yellow-500/20">
@@ -527,17 +527,17 @@
     <!-- Modal: Session -->
     <div id="sessionModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-3xl p-6 relative">
-            <h3 class="text-base font-bold text-white mb-4">تسجيل جلسة تدريبية جديدة</h3>
-            <div class="space-y-3 text-xs">
+            <h3 class="text-lg font-bold text-white mb-4">تسجيل جلسة تدريبية جديدة</h3>
+            <div class="space-y-3.5 text-xs sm:text-sm">
                 <input type="hidden" id="editSessionId">
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="text-slate-400 block mb-1">التاريخ *</label>
-                        <input type="date" id="sessDate" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">التاريخ *</label>
+                        <input type="date" id="sessDate" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                     </div>
                     <div>
-                        <label class="text-slate-400 block mb-1">النوع *</label>
-                        <select id="sessType" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">النوع *</label>
+                        <select id="sessType" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                             <option value="كرة قدم">⚽ كرة قدم</option>
                             <option value="قوة بدنية">🏋️ قوة بدنية</option>
                             <option value="سرعة ورشاقة">⚡ سرعة ورشاقة</option>
@@ -546,14 +546,14 @@
                         </select>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="text-slate-400 block mb-1">المدة (دقائق) *</label>
-                        <input type="number" id="sessDuration" value="60" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">المدة (دقائق) *</label>
+                        <input type="number" id="sessDuration" value="60" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                     </div>
                     <div>
-                        <label class="text-slate-400 block mb-1">الكثافة</label>
-                        <select id="sessIntensity" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">الكثافة</label>
+                        <select id="sessIntensity" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                             <option value="متوسطة">متوسطة</option>
                             <option value="عالية">عالية 🔥</option>
                             <option value="منخفضة">منخفضة 🧘</option>
@@ -561,16 +561,16 @@
                     </div>
                 </div>
                 <div>
-                    <label class="text-slate-400 block mb-1">التمارين المنجزة</label>
-                    <input type="text" id="sessExercises" placeholder="مثال: تمريرات قصيرة، مراوغة بالأقماع" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <label class="text-slate-300 font-bold block mb-1">التمارين المنجزة</label>
+                    <input type="text" id="sessExercises" placeholder="مثال: تمريرات قصيرة، مراوغة بالأقماع" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                 </div>
                 <div>
-                    <label class="text-slate-400 block mb-1">ملاحظات</label>
-                    <input type="text" id="sessNotes" placeholder="شعور ممتاز، تركيز عالي..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <label class="text-slate-300 font-bold block mb-1">ملاحظات</label>
+                    <input type="text" id="sessNotes" placeholder="شعور ممتاز، تركيز عالي..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                 </div>
-                <div class="flex gap-2 pt-2">
-                    <button onclick="saveSession()" class="flex-1 bg-yellow-500 text-slate-950 font-bold py-2.5 rounded-xl">حفظ الجلسة</button>
-                    <button onclick="closeModal('sessionModal')" class="px-4 bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl">إلغاء</button>
+                <div class="flex gap-3 pt-2">
+                    <button onclick="saveSession()" class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ الجلسة</button>
+                    <button onclick="closeModal('sessionModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
                 </div>
             </div>
         </div>
@@ -579,28 +579,28 @@
     <!-- Modal: Task -->
     <div id="taskModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
-            <h3 class="text-base font-bold text-white mb-4">إضافة مهمة يومية</h3>
-            <div class="space-y-3 text-xs">
+            <h3 class="text-lg font-bold text-white mb-4">إضافة مهمة يومية</h3>
+            <div class="space-y-3.5 text-xs sm:text-sm">
                 <div>
-                    <label class="text-slate-400 block mb-1">عنوان المهمة *</label>
-                    <input type="text" id="taskTitleInput" placeholder="عنوان المهمة" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <label class="text-slate-300 font-bold block mb-1">عنوان المهمة *</label>
+                    <input type="text" id="taskTitleInput" placeholder="عنوان المهمة" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                 </div>
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="text-slate-400 block mb-1">النوع</label>
-                        <select id="taskCategoryInput" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">النوع</label>
+                        <select id="taskCategoryInput" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                             <option value="PRIMARY">أساسية (PRIMARY)</option>
                             <option value="SECONDARY">ثانوية (SECONDARY)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="text-slate-400 block mb-1">نقاط XP</label>
-                        <input type="number" id="taskXpInput" value="30" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">نقاط XP</label>
+                        <input type="number" id="taskXpInput" value="30" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                     </div>
                 </div>
-                <div class="flex gap-2 pt-2">
-                    <button onclick="saveNewTask()" class="flex-1 bg-yellow-500 text-slate-950 font-bold py-2.5 rounded-xl">حفظ</button>
-                    <button onclick="closeModal('taskModal')" class="px-4 bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl">إلغاء</button>
+                <div class="flex gap-3 pt-2">
+                    <button onclick="saveNewTask()" class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ</button>
+                    <button onclick="closeModal('taskModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
                 </div>
             </div>
         </div>
@@ -609,43 +609,43 @@
     <!-- Modal: Match -->
     <div id="matchModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
-            <h3 class="text-base font-bold text-white mb-4">تسجيل مباراة رسمية</h3>
-            <div class="space-y-3 text-xs">
+            <h3 class="text-lg font-bold text-white mb-4">تسجيل مباراة رسمية</h3>
+            <div class="space-y-3.5 text-xs sm:text-sm">
                 <div>
-                    <label class="text-slate-400 block mb-1">اسم الخصم / الفريق *</label>
-                    <input type="text" id="mOpponent" placeholder="اسم الخصم" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <label class="text-slate-300 font-bold block mb-1">اسم الخصم / الفريق *</label>
+                    <input type="text" id="mOpponent" placeholder="اسم الخصم" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                 </div>
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="text-slate-400 block mb-1">النتيجة</label>
-                        <select id="mResult" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">النتيجة</label>
+                        <select id="mResult" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                             <option value="فوز">فوز 🏆</option>
                             <option value="تعادل">تعادل 🤝</option>
                             <option value="خسارة">خسارة 💔</option>
                         </select>
                     </div>
                     <div>
-                        <label class="text-slate-400 block mb-1">الدقائق</label>
-                        <input type="number" id="mMinutes" value="90" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">الدقائق</label>
+                        <input type="number" id="mMinutes" value="90" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                     </div>
                 </div>
                 <div class="grid grid-cols-3 gap-2">
                     <div>
-                        <label class="text-slate-400 block mb-1">الأهداف</label>
-                        <input type="number" id="mGoals" value="0" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">الأهداف</label>
+                        <input type="number" id="mGoals" value="0" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                     </div>
                     <div>
-                        <label class="text-slate-400 block mb-1">صناعة</label>
-                        <input type="number" id="mAssists" value="0" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">صناعة</label>
+                        <input type="number" id="mAssists" value="0" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                     </div>
                     <div>
-                        <label class="text-slate-400 block mb-1">التقييم (1-10)</label>
-                        <input type="number" id="mRating" step="0.1" value="7.5" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">التقييم (1-10)</label>
+                        <input type="number" id="mRating" step="0.1" value="7.5" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                     </div>
                 </div>
-                <div class="flex gap-2 pt-2">
-                    <button onclick="saveMatch()" class="flex-1 bg-emerald-500 text-slate-950 font-bold py-2.5 rounded-xl">حفظ المباراة</button>
-                    <button onclick="closeModal('matchModal')" class="px-4 bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl">إلغاء</button>
+                <div class="flex gap-3 pt-2">
+                    <button onclick="saveMatch()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ المباراة</button>
+                    <button onclick="closeModal('matchModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
                 </div>
             </div>
         </div>
@@ -654,37 +654,37 @@
     <!-- Modal: Assessment Skills -->
     <div id="assessmentModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative max-h-[90vh] overflow-y-auto">
-            <h3 class="text-base font-bold text-white mb-4">تقييم المهارات الست (1 إلى 5)</h3>
-            <div class="space-y-3 text-xs">
+            <h3 class="text-lg font-bold text-white mb-4">تقييم المهارات الست (1 إلى 5)</h3>
+            <div class="space-y-3.5 text-xs sm:text-sm">
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="text-slate-400 block mb-1">التمرير (1-5)</label>
-                        <input type="number" id="assPassing" min="1" max="5" value="4" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">التمرير (1-5)</label>
+                        <input type="number" id="assPassing" min="1" max="5" value="4" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
                     </div>
                     <div>
-                        <label class="text-slate-400 block mb-1">التسديد (1-5)</label>
-                        <input type="number" id="assShooting" min="1" max="5" value="3" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">التسديد (1-5)</label>
+                        <input type="number" id="assShooting" min="1" max="5" value="3" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
                     </div>
                     <div>
-                        <label class="text-slate-400 block mb-1">المراوغة (1-5)</label>
-                        <input type="number" id="assDribbling" min="1" max="5" value="4" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">المراوغة (1-5)</label>
+                        <input type="number" id="assDribbling" min="1" max="5" value="4" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
                     </div>
                     <div>
-                        <label class="text-slate-400 block mb-1">اللمسة الأولى (1-5)</label>
-                        <input type="number" id="assTouch" min="1" max="5" value="4" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">اللمسة الأولى (1-5)</label>
+                        <input type="number" id="assTouch" min="1" max="5" value="4" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
                     </div>
                     <div>
-                        <label class="text-slate-400 block mb-1">السرعة (1-5)</label>
-                        <input type="number" id="assSpeed" min="1" max="5" value="4" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">السرعة (1-5)</label>
+                        <input type="number" id="assSpeed" min="1" max="5" value="4" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
                     </div>
                     <div>
-                        <label class="text-slate-400 block mb-1">اللياقة والتحمل (1-5)</label>
-                        <input type="number" id="assStamina" min="1" max="5" value="4" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">اللياقة والتحمل (1-5)</label>
+                        <input type="number" id="assStamina" min="1" max="5" value="4" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
                     </div>
                 </div>
-                <div class="flex gap-2 pt-3">
-                    <button onclick="saveAssessment()" class="flex-1 bg-yellow-500 text-slate-950 font-bold py-2.5 rounded-xl">حفظ التقييم</button>
-                    <button onclick="closeModal('assessmentModal')" class="px-4 bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl">إلغاء</button>
+                <div class="flex gap-3 pt-3">
+                    <button onclick="saveAssessment()" class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ التقييم</button>
+                    <button onclick="closeModal('assessmentModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
                 </div>
             </div>
         </div>
@@ -693,16 +693,16 @@
     <!-- Modal: Planner Activity -->
     <div id="plannerModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
-            <h3 class="text-base font-bold text-white mb-4">جدولة نشاط جديد</h3>
-            <div class="space-y-3 text-xs">
+            <h3 class="text-lg font-bold text-white mb-4">جدولة نشاط جديد</h3>
+            <div class="space-y-3.5 text-xs sm:text-sm">
                 <div>
-                    <label class="text-slate-400 block mb-1">عنوان النشاط *</label>
-                    <input type="text" id="planTitle" placeholder="عنوان النشاط" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <label class="text-slate-300 font-bold block mb-1">عنوان النشاط *</label>
+                    <input type="text" id="planTitle" placeholder="عنوان النشاط" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                 </div>
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="text-slate-400 block mb-1">اليوم</label>
-                        <select id="planDay" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">اليوم</label>
+                        <select id="planDay" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                             <option value="السبت">السبت</option>
                             <option value="الأحد">الأحد</option>
                             <option value="الإثنين">الإثنين</option>
@@ -713,8 +713,8 @@
                         </select>
                     </div>
                     <div>
-                        <label class="text-slate-400 block mb-1">الفئة</label>
-                        <select id="planCategory" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">الفئة</label>
+                        <select id="planCategory" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                             <option value="تمرين">⚽ تمرين</option>
                             <option value="مباراة">🏆 مباراة</option>
                             <option value="دراسة">📚 دراسة</option>
@@ -722,19 +722,19 @@
                         </select>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="text-slate-400 block mb-1">وقت البدء</label>
-                        <input type="time" id="planStartTime" value="16:00" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">وقت البدء</label>
+                        <input type="time" id="planStartTime" value="16:00" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                     </div>
                     <div>
-                        <label class="text-slate-400 block mb-1">وقت الانتهاء</label>
-                        <input type="time" id="planEndTime" value="17:30" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">وقت الانتهاء</label>
+                        <input type="time" id="planEndTime" value="17:30" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                     </div>
                 </div>
-                <div class="flex gap-2 pt-2">
-                    <button onclick="savePlannerItem()" class="flex-1 bg-yellow-500 text-slate-950 font-bold py-2.5 rounded-xl">حفظ النشاط</button>
-                    <button onclick="closeModal('plannerModal')" class="px-4 bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl">إلغاء</button>
+                <div class="flex gap-3 pt-2">
+                    <button onclick="savePlannerItem()" class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ النشاط</button>
+                    <button onclick="closeModal('plannerModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
                 </div>
             </div>
         </div>
@@ -743,19 +743,19 @@
     <!-- Modal: Goal -->
     <div id="goalModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
-            <h3 class="text-base font-bold text-white mb-4">إضافة هدف كبير</h3>
-            <div class="space-y-3 text-xs">
+            <h3 class="text-lg font-bold text-white mb-4">إضافة هدف كبير</h3>
+            <div class="space-y-3.5 text-xs sm:text-sm">
                 <div>
-                    <label class="text-slate-400 block mb-1">عنوان الهدف *</label>
-                    <input type="text" id="goalTitle" placeholder="عنوان الهدف" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <label class="text-slate-300 font-bold block mb-1">عنوان الهدف *</label>
+                    <input type="text" id="goalTitle" placeholder="عنوان الهدف" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                 </div>
                 <div>
-                    <label class="text-slate-400 block mb-1">نسبة الإنجاز (%)</label>
-                    <input type="number" id="goalProgress" min="0" max="100" value="0" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <label class="text-slate-300 font-bold block mb-1">نسبة الإنجاز (%)</label>
+                    <input type="number" id="goalProgress" min="0" max="100" value="0" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                 </div>
-                <div class="flex gap-2 pt-2">
-                    <button onclick="saveGoal()" class="flex-1 bg-yellow-500 text-slate-950 font-bold py-2.5 rounded-xl">حفظ</button>
-                    <button onclick="closeModal('goalModal')" class="px-4 bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl">إلغاء</button>
+                <div class="flex gap-3 pt-2">
+                    <button onclick="saveGoal()" class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ</button>
+                    <button onclick="closeModal('goalModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
                 </div>
             </div>
         </div>
@@ -764,15 +764,15 @@
     <!-- Modal: Habit -->
     <div id="habitModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
-            <h3 class="text-base font-bold text-white mb-4">إضافة عادة يومية</h3>
-            <div class="space-y-3 text-xs">
+            <h3 class="text-lg font-bold text-white mb-4">إضافة عادة يومية</h3>
+            <div class="space-y-3.5 text-xs sm:text-sm">
                 <div>
-                    <label class="text-slate-400 block mb-1">اسم العادة *</label>
-                    <input type="text" id="habitTitle" placeholder="اسم العادة" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <label class="text-slate-300 font-bold block mb-1">اسم العادة *</label>
+                    <input type="text" id="habitTitle" placeholder="اسم العادة" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                 </div>
-                <div class="flex gap-2 pt-2">
-                    <button onclick="saveHabit()" class="flex-1 bg-cyan-500 text-slate-950 font-bold py-2.5 rounded-xl">حفظ</button>
-                    <button onclick="closeModal('habitModal')" class="px-4 bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl">إلغاء</button>
+                <div class="flex gap-3 pt-2">
+                    <button onclick="saveHabit()" class="flex-1 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ</button>
+                    <button onclick="closeModal('habitModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
                 </div>
             </div>
         </div>
@@ -781,19 +781,19 @@
     <!-- Modal: Fitness Metric -->
     <div id="fitnessModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
-            <h3 class="text-base font-bold text-white mb-4">تسجيل قياس بدني</h3>
-            <div class="space-y-3 text-xs">
+            <h3 class="text-lg font-bold text-white mb-4">تسجيل قياس بدني</h3>
+            <div class="space-y-3.5 text-xs sm:text-sm">
                 <div>
-                    <label class="text-slate-400 block mb-1">اسم الاختبار / المقياس *</label>
-                    <input type="text" id="fitMetric" placeholder="مثال: الوزن (كغم) أو ركض 100م" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <label class="text-slate-300 font-bold block mb-1">اسم الاختبار / المقياس *</label>
+                    <input type="text" id="fitMetric" placeholder="مثال: الوزن (كغم) أو ركض 100م" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                 </div>
                 <div>
-                    <label class="text-slate-400 block mb-1">النتيجة والوحدة *</label>
-                    <input type="text" id="fitValue" placeholder="مثال: 72 كغم أو 12.2 ثانية" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <label class="text-slate-300 font-bold block mb-1">النتيجة والوحدة *</label>
+                    <input type="text" id="fitValue" placeholder="مثال: 72 كغم أو 12.2 ثانية" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                 </div>
-                <div class="flex gap-2 pt-2">
-                    <button onclick="saveFitnessMetric()" class="flex-1 bg-emerald-500 text-slate-950 font-bold py-2.5 rounded-xl">حفظ القياس</button>
-                    <button onclick="closeModal('fitnessModal')" class="px-4 bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl">إلغاء</button>
+                <div class="flex gap-3 pt-2">
+                    <button onclick="saveFitnessMetric()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ القياس</button>
+                    <button onclick="closeModal('fitnessModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
                 </div>
             </div>
         </div>
@@ -802,16 +802,16 @@
     <!-- Modal: AI API Key -->
     <div id="aiKeyModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
-            <h3 class="text-base font-bold text-white mb-2">إعداد مفتاح Gemini API</h3>
-            <p class="text-xs text-slate-400 mb-4">يتم حفظ المفتاح في متصفحك محلياً فقط لتمكين الإجابات المباشرة مع AI</p>
-            <div class="space-y-3 text-xs">
+            <h3 class="text-lg font-bold text-white mb-2">إعداد مفتاح Gemini API</h3>
+            <p class="text-xs sm:text-sm text-slate-300 mb-4">يتم حفظ المفتاح في متصفحك محلياً فقط لتمكين الإجابات المباشرة مع AI</p>
+            <div class="space-y-3.5 text-xs sm:text-sm">
                 <div>
-                    <label class="text-slate-400 block mb-1">Gemini API Key</label>
-                    <input type="password" id="apiKeyInput" placeholder="AIzaSy..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <label class="text-slate-300 font-bold block mb-1">Gemini API Key</label>
+                    <input type="password" id="apiKeyInput" placeholder="AIzaSy..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                 </div>
-                <div class="flex gap-2 pt-2">
-                    <button onclick="saveApiKey()" class="flex-1 bg-yellow-500 text-slate-950 font-bold py-2.5 rounded-xl">حفظ</button>
-                    <button onclick="closeModal('aiKeyModal')" class="px-4 bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl">إلغاء</button>
+                <div class="flex gap-3 pt-2">
+                    <button onclick="saveApiKey()" class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ</button>
+                    <button onclick="closeModal('aiKeyModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
                 </div>
             </div>
         </div>
@@ -950,8 +950,8 @@
             appData.filter = cat;
             ['ALL', 'PRIMARY', 'SECONDARY'].forEach(c => {
                 const btn = document.getElementById(`filterBtn${c}`);
-                if (c === cat) btn.className = "px-2.5 py-1 rounded-lg font-bold bg-yellow-500 text-slate-950";
-                else btn.className = "px-2.5 py-1 rounded-lg font-bold text-slate-400";
+                if (c === cat) btn.className = "px-3 py-1.5 rounded-lg font-bold bg-yellow-500 text-slate-950";
+                else btn.className = "px-3 py-1.5 rounded-lg font-bold text-slate-300 hover:text-white";
             });
             renderTasks();
         }
@@ -962,21 +962,21 @@
 
             const filtered = appData.tasks.filter(t => appData.filter === 'ALL' || t.category === appData.filter);
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-slate-500 text-xs">لا توجد مهام في هذه القائمة حالياً.</div>`;
+                container.innerHTML = `<div class="text-center py-6 text-slate-400 text-xs sm:text-sm">لا توجد مهام في هذه القائمة حالياً.</div>`;
                 return;
             }
 
             filtered.forEach(task => {
                 const card = document.createElement('div');
-                card.className = `p-3 rounded-2xl border flex items-center justify-between transition ${task.completed ? 'bg-slate-900/40 border-slate-800 opacity-60' : 'bg-slate-900/90 border-slate-800'}`;
+                card.className = `p-3.5 rounded-2xl border flex items-center justify-between transition ${task.completed ? 'bg-slate-900/40 border-slate-800 opacity-60' : 'bg-slate-900/90 border-slate-800'}`;
                 card.innerHTML = `
                     <div class="flex items-center gap-3">
                         <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask('${task.id}')" class="w-4 h-4 accent-yellow-500 rounded cursor-pointer">
-                        <span class="text-xs font-semibold ${task.completed ? 'line-through text-slate-500' : 'text-slate-200'}">${task.title}</span>
+                        <span class="text-xs sm:text-sm font-semibold ${task.completed ? 'line-through text-slate-500' : 'text-slate-200'}">${task.title}</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-lg bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">XP ${task.xp}+</span>
-                        <button onclick="deleteTask('${task.id}')" class="text-slate-500 hover:text-red-400 text-xs">🗑️</button>
+                        <span class="text-xs font-extrabold px-2.5 py-0.5 rounded-lg bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">XP ${task.xp}+</span>
+                        <button onclick="deleteTask('${task.id}')" class="text-slate-400 hover:text-red-400 text-sm px-1">🗑️</button>
                     </div>
                 `;
                 container.appendChild(card);
@@ -1013,21 +1013,21 @@
             tbody.innerHTML = '';
 
             if (appData.sessions.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-500">لا توجد جلسات تدريبية مسجلة بعد.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400 text-xs sm:text-sm">لا توجد جلسات تدريبية مسجلة بعد. اضغط على "+ تسجيل جلسة جديدة" للبدء.</td></tr>`;
                 return;
             }
 
             appData.sessions.forEach(s => {
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-800/40 border-b border-slate-800/60";
+                tr.className = "hover:bg-slate-800/50 border-b border-slate-800/60";
                 tr.innerHTML = `
-                    <td class="p-3 font-medium text-white">${s.date}</td>
-                    <td class="p-3"><span class="bg-slate-800 text-yellow-400 text-xs px-2 py-0.5 rounded font-bold">${s.type}</span></td>
-                    <td class="p-3">${s.duration} دقيقة</td>
-                    <td class="p-3 text-xs text-slate-400 max-w-xs truncate">${s.exercises || '-'}</td>
-                    <td class="p-3 text-xs text-slate-400">${s.intensity || 'متوسطة'}</td>
-                    <td class="p-3 text-center space-x-1 space-x-reverse">
-                        <button onclick="deleteSession('${s.id}')" class="text-xs text-red-400 hover:text-red-300">🗑️ حذف</button>
+                    <td class="p-3.5 font-bold text-white">${s.date}</td>
+                    <td class="p-3.5"><span class="bg-slate-800 text-yellow-400 text-xs px-2.5 py-1 rounded-lg font-bold">${s.type}</span></td>
+                    <td class="p-3.5">${s.duration} دقيقة</td>
+                    <td class="p-3.5 text-xs sm:text-sm text-slate-300 max-w-xs truncate">${s.exercises || '-'}</td>
+                    <td class="p-3.5 text-xs sm:text-sm text-slate-300">${s.intensity || 'متوسطة'}</td>
+                    <td class="p-3.5 text-center space-x-2 space-x-reverse">
+                        <button onclick="deleteSession('${s.id}')" class="text-xs sm:text-sm text-red-400 hover:text-red-300 font-bold">🗑️ حذف</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -1070,11 +1070,11 @@
                 card.className = "bg-slate-900/80 border border-slate-800 p-4 rounded-2xl flex flex-col justify-between";
                 card.innerHTML = `
                     <div>
-                        <span class="text-[10px] bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded font-bold mb-2 inline-block">${ex.cat}</span>
-                        <h4 class="font-bold text-white text-sm mb-1">${ex.name}</h4>
-                        <p class="text-xs text-slate-400 leading-relaxed mb-3">${ex.text}</p>
+                        <span class="text-xs bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2.5 py-0.5 rounded font-bold mb-2 inline-block">${ex.cat}</span>
+                        <h4 class="font-bold text-white text-sm sm:text-base mb-1">${ex.name}</h4>
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">${ex.text}</p>
                     </div>
-                    <button onclick="addLibToSession('${ex.name}')" class="bg-slate-800 hover:bg-yellow-500 hover:text-slate-950 text-slate-300 text-xs font-bold py-2 rounded-xl transition">
+                    <button onclick="addLibToSession('${ex.name}')" class="bg-slate-800 hover:bg-yellow-500 hover:text-slate-950 text-slate-200 text-xs sm:text-sm font-bold py-2.5 rounded-xl transition">
                         + إضافة للتمارين
                     </button>
                 `;
@@ -1101,13 +1101,22 @@
                     labels: ['التمرير', 'التسديد', 'المراوغة', 'اللمسة الأولى', 'السرعة', 'اللياقة'],
                     datasets: [{
                         data: [a.passing, a.shooting, a.dribbling, a.touch, a.speed, a.stamina],
-                        backgroundColor: 'rgba(250, 204, 21, 0.2)',
+                        backgroundColor: 'rgba(250, 204, 21, 0.25)',
                         borderColor: '#facc15',
-                        borderWidth: 2
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#facc15'
                     }]
                 },
                 options: {
-                    scales: { r: { min: 0, max: 5, ticks: { display: false }, grid: { color: 'rgba(255,255,255,0.1)' } } },
+                    scales: {
+                        r: {
+                            min: 0,
+                            max: 5,
+                            ticks: { display: false },
+                            grid: { color: 'rgba(255,255,255,0.15)' },
+                            pointLabels: { color: '#e2e8f0', font: { size: 12, family: 'Cairo', weight: 'bold' } }
+                        }
+                    },
                     plugins: { legend: { display: false } }
                 }
             });
@@ -1127,15 +1136,15 @@
                 sumRating += parseFloat(m.rating) || 0;
 
                 const card = document.createElement('div');
-                card.className = "bg-slate-900/90 border border-slate-800 p-3 rounded-2xl flex justify-between items-center text-xs";
+                card.className = "bg-slate-900/90 border border-slate-800 p-3.5 rounded-2xl flex justify-between items-center text-xs sm:text-sm";
                 card.innerHTML = `
                     <div>
-                        <span class="font-bold text-white block">${m.opponent}</span>
-                        <span class="text-[10px] text-slate-400">${m.date} • ${m.minutes} دقيقة | ⚽ ${m.goals} | 👟 ${m.assists}</span>
+                        <span class="font-bold text-white text-sm sm:text-base block">${m.opponent}</span>
+                        <span class="text-xs text-slate-300 mt-0.5 block">${m.date} • ${m.minutes} دقيقة | ⚽ ${m.goals} | 👟 ${m.assists}</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded font-bold">⭐ ${m.rating}</span>
-                        <button onclick="deleteMatch('${m.id}')" class="text-slate-500 hover:text-red-400">🗑️</button>
+                        <span class="bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2.5 py-1 rounded-xl font-bold">⭐ ${m.rating}</span>
+                        <button onclick="deleteMatch('${m.id}')" class="text-slate-400 hover:text-red-400 p-1">🗑️</button>
                     </div>
                 `;
                 container.appendChild(card);
@@ -1191,22 +1200,26 @@
             DAYS.forEach(day => {
                 const dayItems = appData.planner.filter(p => p.day === day);
                 const col = document.createElement('div');
-                col.className = "bg-slate-900/60 border border-slate-800/80 rounded-2xl p-2.5 space-y-2 flex flex-col";
-                col.innerHTML = `<h4 class="text-xs font-bold text-yellow-400 border-b border-slate-800 pb-1 text-center">${day}</h4>`;
+                col.className = "bg-slate-900/80 border border-slate-800 rounded-2xl p-3 space-y-2 flex flex-col min-h-[140px]";
+                col.innerHTML = `<h4 class="text-xs sm:text-sm font-bold text-yellow-400 border-b border-slate-800 pb-1.5 text-center">${day}</h4>`;
 
                 const list = document.createElement('div');
-                list.className = "space-y-1.5 flex-1 min-h-[80px]";
+                list.className = "space-y-2 flex-1 flex flex-col justify-start";
 
-                dayItems.forEach(item => {
-                    const el = document.createElement('div');
-                    el.className = "bg-slate-800/90 border border-slate-700/60 p-2 rounded-xl text-[11px] relative group";
-                    el.innerHTML = `
-                        <div class="font-bold text-white truncate">${item.title}</div>
-                        <div class="text-[9px] text-slate-400 mt-0.5">${item.startTime} - ${item.endTime}</div>
-                        <button onclick="deletePlannerItem('${item.id}')" class="text-slate-500 hover:text-red-400 text-[10px] mt-1">حذف</button>
-                    `;
-                    list.appendChild(el);
-                });
+                if (dayItems.length === 0) {
+                    list.innerHTML = `<div class="text-[11px] text-slate-500 text-center py-4 my-auto">لا توجد أنشطة مجدولة</div>`;
+                } else {
+                    dayItems.forEach(item => {
+                        const el = document.createElement('div');
+                        el.className = "bg-slate-800/90 border border-slate-700/70 p-2.5 rounded-xl text-xs relative group";
+                        el.innerHTML = `
+                            <div class="font-bold text-white truncate">${item.title}</div>
+                            <div class="text-[10px] sm:text-xs text-slate-300 mt-1">${item.startTime} - ${item.endTime}</div>
+                            <button onclick="deletePlannerItem('${item.id}')" class="text-slate-400 hover:text-red-400 text-xs mt-1 block">🗑️ حذف</button>
+                        `;
+                        list.appendChild(el);
+                    });
+                }
 
                 col.appendChild(list);
                 grid.appendChild(col);
@@ -1237,16 +1250,16 @@
             gBox.innerHTML = '';
             appData.goals.forEach(g => {
                 const el = document.createElement('div');
-                el.className = "bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl text-xs space-y-1.5";
+                el.className = "bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-xs sm:text-sm space-y-2";
                 el.innerHTML = `
                     <div class="flex justify-between font-bold text-white">
                         <span>${g.title}</span>
                         <span class="text-yellow-400">${g.progress}%</span>
                     </div>
-                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                    <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
                         <div class="bg-yellow-500 h-full" style="width: ${g.progress}%"></div>
                     </div>
-                    <button onclick="deleteGoal('${g.id}')" class="text-slate-500 hover:text-red-400 text-[10px]">حذف الهدف</button>
+                    <button onclick="deleteGoal('${g.id}')" class="text-slate-400 hover:text-red-400 text-xs pt-1">🗑️ حذف الهدف</button>
                 `;
                 gBox.appendChild(el);
             });
@@ -1255,12 +1268,12 @@
             hBox.innerHTML = '';
             appData.habits.forEach(h => {
                 const el = document.createElement('div');
-                el.className = "flex items-center justify-between p-3 bg-slate-900/80 border border-slate-800 rounded-2xl text-xs";
+                el.className = "flex items-center justify-between p-3.5 bg-slate-900/80 border border-slate-800 rounded-2xl text-xs sm:text-sm";
                 el.innerHTML = `
                     <span class="font-bold text-white">${h.title}</span>
-                    <div class="flex items-center gap-2">
-                        <span class="text-amber-400 font-bold">🔥 ${h.streak} أيام</span>
-                        <button onclick="deleteHabit('${h.id}')" class="text-slate-500 hover:text-red-400">🗑️</button>
+                    <div class="flex items-center gap-3">
+                        <span class="text-amber-400 font-extrabold">🔥 ${h.streak} أيام</span>
+                        <button onclick="deleteHabit('${h.id}')" class="text-slate-400 hover:text-red-400">🗑️</button>
                     </div>
                 `;
                 hBox.appendChild(el);
@@ -1300,11 +1313,11 @@
 
             list.forEach(a => {
                 const el = document.createElement('div');
-                el.className = `p-3 rounded-2xl border text-center text-xs ${a.unlocked ? 'bg-slate-900 border-yellow-500/40 text-yellow-400' : 'bg-slate-950/40 border-slate-800 text-slate-600 opacity-50'}`;
+                el.className = `p-3.5 rounded-2xl border text-center text-xs sm:text-sm ${a.unlocked ? 'bg-slate-900 border-yellow-500/50 text-yellow-400 font-bold' : 'bg-slate-950/60 border-slate-800 text-slate-500 opacity-60'}`;
                 el.innerHTML = `
-                    <div class="text-lg mb-1">${a.unlocked ? '🏆' : '🔒'}</div>
-                    <div class="font-bold mb-0.5">${a.title}</div>
-                    <div class="text-[10px] text-slate-400">${a.desc}</div>
+                    <div class="text-2xl mb-1">${a.unlocked ? '🏆' : '🔒'}</div>
+                    <div class="font-bold mb-0.5 text-slate-200">${a.title}</div>
+                    <div class="text-xs text-slate-400">${a.desc}</div>
                 `;
                 container.appendChild(el);
             });
@@ -1326,14 +1339,19 @@
             const tbody = document.getElementById('fitnessTableBody');
             tbody.innerHTML = '';
 
+            if (appData.fitness.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-400 text-xs sm:text-sm">لا توجد قياسات بدنية مسجلة بعد. اضغط "+ تسجيل قياس بدني" للإضافة.</td></tr>`;
+                return;
+            }
+
             appData.fitness.forEach(f => {
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-800/40 border-b border-slate-800/60";
+                tr.className = "hover:bg-slate-800/50 border-b border-slate-800/60";
                 tr.innerHTML = `
-                    <td class="p-3 font-medium text-white">${f.date}</td>
-                    <td class="p-3 text-slate-300 font-semibold">${f.metric}</td>
-                    <td class="p-3 text-emerald-400 font-bold">${f.value}</td>
-                    <td class="p-3 text-center"><button onclick="deleteFitnessMetric('${f.id}')" class="text-slate-500 hover:text-red-400">🗑️</button></td>
+                    <td class="p-3.5 font-bold text-white">${f.date}</td>
+                    <td class="p-3.5 text-slate-200 font-bold">${f.metric}</td>
+                    <td class="p-3.5 text-emerald-400 font-extrabold">${f.value}</td>
+                    <td class="p-3.5 text-center"><button onclick="deleteFitnessMetric('${f.id}')" class="text-slate-400 hover:text-red-400">🗑️</button></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1377,7 +1395,10 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } }
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.08)' }, ticks: { color: '#cbd5e1', font: { size: 11, family: 'Cairo' } } },
+                        x: { grid: { display: false }, ticks: { color: '#e2e8f0', font: { size: 12, family: 'Cairo', weight: 'bold' } } }
+                    }
                 }
             });
 
@@ -1425,13 +1446,13 @@
 
             const box = document.getElementById('aiChatBox');
             const userMsg = document.createElement('div');
-            userMsg.className = "bg-yellow-500/10 border border-yellow-500/20 p-3 rounded-2xl text-yellow-300 max-w-xl mr-auto text-left";
+            userMsg.className = "bg-yellow-500/10 border border-yellow-500/30 p-3.5 rounded-2xl text-yellow-300 max-w-xl mr-auto text-left font-bold";
             userMsg.innerText = prompt;
             box.appendChild(userMsg);
             input.value = '';
 
             const aiMsg = document.createElement('div');
-            aiMsg.className = "bg-slate-900 border border-slate-800 p-3 rounded-2xl text-slate-300 max-w-xl";
+            aiMsg.className = "bg-slate-900 border border-slate-800 p-3.5 rounded-2xl text-slate-200 max-w-xl leading-relaxed";
             aiMsg.innerText = "جاري التحليل واستخراج التوصيات من بياناتك الحالية...";
             box.appendChild(aiMsg);
             box.scrollTop = box.scrollHeight;
