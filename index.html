@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Road To Pro — نظام الانضباط وتطوير اللاعبين الاحترافي</title>
+    <title>Road To Pro — منصة تطوير أداء وتدريب اللاعبين</title>
     
     <!-- PWA & Theme Settings -->
     <link rel="manifest" href="manifest.webmanifest">
@@ -72,10 +72,10 @@
             <button id="soundToggleBtn" onclick="toggleAudio()" class="p-2.5 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-sm text-slate-200" title="كتم/تشغيل الصوت">
                 🔊
             </button>
-            <button onclick="exportUserData()" class="px-3 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5">
+            <button onclick="exportUserData()" class="px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5">
                 📥 تصدير البيانات
             </button>
-            <label class="px-3 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5 cursor-pointer">
+            <label class="px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5 cursor-pointer">
                 📤 استيراد
                 <input type="file" id="importFileInput" accept=".json" onchange="importUserData(event)" class="hidden">
             </label>
@@ -104,17 +104,14 @@
 
     <!-- Main Tab Navigation -->
     <nav class="max-w-7xl mx-auto mb-6 overflow-x-auto pb-2">
-        <div class="flex items-center gap-2 bg-slate-900/90 p-2 rounded-2xl border border-slate-800 w-max sm:w-full min-w-full">
-            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">📊 الرئيسية</button>
-            <button onclick="switchTab('sessions')" id="tab-sessions" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">⚽ التمارين والسجلات</button>
-            <button onclick="switchTab('library')" id="tab-library" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">📚 مكتبة التمارين</button>
-            <button onclick="switchTab('matches')" id="tab-matches" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">🏆 المباريات والرادار</button>
-            <button onclick="switchTab('planner')" id="tab-planner" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">📅 الجدول الأسبوعي</button>
-            <button onclick="switchTab('goals')" id="tab-goals" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">🔥 العادات والأهداف</button>
-            <button onclick="switchTab('nutrition')" id="tab-nutrition" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">💧 التغذية والجسم</button>
-            <button onclick="switchTab('reports')" id="tab-reports" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">📈 التقارير</button>
-            <button onclick="switchTab('ai')" id="tab-ai" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">🤖 المدرب الذكي</button>
-            <button onclick="switchTab('profile')" id="tab-profile" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white">👤 الملف الشخصي</button>
+        <div class="flex items-center justify-between gap-2 bg-slate-900/90 p-2 rounded-2xl border border-slate-800 w-full min-w-[700px]">
+            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📊 الرئيسية</button>
+            <button onclick="switchTab('sessions')" id="tab-sessions" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">⚽ سجل التمارين</button>
+            <button onclick="switchTab('library')" id="tab-library" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📚 مكتبة التمارين</button>
+            <button onclick="switchTab('matches')" id="tab-matches" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">🏆 المباريات والرادار</button>
+            <button onclick="switchTab('reports')" id="tab-reports" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📈 التقرير التراكمي</button>
+            <button onclick="switchTab('ai')" id="tab-ai" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">🤖 المدرب الذكي</button>
+            <button onclick="switchTab('profile')" id="tab-profile" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">👤 الملف الشخصي</button>
         </div>
     </nav>
 
@@ -126,54 +123,40 @@
                 <div class="flex flex-wrap justify-between items-center gap-4 mb-5">
                     <div>
                         <span id="currentDateText" class="text-xs sm:text-sm font-bold text-yellow-400 block mb-1">...</span>
-                        <h2 class="text-xl sm:text-2xl font-bold text-white" id="dashboardGreeting">مرحباً بك! جاهز للانضباط اليوم؟</h2>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white" id="dashboardGreeting">مرحباً بك! جاهز للتدريب والتطوير اليوم؟</h2>
                     </div>
-                    <button onclick="openModal('taskModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-2xl shadow-lg shadow-yellow-500/20 text-xs sm:text-sm transition hover:scale-105 active:scale-95">
-                        + إضافة مهمة يومية
+                    <button onclick="openModal('sessionModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-2xl shadow-lg shadow-yellow-500/20 text-xs sm:text-sm transition hover:scale-105 active:scale-95">
+                        + تسجيل جلسة تدريب جديدة
                     </button>
                 </div>
 
-                <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 mb-6">
-                    <div class="flex justify-between text-xs sm:text-sm font-bold text-slate-200 mb-2">
-                        <span>نسبة الإنجاز اليومي العام</span>
-                        <span id="progressText">(0/0) 0%</span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
+                        <span class="text-xs text-slate-400 block mb-1">الجلسات المسجلة</span>
+                        <span id="statTotalSessions" class="text-xl sm:text-2xl font-extrabold text-white">0 جلسات</span>
                     </div>
-                    <div class="w-full bg-slate-800 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-700/60">
-                        <div id="progressBar" class="bg-gradient-to-r from-yellow-500 via-amber-400 to-emerald-400 h-full w-0 rounded-full transition-all duration-500"></div>
+                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
+                        <span class="text-xs text-slate-400 block mb-1">إجمالي ساعات التدريب</span>
+                        <span id="statTotalHours" class="text-xl sm:text-2xl font-extrabold text-emerald-400">0 ساعة</span>
                     </div>
-                </div>
-
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                    <div class="bg-slate-900/70 border border-slate-800 p-4 rounded-2xl">
-                        <span class="text-xs text-slate-400 block mb-1">تمارين هذا الشهر</span>
-                        <span id="statMonthlySessions" class="text-lg sm:text-xl font-extrabold text-white">0 جلسات</span>
+                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
+                        <span class="text-xs text-slate-400 block mb-1">المباريات المسجلة</span>
+                        <span id="statMatchesCount" class="text-xl sm:text-2xl font-extrabold text-cyan-400">0 مباراة</span>
                     </div>
-                    <div class="bg-slate-900/70 border border-slate-800 p-4 rounded-2xl">
-                        <span class="text-xs text-slate-400 block mb-1">المهام المكتملة اليوم</span>
-                        <span id="statCompletedTasks" class="text-lg sm:text-xl font-extrabold text-emerald-400">0</span>
-                    </div>
-                    <div class="bg-slate-900/70 border border-slate-800 p-4 rounded-2xl">
-                        <span class="text-xs text-slate-400 block mb-1">شرب الماء اليوم</span>
-                        <span id="statWaterDrunk" class="text-lg sm:text-xl font-extrabold text-cyan-400">0 / 3000 مل</span>
-                    </div>
-                    <div class="bg-slate-900/70 border border-slate-800 p-4 rounded-2xl">
-                        <span class="text-xs text-slate-400 block mb-1">النشاط القادم</span>
-                        <span id="statNextActivity" class="text-xs sm:text-sm font-bold text-amber-400 truncate block">لا يوجد</span>
+                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
+                        <span class="text-xs text-slate-400 block mb-1">معدل تقييم الأداء</span>
+                        <span id="statAvgMatchRating" class="text-xl sm:text-2xl font-extrabold text-yellow-400">N/A</span>
                     </div>
                 </div>
             </section>
 
-            <!-- Today's Tasks -->
+            <!-- Recent Sessions Summary -->
             <section class="card-premium rounded-3xl p-5 sm:p-6">
                 <div class="flex justify-between items-center mb-5">
-                    <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2"><span>📋</span> مهام الانضباط اليومية</h3>
-                    <div class="flex items-center gap-1 bg-slate-900 p-1.5 rounded-xl border border-slate-800 text-xs">
-                        <button onclick="setFilter('ALL')" id="filterBtnALL" class="px-3 py-1.5 rounded-lg font-bold bg-yellow-500 text-slate-950">الكل</button>
-                        <button onclick="setFilter('PRIMARY')" id="filterBtnPRIMARY" class="px-3 py-1.5 rounded-lg font-bold text-slate-300 hover:text-white">أساسية ⭐</button>
-                        <button onclick="setFilter('SECONDARY')" id="filterBtnSECONDARY" class="px-3 py-1.5 rounded-lg font-bold text-slate-300 hover:text-white">ثانوية 🗳️</button>
-                    </div>
+                    <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2"><span>⚽</span> أحدث الجلسات التدريبية الميدانية</h3>
+                    <button onclick="switchTab('sessions')" class="text-xs sm:text-sm font-bold text-yellow-400 hover:underline">عرض كل السجلات ←</button>
                 </div>
-                <div id="tasksContainer" class="space-y-3"></div>
+                <div id="dashboardRecentSessions" class="space-y-3"></div>
             </section>
         </div>
 
@@ -221,10 +204,6 @@
                     <div class="w-full md:w-80">
                         <input type="text" id="librarySearch" oninput="renderLibrary()" placeholder="بحث باسم التمرين..." class="w-full bg-slate-800/90 border border-slate-700 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-yellow-500 placeholder-slate-400">
                     </div>
-                </div>
-
-                <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-4" id="categoryFilters">
-                    <!-- Dynamic Category Pills -->
                 </div>
 
                 <div id="exerciseGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -286,142 +265,35 @@
             </section>
         </div>
 
-        <!-- TAB 5: WEEKLY PLANNER -->
-        <div id="view-planner" class="tab-view hidden space-y-6">
-            <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <div class="flex flex-wrap justify-between items-center gap-4 mb-5">
-                    <div>
-                        <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📅</span> الجدول والمخطط الأسبوعي للأنشطة</h2>
-                        <p class="text-xs sm:text-sm text-slate-300 mt-1">نظّم مواعيد تمارينك ومبارياتك ودراستك لتفادي التعارض وزيادة الانضباط</p>
-                    </div>
-                    <button onclick="openModal('plannerModal')" class="bg-yellow-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm hover:bg-yellow-400 transition">
-                        + إضافة نشاط مجدول
-                    </button>
-                </div>
-
-                <div id="plannerConflictWarning" class="hidden mb-5 p-3.5 bg-red-500/10 border border-red-500/30 rounded-xl text-xs sm:text-sm text-red-300 flex items-center gap-2 font-bold">
-                    <span>⚠️</span> <span>تنبيه: يوجد تداخل في الأوقات المجدولة في نفس اليوم! يرجى مراجعة المواعيد.</span>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3" id="plannerDaysGrid"></div>
-            </section>
-        </div>
-
-        <!-- TAB 6: HABITS & GOALS -->
-        <div id="view-goals" class="tab-view hidden space-y-6">
-            <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <div class="flex justify-between items-center mb-5">
-                    <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>🎯</span> الأهداف الكبيرة المستهدفة</h2>
-                    <button onclick="openModal('goalModal')" class="bg-yellow-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs sm:text-sm hover:bg-yellow-400 transition">
-                        + هدف جديد
-                    </button>
-                </div>
-                <div id="goalsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-            </section>
-
-            <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <div class="flex justify-between items-center mb-5">
-                    <div>
-                        <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>🔥</span> العادات اليومية وحساب السلسلة</h2>
-                        <p class="text-xs sm:text-sm text-slate-300 mt-1">حافظ على الالتزام اليومي وبناء العادات الرياضية والشخصية</p>
-                    </div>
-                    <button onclick="openModal('habitModal')" class="bg-cyan-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs sm:text-sm hover:bg-cyan-400 transition">
-                        + عادة جديدة
-                    </button>
-                </div>
-                <div id="habitsContainer" class="space-y-3"></div>
-            </section>
-
-            <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <h2 class="text-xl font-bold text-white mb-5 flex items-center gap-2"><span>🏆</span> الأوسمة والإنجازات المفتوحة</h2>
-                <div id="achievementsContainer" class="grid grid-cols-2 sm:grid-cols-4 gap-4"></div>
-            </section>
-        </div>
-
-        <!-- TAB 7: NUTRITION & BODY MEASUREMENTS -->
-        <div id="view-nutrition" class="tab-view hidden space-y-6">
-            <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <h2 class="text-xl font-bold text-white mb-5 flex items-center gap-2"><span>💧</span> متابعة شرب الماء والتغذية</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 text-center">
-                        <span class="text-xs sm:text-sm text-slate-300 block mb-1">الهدف اليومي للماء</span>
-                        <span id="waterTargetDisplay" class="text-xl font-extrabold text-cyan-400">3000 مل</span>
-                    </div>
-                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 text-center">
-                        <span class="text-xs sm:text-sm text-slate-300 block mb-1">الكمية المستهلكة</span>
-                        <span id="waterDrunkDisplay" class="text-xl font-extrabold text-emerald-400">0 مل</span>
-                    </div>
-                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 flex items-center justify-center gap-2">
-                        <button onclick="addWater(250)" class="bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-3.5 py-2 rounded-xl font-bold text-xs sm:text-sm hover:bg-cyan-500/30 transition">+ 250 مل 🥛</button>
-                        <button onclick="addWater(500)" class="bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-3.5 py-2 rounded-xl font-bold text-xs sm:text-sm hover:bg-cyan-500/30 transition">+ 500 مل 🍾</button>
-                        <button onclick="resetWater()" class="bg-red-500/10 text-red-300 border border-red-500/30 px-3 py-2 rounded-xl font-bold text-xs sm:text-sm hover:bg-red-500/20 transition">تصفير</button>
-                    </div>
-                </div>
-            </section>
-
-            <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <div class="flex justify-between items-center mb-5">
-                    <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>⚖️</span> قياسات الوزن واللياقة البدنية</h2>
-                    <button onclick="openModal('fitnessModal')" class="bg-emerald-500 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs sm:text-sm hover:bg-emerald-400 transition">
-                        + تسجيل قياس بدني
-                    </button>
-                </div>
-
-                <div class="overflow-x-auto rounded-2xl border border-slate-800">
-                    <table class="w-full text-right text-xs sm:text-sm text-slate-200">
-                        <thead class="bg-slate-900/90 text-slate-300 border-b border-slate-800 font-bold">
-                            <tr>
-                                <th class="p-3.5">التاريخ</th>
-                                <th class="p-3.5">اسم القياس / الاختبار</th>
-                                <th class="p-3.5">النتيجة والوحدة</th>
-                                <th class="p-3.5 text-center">حذف</th>
-                            </tr>
-                        </thead>
-                        <tbody id="fitnessTableBody" class="divide-y divide-slate-800/80 bg-slate-950/40">
-                            <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
-
-        <!-- TAB 8: REPORTS -->
+        <!-- TAB 5: REPORTS -->
         <div id="view-reports" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
                 <div class="mb-6">
                     <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📈</span> التقرير التراكمي الفعلي</h2>
-                    <p class="text-xs sm:text-sm text-slate-300 mt-1">ملخص شامل وموثق لجميع تمارينك ومبارياتك وعاداتك المسجلة</p>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1">ملخص شامل وموثق لجميع تمارينك ومبارياتك المسجلة</p>
                 </div>
 
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4 mb-6">
-                    <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl text-center">
-                        <span class="text-xs text-slate-400 block mb-1">المهام المنجزة</span>
-                        <span id="repTasksDone" class="text-lg font-extrabold text-emerald-400">0</span>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-center">
+                        <span class="text-xs text-slate-400 block mb-1">إجمالي الجلسات التدريبية</span>
+                        <span id="repSessionsCount" class="text-xl font-extrabold text-emerald-400">0</span>
                     </div>
-                    <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl text-center">
-                        <span class="text-xs text-slate-400 block mb-1">ساعات التدريب</span>
-                        <span id="repTrainingHours" class="text-lg font-extrabold text-yellow-400">0 س</span>
+                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-center">
+                        <span class="text-xs text-slate-400 block mb-1">ساعات التدريب الفعليه</span>
+                        <span id="repTrainingHours" class="text-xl font-extrabold text-yellow-400">0 س</span>
                     </div>
-                    <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl text-center">
+                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-center">
                         <span class="text-xs text-slate-400 block mb-1">المباريات المسجلة</span>
-                        <span id="repMatchesCount" class="text-lg font-extrabold text-cyan-400">0</span>
+                        <span id="repMatchesCount" class="text-xl font-extrabold text-cyan-400">0</span>
                     </div>
-                    <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl text-center">
-                        <span class="text-xs text-slate-400 block mb-1">الأهداف الكروية</span>
-                        <span id="repGoalsCount" class="text-lg font-extrabold text-emerald-400">0</span>
-                    </div>
-                    <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl text-center">
-                        <span class="text-xs text-slate-400 block mb-1">نسبة العادات</span>
-                        <span id="repHabitRate" class="text-lg font-extrabold text-amber-400">0%</span>
-                    </div>
-                    <div class="bg-slate-900/80 border border-slate-800 p-3.5 rounded-2xl text-center">
-                        <span class="text-xs text-slate-400 block mb-1">أيام الالتزام</span>
-                        <span id="repStreakDays" class="text-lg font-extrabold text-red-400">0 يوم</span>
+                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-center">
+                        <span class="text-xs text-slate-400 block mb-1">المساهمات التهيدفية</span>
+                        <span id="repGoalsCount" class="text-xl font-extrabold text-emerald-400">0</span>
                     </div>
                 </div>
 
                 <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800">
-                    <h3 class="text-xs sm:text-sm font-bold text-slate-200 mb-4">رسم بياني لتحليل الأنشطة</h3>
+                    <h3 class="text-xs sm:text-sm font-bold text-slate-200 mb-4">رسم بياني لتوزيع نوعية التمارين المسجلة</h3>
                     <div class="w-full h-72">
                         <canvas id="weeklyReportChart"></canvas>
                     </div>
@@ -429,7 +301,7 @@
             </section>
         </div>
 
-        <!-- TAB 9: AI COACH -->
+        <!-- TAB 6: AI COACH -->
         <div id="view-ai" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
                 <div class="flex flex-wrap justify-between items-center gap-4 mb-5">
@@ -449,8 +321,7 @@
                 </div>
 
                 <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-4 text-xs sm:text-sm">
-                    <button onclick="sendQuickPrompt('تلخيص أسبوعي')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl whitespace-nowrap border border-slate-700 transition">📊 تلخيص أسبوعي</button>
-                    <button onclick="sendQuickPrompt('تحليل أهدافي')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl whitespace-nowrap border border-slate-700 transition">🎯 تحليل أهدافي</button>
+                    <button onclick="sendQuickPrompt('ملخص التمارين')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl whitespace-nowrap border border-slate-700 transition">📊 ملخص التمارين</button>
                     <button onclick="sendQuickPrompt('تقييم أحدث مباراة')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl whitespace-nowrap border border-slate-700 transition">⚽ تقييم أحدث مباراة</button>
                 </div>
 
@@ -463,7 +334,7 @@
             </section>
         </div>
 
-        <!-- TAB 10: PROFILE -->
+        <!-- TAB 7: PROFILE -->
         <div id="view-profile" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
                 <h2 class="text-xl font-bold text-white mb-1 flex items-center gap-2"><span>👤</span> الملف الشخصي للاعب</h2>
@@ -576,36 +447,6 @@
         </div>
     </div>
 
-    <!-- Modal: Task -->
-    <div id="taskModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
-            <h3 class="text-lg font-bold text-white mb-4">إضافة مهمة يومية</h3>
-            <div class="space-y-3.5 text-xs sm:text-sm">
-                <div>
-                    <label class="text-slate-300 font-bold block mb-1">عنوان المهمة *</label>
-                    <input type="text" id="taskTitleInput" placeholder="عنوان المهمة" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="text-slate-300 font-bold block mb-1">النوع</label>
-                        <select id="taskCategoryInput" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                            <option value="PRIMARY">أساسية (PRIMARY)</option>
-                            <option value="SECONDARY">ثانوية (SECONDARY)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-slate-300 font-bold block mb-1">نقاط XP</label>
-                        <input type="number" id="taskXpInput" value="30" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                    </div>
-                </div>
-                <div class="flex gap-3 pt-2">
-                    <button onclick="saveNewTask()" class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ</button>
-                    <button onclick="closeModal('taskModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal: Match -->
     <div id="matchModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
@@ -690,115 +531,6 @@
         </div>
     </div>
 
-    <!-- Modal: Planner Activity -->
-    <div id="plannerModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
-            <h3 class="text-lg font-bold text-white mb-4">جدولة نشاط جديد</h3>
-            <div class="space-y-3.5 text-xs sm:text-sm">
-                <div>
-                    <label class="text-slate-300 font-bold block mb-1">عنوان النشاط *</label>
-                    <input type="text" id="planTitle" placeholder="عنوان النشاط" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="text-slate-300 font-bold block mb-1">اليوم</label>
-                        <select id="planDay" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                            <option value="السبت">السبت</option>
-                            <option value="الأحد">الأحد</option>
-                            <option value="الإثنين">الإثنين</option>
-                            <option value="الثلاثاء">الثلاثاء</option>
-                            <option value="الأربعاء">الأربعاء</option>
-                            <option value="الخميس">الخميس</option>
-                            <option value="الجمعة">الجمعة</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-slate-300 font-bold block mb-1">الفئة</label>
-                        <select id="planCategory" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                            <option value="تمرين">⚽ تمرين</option>
-                            <option value="مباراة">🏆 مباراة</option>
-                            <option value="دراسة">📚 دراسة</option>
-                            <option value="راحة">🧘 استشفاء</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="text-slate-300 font-bold block mb-1">وقت البدء</label>
-                        <input type="time" id="planStartTime" value="16:00" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                    </div>
-                    <div>
-                        <label class="text-slate-300 font-bold block mb-1">وقت الانتهاء</label>
-                        <input type="time" id="planEndTime" value="17:30" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                    </div>
-                </div>
-                <div class="flex gap-3 pt-2">
-                    <button onclick="savePlannerItem()" class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ النشاط</button>
-                    <button onclick="closeModal('plannerModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Goal -->
-    <div id="goalModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
-            <h3 class="text-lg font-bold text-white mb-4">إضافة هدف كبير</h3>
-            <div class="space-y-3.5 text-xs sm:text-sm">
-                <div>
-                    <label class="text-slate-300 font-bold block mb-1">عنوان الهدف *</label>
-                    <input type="text" id="goalTitle" placeholder="عنوان الهدف" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                </div>
-                <div>
-                    <label class="text-slate-300 font-bold block mb-1">نسبة الإنجاز (%)</label>
-                    <input type="number" id="goalProgress" min="0" max="100" value="0" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                </div>
-                <div class="flex gap-3 pt-2">
-                    <button onclick="saveGoal()" class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ</button>
-                    <button onclick="closeModal('goalModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Habit -->
-    <div id="habitModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
-            <h3 class="text-lg font-bold text-white mb-4">إضافة عادة يومية</h3>
-            <div class="space-y-3.5 text-xs sm:text-sm">
-                <div>
-                    <label class="text-slate-300 font-bold block mb-1">اسم العادة *</label>
-                    <input type="text" id="habitTitle" placeholder="اسم العادة" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                </div>
-                <div class="flex gap-3 pt-2">
-                    <button onclick="saveHabit()" class="flex-1 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ</button>
-                    <button onclick="closeModal('habitModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Fitness Metric -->
-    <div id="fitnessModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
-            <h3 class="text-lg font-bold text-white mb-4">تسجيل قياس بدني</h3>
-            <div class="space-y-3.5 text-xs sm:text-sm">
-                <div>
-                    <label class="text-slate-300 font-bold block mb-1">اسم الاختبار / المقياس *</label>
-                    <input type="text" id="fitMetric" placeholder="مثال: الوزن (كغم) أو ركض 100م" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                </div>
-                <div>
-                    <label class="text-slate-300 font-bold block mb-1">النتيجة والوحدة *</label>
-                    <input type="text" id="fitValue" placeholder="مثال: 72 كغم أو 12.2 ثانية" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                </div>
-                <div class="flex gap-3 pt-2">
-                    <button onclick="saveFitnessMetric()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ القياس</button>
-                    <button onclick="closeModal('fitnessModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal: AI API Key -->
     <div id="aiKeyModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
@@ -825,7 +557,6 @@
             streak: 3,
             audioEnabled: true,
             apiKey: '',
-            filter: 'ALL',
             profile: {
                 name: 'اللاعب المحترف',
                 position: 'صانع ألعاب (CAM)',
@@ -840,23 +571,6 @@
             ],
             matches: [
                 { id: 'm1', date: '2026-09-28', opponent: 'فريق النجوم', result: 'فوز', minutes: 90, goals: 1, assists: 1, rating: 8.5 }
-            ],
-            fitness: [
-                { id: 'f1', date: '2026-09-25', metric: 'الوزن (كغم)', value: '72 كغم' }
-            ],
-            nutrition: { waterTarget: 3000, waterDrunk: 1750 },
-            planner: [
-                { id: 'p1', day: 'السبت', title: 'تمرين سرعة ولياقة', startTime: '16:00', endTime: '17:30', category: 'تمرين' }
-            ],
-            tasks: [
-                { id: 't1', title: 'تمارين مرونة وإطالات صباحية', category: 'PRIMARY', xp: 30, completed: true },
-                { id: 't2', title: 'تمرين اللمسة الأولى والتحكم بالكرة 30 دقيقة', category: 'PRIMARY', xp: 50, completed: false }
-            ],
-            goals: [
-                { id: 'g1', title: 'تحسين نسبة التمرير الدقيق إلى 85%', progress: 60 }
-            ],
-            habits: [
-                { id: 'h1', title: 'النوم المبكر وقراءة 15 دقيقة', streak: 4, lastChecked: '' }
             ]
         };
 
@@ -910,6 +624,7 @@
 
             if (tabId === 'matches') renderRadarChart();
             if (tabId === 'reports') renderWeeklyReportChart();
+            if (tabId === 'dashboard') renderDashboardRecentSessions();
         }
 
         function openModal(id) { playSound('click'); document.getElementById(id).classList.remove('hidden'); document.getElementById(id).classList.add('flex'); }
@@ -944,68 +659,33 @@
             reader.readAsText(file);
         }
 
-        // --- DASHBOARD & TASKS ---
-        function setFilter(cat) {
-            playSound('click');
-            appData.filter = cat;
-            ['ALL', 'PRIMARY', 'SECONDARY'].forEach(c => {
-                const btn = document.getElementById(`filterBtn${c}`);
-                if (c === cat) btn.className = "px-3 py-1.5 rounded-lg font-bold bg-yellow-500 text-slate-950";
-                else btn.className = "px-3 py-1.5 rounded-lg font-bold text-slate-300 hover:text-white";
-            });
-            renderTasks();
-        }
-
-        function renderTasks() {
-            const container = document.getElementById('tasksContainer');
+        // --- DASHBOARD RECENT SESSIONS ---
+        function renderDashboardRecentSessions() {
+            const container = document.getElementById('dashboardRecentSessions');
             container.innerHTML = '';
 
-            const filtered = appData.tasks.filter(t => appData.filter === 'ALL' || t.category === appData.filter);
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-slate-400 text-xs sm:text-sm">لا توجد مهام في هذه القائمة حالياً.</div>`;
+            const recent = appData.sessions.slice(0, 3);
+            if (recent.length === 0) {
+                container.innerHTML = `<div class="text-center py-6 text-slate-400 text-xs sm:text-sm">لا توجد تمارين مسجلة حالياً. قم بإضافة أوائل تمارينك للبدء في تتبع الأداء.</div>`;
                 return;
             }
 
-            filtered.forEach(task => {
+            recent.forEach(s => {
                 const card = document.createElement('div');
-                card.className = `p-3.5 rounded-2xl border flex items-center justify-between transition ${task.completed ? 'bg-slate-900/40 border-slate-800 opacity-60' : 'bg-slate-900/90 border-slate-800'}`;
+                card.className = "p-3.5 bg-slate-900/90 border border-slate-800 rounded-2xl flex justify-between items-center text-xs sm:text-sm";
                 card.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask('${task.id}')" class="w-4 h-4 accent-yellow-500 rounded cursor-pointer">
-                        <span class="text-xs sm:text-sm font-semibold ${task.completed ? 'line-through text-slate-500' : 'text-slate-200'}">${task.title}</span>
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="font-bold text-white">${s.type}</span>
+                            <span class="bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded text-xs font-bold">${s.intensity || 'متوسطة'}</span>
+                        </div>
+                        <span class="text-xs text-slate-400">${s.date} • ${s.duration} دقيقة | ${s.exercises || 'تمارين متنوعة'}</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs font-extrabold px-2.5 py-0.5 rounded-lg bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">XP ${task.xp}+</span>
-                        <button onclick="deleteTask('${task.id}')" class="text-slate-400 hover:text-red-400 text-sm px-1">🗑️</button>
-                    </div>
+                    <button onclick="switchTab('sessions')" class="text-xs font-bold text-slate-300 hover:text-yellow-400">التفاصيل ←</button>
                 `;
                 container.appendChild(card);
             });
         }
-
-        function saveNewTask() {
-            const title = document.getElementById('taskTitleInput').value.trim();
-            const category = document.getElementById('taskCategoryInput').value;
-            const xp = parseInt(document.getElementById('taskXpInput').value) || 30;
-
-            if (!title) return;
-            appData.tasks.push({ id: Date.now().toString(), title, category, xp, completed: false });
-            document.getElementById('taskTitleInput').value = '';
-            closeModal('taskModal');
-            saveState();
-        }
-
-        function toggleTask(id) {
-            const t = appData.tasks.find(x => x.id === id);
-            if (t) {
-                t.completed = !t.completed;
-                if (t.completed) { appData.xp += t.xp; playSound('complete'); }
-                else appData.xp = Math.max(0, appData.xp - t.xp);
-                saveState();
-            }
-        }
-
-        function deleteTask(id) { appData.tasks = appData.tasks.filter(x => x.id !== id); saveState(); }
 
         // --- SESSIONS LOGIC ---
         function renderSessions() {
@@ -1190,204 +870,29 @@
             saveState();
         }
 
-        // --- WEEKLY PLANNER ---
-        const DAYS = ['السبت', 'الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
-
-        function renderPlanner() {
-            const grid = document.getElementById('plannerDaysGrid');
-            grid.innerHTML = '';
-
-            DAYS.forEach(day => {
-                const dayItems = appData.planner.filter(p => p.day === day);
-                const col = document.createElement('div');
-                col.className = "bg-slate-900/80 border border-slate-800 rounded-2xl p-3 space-y-2 flex flex-col min-h-[140px]";
-                col.innerHTML = `<h4 class="text-xs sm:text-sm font-bold text-yellow-400 border-b border-slate-800 pb-1.5 text-center">${day}</h4>`;
-
-                const list = document.createElement('div');
-                list.className = "space-y-2 flex-1 flex flex-col justify-start";
-
-                if (dayItems.length === 0) {
-                    list.innerHTML = `<div class="text-[11px] text-slate-500 text-center py-4 my-auto">لا توجد أنشطة مجدولة</div>`;
-                } else {
-                    dayItems.forEach(item => {
-                        const el = document.createElement('div');
-                        el.className = "bg-slate-800/90 border border-slate-700/70 p-2.5 rounded-xl text-xs relative group";
-                        el.innerHTML = `
-                            <div class="font-bold text-white truncate">${item.title}</div>
-                            <div class="text-[10px] sm:text-xs text-slate-300 mt-1">${item.startTime} - ${item.endTime}</div>
-                            <button onclick="deletePlannerItem('${item.id}')" class="text-slate-400 hover:text-red-400 text-xs mt-1 block">🗑️ حذف</button>
-                        `;
-                        list.appendChild(el);
-                    });
-                }
-
-                col.appendChild(list);
-                grid.appendChild(col);
-            });
-        }
-
-        function savePlannerItem() {
-            const title = document.getElementById('planTitle').value.trim();
-            if (!title) return;
-
-            appData.planner.push({
-                id: Date.now().toString(),
-                day: document.getElementById('planDay').value,
-                title,
-                startTime: document.getElementById('planStartTime').value,
-                endTime: document.getElementById('planEndTime').value
-            });
-
-            closeModal('plannerModal');
-            saveState();
-        }
-
-        function deletePlannerItem(id) { appData.planner = appData.planner.filter(p => p.id !== id); saveState(); }
-
-        // --- GOALS & HABITS ---
-        function renderGoalsAndHabits() {
-            const gBox = document.getElementById('goalsContainer');
-            gBox.innerHTML = '';
-            appData.goals.forEach(g => {
-                const el = document.createElement('div');
-                el.className = "bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-xs sm:text-sm space-y-2";
-                el.innerHTML = `
-                    <div class="flex justify-between font-bold text-white">
-                        <span>${g.title}</span>
-                        <span class="text-yellow-400">${g.progress}%</span>
-                    </div>
-                    <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
-                        <div class="bg-yellow-500 h-full" style="width: ${g.progress}%"></div>
-                    </div>
-                    <button onclick="deleteGoal('${g.id}')" class="text-slate-400 hover:text-red-400 text-xs pt-1">🗑️ حذف الهدف</button>
-                `;
-                gBox.appendChild(el);
-            });
-
-            const hBox = document.getElementById('habitsContainer');
-            hBox.innerHTML = '';
-            appData.habits.forEach(h => {
-                const el = document.createElement('div');
-                el.className = "flex items-center justify-between p-3.5 bg-slate-900/80 border border-slate-800 rounded-2xl text-xs sm:text-sm";
-                el.innerHTML = `
-                    <span class="font-bold text-white">${h.title}</span>
-                    <div class="flex items-center gap-3">
-                        <span class="text-amber-400 font-extrabold">🔥 ${h.streak} أيام</span>
-                        <button onclick="deleteHabit('${h.id}')" class="text-slate-400 hover:text-red-400">🗑️</button>
-                    </div>
-                `;
-                hBox.appendChild(el);
-            });
-
-            renderAchievements();
-        }
-
-        function saveGoal() {
-            const title = document.getElementById('goalTitle').value.trim();
-            if (!title) return;
-            appData.goals.push({ id: Date.now().toString(), title, progress: parseInt(document.getElementById('goalProgress').value) || 0 });
-            closeModal('goalModal');
-            saveState();
-        }
-
-        function saveHabit() {
-            const title = document.getElementById('habitTitle').value.trim();
-            if (!title) return;
-            appData.habits.push({ id: Date.now().toString(), title, streak: 1 });
-            closeModal('habitModal');
-            saveState();
-        }
-
-        function deleteGoal(id) { appData.goals = appData.goals.filter(g => g.id !== id); saveState(); }
-        function deleteHabit(id) { appData.habits = appData.habits.filter(h => h.id !== id); saveState(); }
-
-        function renderAchievements() {
-            const container = document.getElementById('achievementsContainer');
-            container.innerHTML = '';
-            const list = [
-                { title: 'الخطوة الأولى', desc: 'إنجاز أول مهمة يومية', unlocked: appData.tasks.some(t => t.completed) },
-                { title: 'نجم التمارين', desc: 'تسجيل أول جلسة تدريب', unlocked: appData.sessions.length > 0 },
-                { title: 'هداف الفريق', desc: 'تسجيل أول مباراة رسمية', unlocked: appData.matches.length > 0 },
-                { title: 'الالتزام التام', desc: 'سلسلة 3 أيام متتالية', unlocked: appData.streak >= 3 }
-            ];
-
-            list.forEach(a => {
-                const el = document.createElement('div');
-                el.className = `p-3.5 rounded-2xl border text-center text-xs sm:text-sm ${a.unlocked ? 'bg-slate-900 border-yellow-500/50 text-yellow-400 font-bold' : 'bg-slate-950/60 border-slate-800 text-slate-500 opacity-60'}`;
-                el.innerHTML = `
-                    <div class="text-2xl mb-1">${a.unlocked ? '🏆' : '🔒'}</div>
-                    <div class="font-bold mb-0.5 text-slate-200">${a.title}</div>
-                    <div class="text-xs text-slate-400">${a.desc}</div>
-                `;
-                container.appendChild(el);
-            });
-        }
-
-        // --- NUTRITION & FITNESS METRICS ---
-        function addWater(amount) {
-            appData.nutrition.waterDrunk = Math.min(6000, (appData.nutrition.waterDrunk || 0) + amount);
-            playSound('click');
-            saveState();
-        }
-
-        function resetWater() {
-            appData.nutrition.waterDrunk = 0;
-            saveState();
-        }
-
-        function renderFitnessMetrics() {
-            const tbody = document.getElementById('fitnessTableBody');
-            tbody.innerHTML = '';
-
-            if (appData.fitness.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-slate-400 text-xs sm:text-sm">لا توجد قياسات بدنية مسجلة بعد. اضغط "+ تسجيل قياس بدني" للإضافة.</td></tr>`;
-                return;
-            }
-
-            appData.fitness.forEach(f => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-800/50 border-b border-slate-800/60";
-                tr.innerHTML = `
-                    <td class="p-3.5 font-bold text-white">${f.date}</td>
-                    <td class="p-3.5 text-slate-200 font-bold">${f.metric}</td>
-                    <td class="p-3.5 text-emerald-400 font-extrabold">${f.value}</td>
-                    <td class="p-3.5 text-center"><button onclick="deleteFitnessMetric('${f.id}')" class="text-slate-400 hover:text-red-400">🗑️</button></td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function saveFitnessMetric() {
-            const metric = document.getElementById('fitMetric').value.trim();
-            const value = document.getElementById('fitValue').value.trim();
-            if (!metric || !value) return;
-
-            appData.fitness.unshift({ id: Date.now().toString(), date: new Date().toISOString().slice(0,10), metric, value });
-            closeModal('fitnessModal');
-            saveState();
-        }
-
-        function deleteFitnessMetric(id) { appData.fitness = appData.fitness.filter(f => f.id !== id); saveState(); }
-
         // --- REPORTS CHART ---
         let reportChartInstance = null;
         function renderWeeklyReportChart() {
             const ctx = document.getElementById('weeklyReportChart').getContext('2d');
             if (reportChartInstance) reportChartInstance.destroy();
 
-            const completedTasks = appData.tasks.filter(t => t.completed).length;
-            const sessionsCount = appData.sessions.length;
-            const matchesCount = appData.matches.length;
-            const goalsCount = appData.goals.length;
+            // Count sessions by type
+            const typeCounts = {};
+            appData.sessions.forEach(s => {
+                typeCounts[s.type] = (typeCounts[s.type] || 0) + 1;
+            });
+
+            const labels = Object.keys(typeCounts).length ? Object.keys(typeCounts) : ['كرة قدم', 'قوة بدنية', 'سرعة ورشاقة', 'استشفاء'];
+            const dataValues = Object.keys(typeCounts).length ? Object.values(typeCounts) : [0, 0, 0, 0];
 
             reportChartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['المهام اليومية', 'الجلسات التدريبية', 'المباريات', 'الأهداف المستهدفة'],
+                    labels: labels,
                     datasets: [{
-                        label: 'الإنجاز الفعلي',
-                        data: [completedTasks, sessionsCount, matchesCount, goalsCount],
-                        backgroundColor: ['#facc15', '#10b981', '#06b6d4', '#f59e0b'],
+                        label: 'عدد الجلسات',
+                        data: dataValues,
+                        backgroundColor: ['#facc15', '#10b981', '#06b6d4', '#f59e0b', '#ec4899'],
                         borderRadius: 8
                     }]
                 },
@@ -1402,13 +907,13 @@
                 }
             });
 
-            document.getElementById('repTasksDone').innerText = completedTasks;
+            document.getElementById('repSessionsCount').innerText = appData.sessions.length;
             const totalMins = appData.sessions.reduce((acc, s) => acc + (parseInt(s.duration)||0), 0);
             document.getElementById('repTrainingHours').innerText = `${(totalMins / 60).toFixed(1)} س`;
-            document.getElementById('repMatchesCount').innerText = matchesCount;
-            document.getElementById('repGoalsCount').innerText = appData.matches.reduce((acc, m) => acc + (parseInt(m.goals)||0), 0);
-            document.getElementById('repHabitRate').innerText = appData.habits.length ? '100%' : '0%';
-            document.getElementById('repStreakDays').innerText = `${appData.streak} يوم`;
+            document.getElementById('repMatchesCount').innerText = appData.matches.length;
+            const goals = appData.matches.reduce((acc, m) => acc + (parseInt(m.goals)||0), 0);
+            const assists = appData.matches.reduce((acc, m) => acc + (parseInt(m.assists)||0), 0);
+            document.getElementById('repGoalsCount').innerText = `${goals + assists}`;
         }
 
         // --- PROFILE LOGIC ---
@@ -1479,8 +984,8 @@
                 } catch (e) { aiMsg.innerText = "حدث خطأ في الاتصال بالسيرفر. تحقق من صحة المفتاح."; }
             } else {
                 setTimeout(() => {
-                    let reply = `💡 [تحليل البيانات المحلية]: أنجزت حتى الآن ${appData.sessions.length} جلسات تدريبية، وسجلت ${appData.matches.length} مباريات. واصل الاستمرار في تنفيذ المهام اليومية للحفاظ على سلسلة التزامك (🔥 ${appData.streak} أيام).`;
-                    if (prompt.includes('تلخيص')) reply = `📊 **ملخص الأداء**: مركزك الحالي هو (${appData.profile.position}). تم إكمال ${appData.tasks.filter(t=>t.completed).length} مهام يومية. نقاط القوة: (${appData.profile.strengths}).`;
+                    let reply = `💡 [تحليل البيانات المحلية]: أنجزت حتى الآن ${appData.sessions.length} جلسات تدريبية، وسجلت ${appData.matches.length} مباريات.`;
+                    if (prompt.includes('تلخيص')) reply = `📊 **ملخص الأداء**: مركزك الحالي هو (${appData.profile.position}). نقاط القوة: (${appData.profile.strengths}). الجلسات المنجزة: ${appData.sessions.length}.`;
                     aiMsg.innerText = reply;
                     box.scrollTop = box.scrollHeight;
                 }, 600);
@@ -1495,21 +1000,20 @@
             document.getElementById('streakCount').innerText = appData.streak;
             document.getElementById('levelValue').innerText = appData.level;
             document.getElementById('headerPlayerName').innerText = appData.profile.name || 'اللاعب المحترف';
-            document.getElementById('dashboardGreeting').innerText = `مرحباً بك يا ${appData.profile.name}! جاهز للانضباط اليوم؟`;
+            document.getElementById('dashboardGreeting').innerText = `مرحباً بك يا ${appData.profile.name}! جاهز للتدريب اليوم؟`;
 
-            const totalT = appData.tasks.length;
-            const doneT = appData.tasks.filter(t => t.completed).length;
-            const pct = totalT ? Math.round((doneT / totalT) * 100) : 0;
+            // Dashboard KPI Calculations
+            const totalMins = appData.sessions.reduce((acc, s) => acc + (parseInt(s.duration) || 0), 0);
+            const totalHours = (totalMins / 60).toFixed(1);
+            
+            let sumRating = 0;
+            appData.matches.forEach(m => sumRating += parseFloat(m.rating) || 0);
+            const avgRating = appData.matches.length ? (sumRating / appData.matches.length).toFixed(1) : 'N/A';
 
-            document.getElementById('progressText').innerText = `(${doneT}/${totalT}) ${pct}%`;
-            document.getElementById('progressBar').style.width = `${pct}%`;
-
-            document.getElementById('statMonthlySessions').innerText = `${appData.sessions.length} جلسة`;
-            document.getElementById('statCompletedTasks').innerText = doneT;
-            document.getElementById('statWaterDrunk').innerText = `${appData.nutrition.waterDrunk || 0} / ${appData.nutrition.waterTarget || 3000} مل`;
-            document.getElementById('waterTargetDisplay').innerText = `${appData.nutrition.waterTarget || 3000} مل`;
-            document.getElementById('waterDrunkDisplay').innerText = `${appData.nutrition.waterDrunk || 0} مل`;
-            document.getElementById('statNextActivity').innerText = appData.planner[0] ? `${appData.planner[0].day}: ${appData.planner[0].title}` : 'لا يوجد';
+            document.getElementById('statTotalSessions').innerText = `${appData.sessions.length} جلسة`;
+            document.getElementById('statTotalHours').innerText = `${totalHours} ساعة`;
+            document.getElementById('statMatchesCount').innerText = `${appData.matches.length} مباراة`;
+            document.getElementById('statAvgMatchRating').innerText = avgRating;
 
             // Profile Form
             document.getElementById('profName').value = appData.profile.name || '';
@@ -1523,12 +1027,9 @@
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('currentDateText').innerText = new Date().toLocaleDateString('ar-EG', options);
 
-            renderTasks();
             renderSessions();
             renderLibrary();
-            renderPlanner();
-            renderGoalsAndHabits();
-            renderFitnessMetrics();
+            renderDashboardRecentSessions();
         }
 
         // INITIALIZE APP
