@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Road To Pro — نظام الانضباط اليومي وإدارة المهام</title>
+    <title>Road To Pro — مصفوفة الانضباط اليومي وإدارة المهام</title>
     
     <!-- PWA & Theme Settings -->
     <link rel="manifest" href="manifest.webmanifest">
@@ -92,12 +92,12 @@
 
     <!-- Main Tab Navigation -->
     <nav class="max-w-7xl mx-auto mb-6 overflow-x-auto pb-2">
-        <div class="flex items-center justify-between gap-2 bg-slate-900/90 p-2 rounded-2xl border border-slate-800 w-full min-w-[700px]">
-            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📊 الرئيسية والمهام</button>
+        <div class="flex items-center justify-between gap-2 bg-slate-900/90 p-2 rounded-2xl border border-slate-800 w-full min-w-[750px]">
+            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📊 الرئيسية</button>
+            <button onclick="switchTab('matrix')" id="tab-matrix" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">🎛️ مصفوفة المهام</button>
             <button onclick="switchTab('tasks')" id="tab-tasks" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📋 إدارة المهام</button>
             <button onclick="switchTab('schedule')" id="tab-schedule" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📅 الجدول اليومي</button>
-            <button onclick="switchTab('activities')" id="tab-activities" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">⚽ الأنشطة الشخصية</button>
-            <button onclick="switchTab('reports')" id="tab-reports" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📈 تقارير الانضباط</button>
+            <button onclick="switchTab('reports')" id="tab-reports" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📈 التقارير</button>
             <button onclick="switchTab('profile')" id="tab-profile" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">👤 الملف الشخصي</button>
         </div>
     </nav>
@@ -147,25 +147,79 @@
             <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-6">
                 <div>
                     <h3 class="text-lg font-bold text-amber-400 mb-1 flex items-center gap-2"><span>⭐</span> المهام الأساسية لليوم (Essential Tasks)</h3>
-                    <p class="text-xs text-slate-400">هذه هي الأولويات القصوى التي يجب إنجازها اليوم دون تفريط.</p>
+                    <p class="text-xs text-slate-400">أولويات قصوى مصنفة عبر مصفوفة الانضباط.</p>
                 </div>
                 <div id="dashboardEssentialContainer" class="space-y-3"></div>
 
                 <div class="border-t border-slate-800 pt-4">
                     <h3 class="text-lg font-bold text-cyan-400 mb-1 flex items-center gap-2"><span>📌</span> المهام الثانوية (Secondary Tasks)</h3>
-                    <p class="text-xs text-slate-400">أنشطة إضافية لتطوير الذات وإنهاء الالتزامات الفرعية.</p>
+                    <p class="text-xs text-slate-400">أنشطة فرعية وداعمة.</p>
                 </div>
                 <div id="dashboardSecondaryContainer" class="space-y-3"></div>
             </section>
         </div>
 
-        <!-- TAB 2: TASK MANAGEMENT -->
+        <!-- TAB 2: TASK MATRIX (EISENHOWER MATRIX) -->
+        <div id="view-matrix" class="tab-view hidden space-y-6">
+            <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-5">
+                <div class="flex flex-wrap justify-between items-center gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>🎛️</span> مصفوفة تقييم وتنظيم المهام (Task Matrix)</h2>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">تقييم المهام بناءً على (الأهمية مقابل الاستعجال) لتحديد ما تفعله فوراً وما تؤجله.</p>
+                    </div>
+                    <button onclick="openModal('taskModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow-lg shadow-yellow-500/20">
+                        + إضافة مهمة للمصفوفة
+                    </button>
+                </div>
+
+                <!-- 4 Quadrants Matrix Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                    <!-- Quadrant 1: Urgent & Important (Do First) -->
+                    <div class="bg-amber-950/20 border border-amber-500/30 rounded-2xl p-4 sm:p-5 space-y-3">
+                        <div class="flex justify-between items-center border-b border-amber-500/20 pb-2">
+                            <h3 class="font-bold text-amber-400 text-sm sm:text-base">🔥 عاجل ومهم (افعلها فوراً - أساسية ⭐)</h3>
+                            <span id="q1Count" class="text-xs bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded-full font-bold">0</span>
+                        </div>
+                        <div id="matrixQ1" class="space-y-2.5 min-h-[120px]"></div>
+                    </div>
+
+                    <!-- Quadrant 2: Important & Not Urgent (Schedule) -->
+                    <div class="bg-emerald-950/20 border border-emerald-500/30 rounded-2xl p-4 sm:p-5 space-y-3">
+                        <div class="flex justify-between items-center border-b border-emerald-500/20 pb-2">
+                            <h3 class="font-bold text-emerald-400 text-sm sm:text-base">📅 مهم وغير عاجل (جدولها - أساسية ⭐)</h3>
+                            <span id="q2Count" class="text-xs bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full font-bold">0</span>
+                        </div>
+                        <div id="matrixQ2" class="space-y-2.5 min-h-[120px]"></div>
+                    </div>
+
+                    <!-- Quadrant 3: Urgent & Not Important (Delegate / Secondary) -->
+                    <div class="bg-cyan-950/20 border border-cyan-500/30 rounded-2xl p-4 sm:p-5 space-y-3">
+                        <div class="flex justify-between items-center border-b border-cyan-500/20 pb-2">
+                            <h3 class="font-bold text-cyan-400 text-sm sm:text-base">⚡ عاجل وغير مهم (قلل منها - ثانوية 📌)</h3>
+                            <span id="q3Count" class="text-xs bg-cyan-500/20 text-cyan-300 px-2.5 py-0.5 rounded-full font-bold">0</span>
+                        </div>
+                        <div id="matrixQ3" class="space-y-2.5 min-h-[120px]"></div>
+                    </div>
+
+                    <!-- Quadrant 4: Not Urgent & Not Important (Eliminate / Secondary) -->
+                    <div class="bg-slate-950/40 border border-slate-700/50 rounded-2xl p-4 sm:p-5 space-y-3">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                            <h3 class="font-bold text-slate-400 text-sm sm:text-base">🗑️ غير عاجل وغير مهم (اتركها - ثانوية 📌)</h3>
+                            <span id="q4Count" class="text-xs bg-slate-800 text-slate-300 px-2.5 py-0.5 rounded-full font-bold">0</span>
+                        </div>
+                        <div id="matrixQ4" class="space-y-2.5 min-h-[120px]"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 3: TASK MANAGEMENT -->
         <div id="view-tasks" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-5">
                 <div class="flex flex-wrap justify-between items-center gap-4">
                     <div>
                         <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📋</span> إدارة المهام الشاملة</h2>
-                        <p class="text-xs sm:text-sm text-slate-300 mt-1">إضافة، تعديل، فلترة، وحذف مهامك بمرونة تامة.</p>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">تعديل وفلترة وحذف مهامك مع مصفوفة التقييم.</p>
                     </div>
                     <button onclick="openModal('taskModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow-lg shadow-yellow-500/20">
                         + إضافة مهمة جديدة
@@ -185,52 +239,20 @@
             </section>
         </div>
 
-        <!-- TAB 3: SCHEDULE & ROUTINE -->
+        <!-- TAB 4: SCHEDULE & ROUTINE -->
         <div id="view-schedule" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
                 <div class="flex flex-wrap justify-between items-center gap-4 mb-5">
                     <div>
                         <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📅</span> الجدول اليومي والروتين</h2>
-                        <p class="text-xs sm:text-sm text-slate-300 mt-1">نظّم أوقاتك وأنشطتك اليومية لضمان أعلى مستوى من الانضباط والاستمرارية.</p>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">نظّم أوقاتك لضمان أعلى مستوى من الانضباط والاستمرارية.</p>
                     </div>
-                    <button onclick="openModal('scheduleModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm">
+                    <button onclick="openModal('scheduleModal')" class="bg-yellow-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm">
                         + إضافة موعد في الروتين
                     </button>
                 </div>
 
                 <div id="scheduleContainer" class="space-y-3"></div>
-            </section>
-        </div>
-
-        <!-- TAB 4: PERSONAL ACTIVITIES (FOOTBALL / STUDY / EXERCISE) -->
-        <div id="view-activities" class="tab-view hidden space-y-6">
-            <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
-                    <div>
-                        <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>⚽</span> سجل الأنشطة والتمارين الشخصية</h2>
-                        <p class="text-xs sm:text-sm text-slate-300 mt-1">تسجيل جلساتك التدريبية أو الرياضية أو الدراسية كأنشطة فرعية.</p>
-                    </div>
-                    <button onclick="openModal('activityModal')" class="bg-emerald-500 text-slate-950 font-extrabold px-5 py-2.5 rounded-xl text-xs sm:text-sm hover:bg-emerald-400">
-                        + تسجيل نشاط جديد
-                    </button>
-                </div>
-
-                <div class="overflow-x-auto rounded-2xl border border-slate-800">
-                    <table class="w-full text-right text-xs sm:text-sm text-slate-200">
-                        <thead class="bg-slate-900/90 text-slate-300 border-b border-slate-800 font-bold">
-                            <tr>
-                                <th class="p-3.5">التاريخ</th>
-                                <th class="p-3.5">نوع النشاط</th>
-                                <th class="p-3.5">المدة</th>
-                                <th class="p-3.5">التفاصيل</th>
-                                <th class="p-3.5 text-center">إجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="activitiesTableBody" class="divide-y divide-slate-800/80 bg-slate-950/40">
-                            <!-- Populated dynamically -->
-                        </tbody>
-                    </table>
-                </div>
             </section>
         </div>
 
@@ -284,7 +306,7 @@
                         </div>
                         <div>
                             <label class="text-xs sm:text-sm font-bold text-slate-300 block mb-1">المجال الأساسي للتركيز</label>
-                            <input type="text" id="profField" placeholder="مثال: دراسة، تطوير ذات، رياضة" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none">
+                            <input type="text" id="profField" placeholder="مثال: دراسة، تطوير ذات، عمل" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none">
                         </div>
                     </div>
 
@@ -304,15 +326,15 @@
 
     <!-- MODALS SECTION -->
 
-    <!-- Modal: Add/Edit Task -->
+    <!-- Modal: Add/Edit Task with Matrix Evaluation -->
     <div id="taskModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
-            <h3 id="taskModalTitle" class="text-lg font-bold text-white mb-4">إضافة مهمة جديدة</h3>
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-3xl p-6 relative max-h-[90vh] overflow-y-auto">
+            <h3 id="taskModalTitle" class="text-lg font-bold text-white mb-4">إضافة مهمة جديدة لمصفوفة الانضباط</h3>
             <div class="space-y-3.5 text-xs sm:text-sm">
                 <input type="hidden" id="editTaskId">
                 <div>
                     <label class="text-slate-300 font-bold block mb-1">عنوان المهمة *</label>
-                    <input type="text" id="taskTitleInput" placeholder="مثال: دراسة الفصل الأول أو تمرين رياضي" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+                    <input type="text" id="taskTitleInput" placeholder="مثال: إنجاز المشروع أو مراجعة المحاضرة" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                 </div>
                 <div>
                     <label class="text-slate-300 font-bold block mb-1">الوصف (اختياري)</label>
@@ -320,19 +342,29 @@
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="text-slate-300 font-bold block mb-1">الأولوية / النوع</label>
-                        <select id="taskCategoryInput" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                            <option value="PRIMARY">أساسية (Essential) ⭐</option>
-                            <option value="SECONDARY">ثانوية (Secondary) 📌</option>
+                        <label class="text-slate-300 font-bold block mb-1">مدى الأهمية (Importance)</label>
+                        <select id="taskImportance" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+                            <option value="important">مهم للغاية ⭐</option>
+                            <option value="not_important">غير مهم نسبيّاً 📌</option>
                         </select>
                     </div>
                     <div>
-                        <label class="text-slate-300 font-bold block mb-1">التوقيت / الموعد</label>
-                        <input type="text" id="taskTimeInput" placeholder="مثال: 08:00 ص أو اليوم" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+                        <label class="text-slate-300 font-bold block mb-1">مدى الاستعجال (Urgency)</label>
+                        <select id="taskUrgency" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+                            <option value="urgent">عاجل وفوري ⚡</option>
+                            <option value="not_urgent">غير عاجل (يُؤجل) ⏳</option>
+                        </select>
                     </div>
                 </div>
+                <div>
+                    <label class="text-slate-300 font-bold block mb-1">التوقيت / الموعد (اختياري)</label>
+                    <input type="text" id="taskTimeInput" placeholder="مثال: 10:00 ص أو اليوم" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+                </div>
+                <div class="p-3 bg-slate-800/80 rounded-xl border border-slate-700 text-xs text-slate-300">
+                    💡 <strong>آلية المصفوفة:</strong> المهام <em>(مهم + عاجل)</em> أو <em>(مهم + غير عاجل)</em> تُصنف تلقائياً كـ **أساسية ⭐** وتظهر في أولويات اليوم.
+                </div>
                 <div class="flex gap-3 pt-2">
-                    <button onclick="saveTask()" class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ المهمة</button>
+                    <button onclick="saveTask()" class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ المهمة وتصنيفها</button>
                     <button onclick="closeModal('taskModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
                 </div>
             </div>
@@ -357,7 +389,7 @@
                         <label class="text-slate-300 font-bold block mb-1">التصنيف</label>
                         <select id="schedCategory" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                             <option value="عمل/دراسة">عمل / دراسة</option>
-                            <option value="رياضة">رياضة وتدريب</option>
+                            <option value="تطوير ذات">تطوير ذات</option>
                             <option value="استراحة">استراحة واسترخاء</option>
                         </select>
                     </div>
@@ -365,42 +397,6 @@
                 <div class="flex gap-3 pt-2">
                     <button onclick="saveScheduleItem()" class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ الموعد</button>
                     <button onclick="closeModal('scheduleModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Add Personal Activity -->
-    <div id="activityModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
-            <h3 class="text-lg font-bold text-white mb-4">تسجيل نشاط شخصي جديد</h3>
-            <div class="space-y-3.5 text-xs sm:text-sm">
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="text-slate-300 font-bold block mb-1">التاريخ</label>
-                        <input type="date" id="actDate" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                    </div>
-                    <div>
-                        <label class="text-slate-300 font-bold block mb-1">نوع النشاط</label>
-                        <select id="actType" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                            <option value="كرة قدم">⚽ كرة قدم</option>
-                            <option value="تمارين بدنية">🏋️ تمارين بدنية</option>
-                            <option value="جلسة دراسة">📚 جلسة دراسة</option>
-                            <option value="تطوير ذات">🎯 تطوير ذات</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="text-slate-300 font-bold block mb-1">المدة (بالدقائق)</label>
-                    <input type="number" id="actDuration" value="60" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                </div>
-                <div>
-                    <label class="text-slate-300 font-bold block mb-1">التفاصيل / الملاحظات</label>
-                    <input type="text" id="actDetails" placeholder="ملاحظات حول الجلسة..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                </div>
-                <div class="flex gap-3 pt-2">
-                    <button onclick="saveActivity()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ النشاط</button>
-                    <button onclick="closeModal('activityModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
                 </div>
             </div>
         </div>
@@ -418,25 +414,21 @@
                 goals: 'الالتزام الكامل بجدول المهام اليومية والوصول لأقصى إنتاجية'
             },
             tasks: [
-                { id: 't1', title: 'مراجعة المهام والجدول الصباحي', description: 'تخطيط اليوم وتحديد أولويات العمل العميق', category: 'PRIMARY', time: '07:30 ص', completed: true },
-                { id: 't2', title: 'جلسة دراسة أو عمل مركز لمدة ساعتين', description: 'بدون مقاطعات أو تشتيت', category: 'PRIMARY', time: '09:00 ص', completed: false },
-                { id: 't3', title: 'تمرين بدني خفيف أو مشي', description: 'الحفاظ على النشاط الحركي والصحي', category: 'SECONDARY', time: '05:00 م', completed: false },
-                { id: 't4', title: 'قراءة 15 صفحة من كتاب مفيد', description: 'تنمية المعرفة المستمرة', category: 'SECONDARY', time: '09:00 م', completed: false }
+                { id: 't1', title: 'مراجعة وترتيب مهام اليوم', description: 'تخطيط الأولوية عبر مصفوفة الانضباط', importance: 'important', urgency: 'urgent', category: 'PRIMARY', time: '07:30 ص', completed: true },
+                { id: 't2', title: 'جلسة عمل عميق لمدة ساعتين', description: 'إنجاز المهام الأساسية بدون مشتتات', importance: 'important', urgency: 'not_urgent', category: 'PRIMARY', time: '09:00 ص', completed: false },
+                { id: 't3', title: 'الرد على الرسائل والبريد الإلكتروني', description: 'أنشطة روتينية سريعة', importance: 'not_important', urgency: 'urgent', category: 'SECONDARY', time: '02:00 م', completed: false },
+                { id: 't4', title: 'قراءة كتاب تطوير ذات', description: 'تنمية المعرفة المستمرة', importance: 'not_important', urgency: 'not_urgent', category: 'SECONDARY', time: '09:00 م', completed: false }
             ],
             schedule: [
-                { id: 'sc1', title: 'الاستيقاظ المبكر والتخطيط', time: '07:00 - 07:30 ص', category: 'عمل/دراسة' },
-                { id: 'sc2', title: 'جلسة العمل العميق الأولى', time: '09:00 - 11:30 ص', category: 'عمل/دراسة' },
-                { id: 'sc3', title: 'النشاط البدني والاسترخاء', time: '05:00 - 06:30 م', category: 'رياضة' }
-            ],
-            activities: [
-                { id: 'a1', date: '2026-09-29', type: 'جلسة دراسة', duration: 90, details: 'إنجاز مهام البرمجة أو الدراسة' }
+                { id: 'sc1', title: 'الاستيقاظ المبكر والتخطيط', time: '07:00 - 07:30 ص', category: 'تطوير ذات' },
+                { id: 'sc2', title: 'جلسة العمل العميق الأولى', time: '09:00 - 11:30 ص', category: 'عمل/دراسة' }
             ]
         };
 
-        let appData = JSON.parse(localStorage.getItem('rtp_discipline_data_v4')) || DEFAULT_STATE;
+        let appData = JSON.parse(localStorage.getItem('rtp_discipline_data_v5')) || DEFAULT_STATE;
 
         function saveState() {
-            localStorage.setItem('rtp_discipline_data_v4', JSON.stringify(appData));
+            localStorage.setItem('rtp_discipline_data_v5', JSON.stringify(appData));
             updateUI();
         }
 
@@ -482,9 +474,9 @@
             document.getElementById(`tab-${tabId}`).classList.add('active');
 
             if (tabId === 'dashboard') updateDashboard();
+            if (tabId === 'matrix') renderTaskMatrix();
             if (tabId === 'tasks') renderFullTasks();
             if (tabId === 'schedule') renderSchedule();
-            if (tabId === 'activities') renderActivities();
             if (tabId === 'reports') renderReports();
         }
 
@@ -495,10 +487,9 @@
                 document.getElementById('taskTitleInput').value = '';
                 document.getElementById('taskDescInput').value = '';
                 document.getElementById('taskTimeInput').value = '';
-                document.getElementById('taskModalTitle').innerText = 'إضافة مهمة جديدة';
-            }
-            if(id === 'activityModal') {
-                document.getElementById('actDate').value = new Date().toISOString().slice(0,10);
+                document.getElementById('taskImportance').value = 'important';
+                document.getElementById('taskUrgency').value = 'urgent';
+                document.getElementById('taskModalTitle').innerText = 'إضافة مهمة جديدة لمصفوفة الانضباط';
             }
             document.getElementById(id).classList.remove('hidden'); 
             document.getElementById(id).classList.add('flex'); 
@@ -511,7 +502,7 @@
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
             const downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `discipline_planner_backup_${new Date().toISOString().slice(0,10)}.json`);
+            downloadAnchor.setAttribute("download", `discipline_matrix_backup_${new Date().toISOString().slice(0,10)}.json`);
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();
@@ -532,6 +523,55 @@
                 } catch (err) { alert('ملف البيانات غير صالح!'); }
             };
             reader.readAsText(file);
+        }
+
+        // --- TASK MATRIX EVALUATION LOGIC ---
+        function evaluateTaskQuadrant(importance, urgency) {
+            if (importance === 'important' && urgency === 'urgent') return { quad: 'Q1', category: 'PRIMARY', label: 'عاجل ومهم (افعلها فوراً)' };
+            if (importance === 'important' && urgency === 'not_urgent') return { quad: 'Q2', category: 'PRIMARY', label: 'مهم وغير عاجل (جدولها)' };
+            if (importance === 'not_important' && urgency === 'urgent') return { quad: 'Q3', category: 'SECONDARY', label: 'عاجل وغير مهم (قلل منها)' };
+            return { quad: 'Q4', category: 'SECONDARY', label: 'غير عاجل وغير مهم (اتركها)' };
+        }
+
+        function renderTaskMatrix() {
+            ['matrixQ1', 'matrixQ2', 'matrixQ3', 'matrixQ4'].forEach(id => document.getElementById(id).innerHTML = '');
+            let counts = { Q1: 0, Q2: 0, Q3: 0, Q4: 0 };
+
+            appData.tasks.forEach(task => {
+                const imp = task.importance || 'important';
+                const urg = task.urgency || 'urgent';
+                const evaluation = evaluateTaskQuadrant(imp, urg);
+                counts[evaluation.quad]++;
+
+                const container = document.getElementById(`matrix${evaluation.quad}`);
+                const card = document.createElement('div');
+                card.className = `p-3 rounded-xl border flex items-center justify-between text-xs sm:text-sm ${task.completed ? 'bg-slate-900/40 border-slate-800 opacity-60' : 'bg-slate-900/90 border-slate-800'}`;
+                card.innerHTML = `
+                    <div class="flex items-center gap-2.5">
+                        <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask('${task.id}')" class="w-4 h-4 accent-yellow-500 rounded cursor-pointer">
+                        <div>
+                            <span class="font-bold ${task.completed ? 'line-through text-slate-500' : 'text-slate-100'}">${task.title}</span>
+                            ${task.time ? `<span class="text-[10px] text-slate-400 block">⏰ ${task.time}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="editTask('${task.id}')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg">تعديل</button>
+                        <button onclick="deleteTask('${task.id}')" class="text-xs text-red-400 hover:text-red-300 p-1">🗑️</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            document.getElementById('q1Count').innerText = counts.Q1;
+            document.getElementById('q2Count').innerText = counts.Q2;
+            document.getElementById('q3Count').innerText = counts.Q3;
+            document.getElementById('q4Count').innerText = counts.Q4;
+
+            ['Q1', 'Q2', 'Q3', 'Q4'].forEach(q => {
+                if(counts[q] === 0) {
+                    document.getElementById(`matrix${q}`).innerHTML = `<p class="text-[11px] text-slate-500 text-center py-4">لا توجد مهام في هذا المربع حالياً</p>`;
+                }
+            });
         }
 
         // --- TASK MANAGEMENT LOGIC ---
@@ -593,15 +633,23 @@
             const id = document.getElementById('editTaskId').value;
             const title = document.getElementById('taskTitleInput').value.trim();
             const description = document.getElementById('taskDescInput').value.trim();
-            const category = document.getElementById('taskCategoryInput').value;
+            const importance = document.getElementById('taskImportance').value;
+            const urgency = document.getElementById('taskUrgency').value;
             const time = document.getElementById('taskTimeInput').value.trim();
 
             if (!title) { alert('يرجى إدخال عنوان المهمة'); return; }
 
+            // Evaluate via Matrix Eisenhower Logic
+            const evaluation = evaluateTaskQuadrant(importance, urgency);
+
             if (id) {
-                appData.tasks = appData.tasks.map(t => t.id === id ? { ...t, title, description, category, time } : t);
+                appData.tasks = appData.tasks.map(t => t.id === id ? { 
+                    ...t, title, description, importance, urgency, category: evaluation.category, time 
+                } : t);
             } else {
-                appData.tasks.push({ id: Date.now().toString(), title, description, category, time, completed: false });
+                appData.tasks.push({ 
+                    id: Date.now().toString(), title, description, importance, urgency, category: evaluation.category, time, completed: false 
+                });
             }
 
             closeModal('taskModal');
@@ -615,9 +663,10 @@
             document.getElementById('editTaskId').value = t.id;
             document.getElementById('taskTitleInput').value = t.title;
             document.getElementById('taskDescInput').value = t.description || '';
-            document.getElementById('taskCategoryInput').value = t.category;
+            document.getElementById('taskImportance').value = t.importance || 'important';
+            document.getElementById('taskUrgency').value = t.urgency || 'urgent';
             document.getElementById('taskTimeInput').value = t.time || '';
-            document.getElementById('taskModalTitle').innerText = 'تعديل المهمة';
+            document.getElementById('taskModalTitle').innerText = 'تعديل المهمة وتقييمها';
             openModal('taskModal');
         }
 
@@ -657,7 +706,7 @@
             essContainer.innerHTML = '';
             const essentialTasks = appData.tasks.filter(t => t.category === 'PRIMARY');
             if (essentialTasks.length === 0) {
-                essContainer.innerHTML = `<p class="text-xs text-slate-500">لا توجد مهام أساسية مسجلة. أضف مهامك الأساسية الآن.</p>`;
+                essContainer.innerHTML = `<p class="text-xs text-slate-500">لا توجد مهام أساسية مسجلة. أضف مهامك عبر المصفوفة.</p>`;
             } else {
                 essentialTasks.forEach(task => {
                     essContainer.appendChild(createTaskCardElement(task));
@@ -739,48 +788,6 @@
             saveState();
         }
 
-        // --- PERSONAL ACTIVITIES LOGIC ---
-        function renderActivities() {
-            const tbody = document.getElementById('activitiesTableBody');
-            tbody.innerHTML = '';
-
-            if (appData.activities.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400 text-xs sm:text-sm">لا توجد أنشطة مسجلة بعد.</td></tr>`;
-                return;
-            }
-
-            appData.activities.forEach(act => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-800/50 border-b border-slate-800/60";
-                tr.innerHTML = `
-                    <td class="p-3.5 font-bold text-white">${act.date}</td>
-                    <td class="p-3.5"><span class="bg-slate-800 text-yellow-400 text-xs px-2.5 py-1 rounded-lg font-bold">${act.type}</span></td>
-                    <td class="p-3.5">${act.duration} دقيقة</td>
-                    <td class="p-3.5 text-xs sm:text-sm text-slate-300">${act.details || '-'}</td>
-                    <td class="p-3.5 text-center">
-                        <button onclick="deleteActivity('${act.id}')" class="text-xs sm:text-sm text-red-400 hover:text-red-300 font-bold">🗑️ حذف</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function saveActivity() {
-            const date = document.getElementById('actDate').value || new Date().toISOString().slice(0,10);
-            const type = document.getElementById('actType').value;
-            const duration = parseInt(document.getElementById('actDuration').value) || 60;
-            const details = document.getElementById('actDetails').value.trim();
-
-            appData.activities.unshift({ id: Date.now().toString(), date, type, duration, details });
-            closeModal('activityModal');
-            saveState();
-        }
-
-        function deleteActivity(id) {
-            appData.activities = appData.activities.filter(a => a.id !== id);
-            saveState();
-        }
-
         // --- REPORTS CHART ---
         let disciplineChartInstance = null;
         function renderReports() {
@@ -839,9 +846,10 @@
             document.getElementById('profGoals').value = appData.profile.goals || '';
 
             updateDashboard();
+            renderTaskMatrix();
             renderFullTasks();
             renderSchedule();
-            renderActivities();
+            if(!document.getElementById('view-reports').classList.contains('hidden')) renderReports();
         }
 
         // INITIALIZE APP
