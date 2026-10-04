@@ -51,6 +51,15 @@
             box-shadow: 0 4px 14px rgba(250, 204, 21, 0.35);
         }
 
+        /* Custom Toast Notification */
+        #toastBanner {
+            transform: translateY(100px);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        #toastBanner.show {
+            transform: translateY(0);
+        }
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #090d16; }
@@ -59,6 +68,12 @@
     </style>
 </head>
 <body class="p-3 sm:p-6 md:p-8 pb-24">
+
+    <!-- Notification Toast Banner -->
+    <div id="toastBanner" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 border border-yellow-500/50 text-white px-6 py-3 rounded-2xl shadow-2xl z-50 flex items-center gap-3 text-xs sm:text-sm font-bold pointer-events-none">
+        <span id="toastIcon">✨</span>
+        <span id="toastMessage">تم التحديث بنجاح</span>
+    </div>
 
     <!-- Header & Top Navigation Bar -->
     <header class="max-w-7xl mx-auto mb-6 flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
@@ -110,7 +125,7 @@
                 <div class="flex flex-wrap justify-between items-center gap-4 mb-5">
                     <div>
                         <span id="currentDateText" class="text-xs sm:text-sm font-bold text-yellow-400 block mb-1">...</span>
-                        <h2 class="text-xl sm:text-2xl font-bold text-white" id="dashboardGreeting">مرحباً بك في مستقبلك الاحترافي! أضف مهامك الأولى للبدء.</h2>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white" id="dashboardGreeting">مرحباً بك! أضف مهامك وانطلق في جدول انضباطك.</h2>
                     </div>
                     <button onclick="openModal('taskModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-2xl shadow-lg shadow-yellow-500/20 text-xs sm:text-sm transition hover:scale-105 active:scale-95">
                         + إضافة مهمة جديدة
@@ -315,6 +330,8 @@
     </main>
 
     <!-- MODALS SECTION -->
+
+    <!-- Modal: Add / Edit Task -->
     <div id="taskModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
             <h3 id="taskModalTitle" class="text-lg font-bold text-white mb-4">إضافة مهمة جديدة</h3>
@@ -349,6 +366,24 @@
         </div>
     </div>
 
+    <!-- Modal: Custom Delete Confirmation Modal -->
+    <div id="deleteConfirmModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-red-500/30 w-full max-w-sm rounded-3xl p-6 text-center space-y-4">
+            <div class="w-12 h-12 bg-red-500/10 text-red-400 rounded-2xl flex items-center justify-center text-xl mx-auto border border-red-500/20">
+                🗑️
+            </div>
+            <div>
+                <h3 class="text-lg font-bold text-white mb-1">حذف المهمة؟</h3>
+                <p id="deleteConfirmTaskTitle" class="text-xs text-slate-300">هل أنت متأكد من حذف هذه المهمة؟ لا يمكن التراجع عن هذا الإجراء.</p>
+            </div>
+            <div class="flex gap-3 pt-2">
+                <button onclick="confirmTaskDeletion()" class="flex-1 bg-red-500 hover:bg-red-400 text-white font-extrabold py-2.5 rounded-xl transition text-xs sm:text-sm shadow-lg shadow-red-500/20">نعم، احذف</button>
+                <button onclick="closeModal('deleteConfirmModal')" class="flex-1 bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl transition text-xs sm:text-sm">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Record Match / Football Session -->
     <div id="matchModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
             <h3 class="text-lg font-bold text-white mb-4">تسجيل مباراة أو تمرين كروي</h3>
@@ -385,6 +420,7 @@
         </div>
     </div>
 
+    <!-- Modal: Schedule Modal -->
     <div id="scheduleModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
             <h3 class="text-lg font-bold text-white mb-4">إضافة موعد في الجدول اليومي</h3>
@@ -434,21 +470,27 @@
         };
 
         let appData = JSON.parse(localStorage.getItem('rtp_clean_discipline_v7')) || CLEAN_NEW_USER_STATE;
+        let taskIdToDelete = null;
 
         function saveState() {
             localStorage.setItem('rtp_clean_discipline_v7', JSON.stringify(appData));
             updateUI();
         }
 
+        function showToast(msg, icon = '✨') {
+            const toast = document.getElementById('toastBanner');
+            document.getElementById('toastMessage').innerText = msg;
+            document.getElementById('toastIcon').innerText = icon;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
         // --- STREAK MANAGEMENT ENGINE (CALENDAR-BASED) ---
         function checkAndUpdateStreak() {
-            const todayStr = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+            const todayStr = new Date().toISOString().slice(0, 10);
             const lastActive = appData.lastActiveDate;
 
-            if (!lastActive) {
-                // Brand new user, streak remains 0 until first activity
-                return;
-            }
+            if (!lastActive) return;
 
             const today = new Date(todayStr);
             const last = new Date(lastActive);
@@ -456,7 +498,6 @@
             const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
 
             if (diffDays > 1) {
-                // Missed a full calendar day, reset streak
                 appData.streak = 0;
             }
         }
@@ -465,13 +506,9 @@
             const todayStr = new Date().toISOString().slice(0, 10);
             const lastActive = appData.lastActiveDate;
 
-            if (lastActive === todayStr) {
-                // Already counted today, do not increase streak again on refresh/repeat
-                return;
-            }
+            if (lastActive === todayStr) return;
 
             if (!lastActive) {
-                // First ever activity
                 appData.streak = 1;
                 appData.lastActiveDate = todayStr;
             } else {
@@ -480,11 +517,9 @@
                 const diffDays = Math.round((today - last) / (1000 * 60 * 60 * 24));
 
                 if (diffDays === 1) {
-                    // Consecutive day active
                     appData.streak += 1;
                     appData.lastActiveDate = todayStr;
                 } else if (diffDays > 1) {
-                    // Gap of more than 1 day, reset and start new streak of 1
                     appData.streak = 1;
                     appData.lastActiveDate = todayStr;
                 }
@@ -505,6 +540,12 @@
                 if (type === 'complete') {
                     osc.frequency.setValueAtTime(523, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+                } else if (type === 'delete') {
+                    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.15);
                     gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
                     osc.start(); osc.stop(audioCtx.currentTime + 0.15);
@@ -575,7 +616,7 @@
                     if (imported && typeof imported === 'object') {
                         appData = { ...CLEAN_NEW_USER_STATE, ...imported };
                         saveState();
-                        alert('تم استيراد البيانات بنجاح!');
+                        showToast('تم استيراد البيانات بنجاح', '📥');
                     }
                 } catch (err) { alert('ملف البيانات غير صالح!'); }
             };
@@ -707,14 +748,16 @@
             closeModal('matchModal');
             playSound('complete');
             saveState();
+            showToast('تم حفظ سجل المباراة وتحديث التقييم', '⚽');
         }
 
         function deleteFootballMatch(id) {
-            appData.footballMatches = appData.footballMatches.filter(m => m.id !== id);
+            appData.footballMatches = appData.footballMatches.filter(m => String(m.id) !== String(id));
             saveState();
+            showToast('تم حذف المباراة', '🗑️');
         }
 
-        // --- TASK MANAGEMENT LOGIC ---
+        // --- FIXED TASK DELETION & MANAGEMENT LOGIC ---
         function setTaskFilter(filter) {
             playSound('click');
             appData.currentTaskFilter = filter;
@@ -762,7 +805,7 @@
                     </div>
                     <div class="flex items-center gap-2 self-end sm:self-center">
                         <button onclick="editTask('${task.id}')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl font-bold">تعديل</button>
-                        <button onclick="deleteTask('${task.id}')" class="text-xs bg-red-500/10 hover:bg-red-500/20 text-red-400 px-3 py-1.5 rounded-xl font-bold">حذف</button>
+                        <button onclick="requestTaskDeletion('${task.id}')" class="text-xs bg-red-500/10 hover:bg-red-500/20 text-red-400 px-3 py-1.5 rounded-xl font-bold">حذف</button>
                     </div>
                 `;
                 container.appendChild(card);
@@ -779,9 +822,11 @@
             if (!title) { alert('يرجى إدخال عنوان المهمة'); return; }
 
             if (id) {
-                appData.tasks = appData.tasks.map(t => t.id === id ? { ...t, title, description, category, time } : t);
+                appData.tasks = appData.tasks.map(t => String(t.id) === String(id) ? { ...t, title, description, category, time } : t);
+                showToast('تم تعديل المهمة بنجاح', '✏️');
             } else {
                 appData.tasks.push({ id: Date.now().toString(), title, description, category, time, completed: false });
+                showToast('تمت إضافة المهمة بنجاح', '➕');
             }
 
             closeModal('taskModal');
@@ -790,7 +835,7 @@
         }
 
         function editTask(id) {
-            const t = appData.tasks.find(x => x.id === id);
+            const t = appData.tasks.find(x => String(x.id) === String(id));
             if (!t) return;
             document.getElementById('editTaskId').value = t.id;
             document.getElementById('taskTitleInput').value = t.title;
@@ -802,12 +847,13 @@
         }
 
         function toggleTask(id) {
-            const t = appData.tasks.find(x => x.id === id);
+            const t = appData.tasks.find(x => String(x.id) === String(id));
             if (t) {
                 t.completed = !t.completed;
                 if (t.completed) {
                     registerMeaningfulActivity();
                     playSound('complete');
+                    showToast('تم إنجاز المهمة بنجاح! أحسنت ⭐', '🎉');
                 } else {
                     playSound('click');
                 }
@@ -815,9 +861,31 @@
             }
         }
 
-        function deleteTask(id) {
-            if (!confirm('هل أنت متأكد من حذف هذه المهمة؟')) return;
-            appData.tasks = appData.tasks.filter(x => x.id !== id);
+        // Dedicated & Reliable Delete Flow with Custom Modal Confirmation
+        function requestTaskDeletion(id) {
+            const targetTask = appData.tasks.find(t => String(t.id) === String(id));
+            if (!targetTask) return;
+
+            taskIdToDelete = String(id);
+            document.getElementById('deleteConfirmTaskTitle').innerText = `هل أنت متأكد من حذف مهمة "${targetTask.title}"؟ لا يمكن التراجع بعد الحذف.`;
+            openModal('deleteConfirmModal');
+        }
+
+        function confirmTaskDeletion() {
+            if (!taskIdToDelete) return;
+
+            const initialLength = appData.tasks.length;
+            appData.tasks = appData.tasks.filter(x => String(x.id) !== String(taskIdToDelete));
+
+            if (appData.tasks.length < initialLength) {
+                playSound('delete');
+                showToast('تم حذف المهمة بنجاح', '🗑️');
+            } else {
+                showToast('حدث خطأ أثناء إتمام الحذف', '⚠️');
+            }
+
+            taskIdToDelete = null;
+            closeModal('deleteConfirmModal');
             saveState();
         }
 
@@ -871,7 +939,10 @@
                         ${task.time ? `<span class="text-[10px] text-slate-400">⏰ ${task.time}</span>` : ''}
                     </div>
                 </div>
-                <button onclick="editTask('${task.id}')" class="text-xs text-slate-400 hover:text-yellow-400">تعديل</button>
+                <div class="flex items-center gap-2">
+                    <button onclick="editTask('${task.id}')" class="text-xs text-slate-400 hover:text-yellow-400 font-bold">تعديل</button>
+                    <button onclick="requestTaskDeletion('${task.id}')" class="text-xs text-red-400 hover:text-red-300 font-bold">حذف</button>
+                </div>
             `;
             return card;
         }
@@ -912,11 +983,13 @@
             appData.schedule.push({ id: Date.now().toString(), title, time, category });
             closeModal('scheduleModal');
             saveState();
+            showToast('تمت إضافة الموعد للجدول', '📅');
         }
 
         function deleteScheduleItem(id) {
-            appData.schedule = appData.schedule.filter(s => s.id !== id);
+            appData.schedule = appData.schedule.filter(s => String(s.id) !== String(id));
             saveState();
+            showToast('تم حذف الموعد', '🗑️');
         }
 
         // --- REPORTS CHART ---
@@ -965,7 +1038,7 @@
                 goals: document.getElementById('profGoals').value.trim()
             };
             saveState();
-            alert('تم حفظ الملف الشخصي بنجاح!');
+            showToast('تم حفظ الملف الشخصي بنجاح', '👤');
         }
 
         // --- GLOBAL UI UPDATE ---
