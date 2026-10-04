@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Road To Pro — مصفوفة الانضباط وتقييم الأداء الكروي</title>
+    <title>Road To Pro — نظام الانضباط اليومي وإدارة المهام</title>
     
     <!-- PWA & Theme Settings -->
     <link rel="manifest" href="manifest.webmanifest">
@@ -75,14 +75,14 @@
             </label>
 
             <div class="streak-badge px-3.5 py-1.5 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center gap-1.5">
-                🔥 <span id="streakCount">3</span> أيام التزام متتالية
+                🔥 <span id="streakCount">0</span> أيام التزام متتالية
             </div>
         </div>
 
         <div class="flex items-center gap-3">
             <div class="text-left">
                 <h1 class="text-xl sm:text-2xl font-black tracking-wider text-white">ROAD TO PRO</h1>
-                <p class="text-xs text-yellow-400 font-bold">منصة الانضباط اليومي وتطوير الأداء — <span id="headerUserName">المستخدم</span></p>
+                <p class="text-xs text-yellow-400 font-bold">منصة الانضباط اليومي — <span id="headerUserName">مستخدم جديد</span></p>
             </div>
             <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-yellow-500 to-amber-300 font-black text-slate-950 flex items-center justify-center text-lg shadow-lg shadow-yellow-500/20 border border-yellow-200/40">
                 RTP
@@ -94,7 +94,7 @@
     <nav class="max-w-7xl mx-auto mb-6 overflow-x-auto pb-2">
         <div class="flex items-center justify-between gap-2 bg-slate-900/90 p-2 rounded-2xl border border-slate-800 w-full min-w-[750px]">
             <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📊 الرئيسية والمهام</button>
-            <button onclick="switchTab('footballMatrix')" id="tab-footballMatrix" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">⚽ مصفوفة تقييم كرة القدم</button>
+            <button onclick="switchTab('footballMatrix')" id="tab-footballMatrix" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">⚽ مصفوفة كرة القدم</button>
             <button onclick="switchTab('tasks')" id="tab-tasks" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📋 إدارة المهام</button>
             <button onclick="switchTab('schedule')" id="tab-schedule" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📅 الجدول اليومي</button>
             <button onclick="switchTab('reports')" id="tab-reports" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📈 التقارير</button>
@@ -104,13 +104,13 @@
 
     <main class="max-w-7xl mx-auto">
 
-        <!-- TAB 1: DASHBOARD (TODAY'S TASKS & PROGRESS) -->
+        <!-- TAB 1: DASHBOARD -->
         <div id="view-dashboard" class="tab-view space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
                 <div class="flex flex-wrap justify-between items-center gap-4 mb-5">
                     <div>
                         <span id="currentDateText" class="text-xs sm:text-sm font-bold text-yellow-400 block mb-1">...</span>
-                        <h2 class="text-xl sm:text-2xl font-bold text-white" id="dashboardGreeting">مرحباً بك! ركّز على إنجاز مهام اليوم الأساسية.</h2>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white" id="dashboardGreeting">مرحباً بك في مستقبلك الاحترافي! أضف مهامك الأولى للبدء.</h2>
                     </div>
                     <button onclick="openModal('taskModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-2xl shadow-lg shadow-yellow-500/20 text-xs sm:text-sm transition hover:scale-105 active:scale-95">
                         + إضافة مهمة جديدة
@@ -143,11 +143,11 @@
                 </div>
             </section>
 
-            <!-- Today's Focus Tasks List -->
+            <!-- Focus Tasks List -->
             <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-6">
                 <div>
                     <h3 class="text-lg font-bold text-amber-400 mb-1 flex items-center gap-2"><span>⭐</span> المهام الأساسية لليوم (Essential Tasks)</h3>
-                    <p class="text-xs text-slate-400">أولويات قصوى لإدارة وتطوير الروتين اليومي.</p>
+                    <p class="text-xs text-slate-400">أولويات قصوى لإدارة وتطوير روتينك اليومي.</p>
                 </div>
                 <div id="dashboardEssentialContainer" class="space-y-3"></div>
 
@@ -159,33 +159,31 @@
             </section>
         </div>
 
-        <!-- TAB 2: FOOTBALL EVALUATION MATRIX -->
+        <!-- TAB 2: FOOTBALL MATRIX -->
         <div id="view-footballMatrix" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-6">
                 <div class="flex flex-wrap justify-between items-center gap-4">
                     <div>
                         <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>⚽</span> مصفوفة تقييم ومستوى كرة القدم التلقائية</h2>
-                        <p class="text-xs sm:text-sm text-slate-300 mt-1">تقييم آلي ومبني على سجل مبارياتك وتمارينك المسجلة لتحديد مستواك الفني والبدني الحالي.</p>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">تقييم آلي ومبني على سجل مبارياتك وتمارينك المسجلة.</p>
                     </div>
                     <button onclick="openModal('matchModal')" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow-lg shadow-emerald-500/20">
                         + تسجيل مباراة أو تمرين جديد
                     </button>
                 </div>
 
-                <!-- Overall Level Evaluation Card -->
                 <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-emerald-950/40 p-5 sm:p-6 rounded-2xl border border-emerald-500/30 flex flex-col md:flex-row justify-between items-center gap-6">
                     <div class="space-y-2 text-center md:text-right">
-                        <span class="text-xs bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full font-extrabold inline-block">تقييم تلقائي مستند للبيانات</span>
-                        <h3 class="text-xl sm:text-2xl font-black text-white" id="evalLevelTitle">مستوى اللاعب: متطور (Advanced)</h3>
-                        <p class="text-xs sm:text-sm text-slate-300 max-w-xl" id="evalLevelDesc">يعتمد هذا التقييم آلياً على عدد المباريات المسجلة، معدل التقييم (OVR)، وساعات التدريب الفعلية.</p>
+                        <span class="text-xs bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full font-extrabold inline-block">تقييم آلي مستند للبيانات</span>
+                        <h3 class="text-xl sm:text-2xl font-black text-white" id="evalLevelTitle">مستوى اللاعب: في بداية الطريق (New User)</h3>
+                        <p class="text-xs sm:text-sm text-slate-300 max-w-xl" id="evalLevelDesc">سجل مباراتك أو تمرينك الأول لتفعيل التقييم الشامل.</p>
                     </div>
                     <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-2xl text-center min-w-[150px]">
                         <span class="text-xs text-slate-400 block mb-1">التقييم العام (OVR)</span>
-                        <span id="evalOvrScore" class="text-3xl font-black text-yellow-400">82</span>
+                        <span id="evalOvrScore" class="text-3xl font-black text-yellow-400">0</span>
                     </div>
                 </div>
 
-                <!-- Radar Chart & Metrics Breakdown -->
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                     <div class="lg:col-span-5 flex flex-col items-center justify-center bg-slate-900/80 p-5 rounded-2xl border border-slate-800">
                         <span class="text-xs sm:text-sm font-bold text-slate-300 mb-2">مخطط رادار المهارات الحالية</span>
@@ -193,20 +191,14 @@
                             <canvas id="footballRadarChart"></canvas>
                         </div>
                     </div>
-
                     <div class="lg:col-span-7 space-y-4">
                         <h3 class="text-sm font-bold text-slate-200">تحليل المعايير والدرجات (من 5):</h3>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="matrixCriteriaGrid">
-                            <!-- Populated dynamically -->
-                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="matrixCriteriaGrid"></div>
                     </div>
                 </div>
 
-                <!-- Recorded Football Sessions & Matches Log -->
                 <div class="space-y-3 pt-4 border-t border-slate-800">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-base font-bold text-white">سجل المباريات والتمارين المؤثرة في التقييم:</h3>
-                    </div>
+                    <h3 class="text-base font-bold text-white">سجل المباريات والتمارين:</h3>
                     <div id="footballRecordsContainer" class="space-y-2 max-h-60 overflow-y-auto"></div>
                 </div>
             </section>
@@ -218,7 +210,7 @@
                 <div class="flex flex-wrap justify-between items-center gap-4">
                     <div>
                         <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📋</span> إدارة المهام الشاملة</h2>
-                        <p class="text-xs sm:text-sm text-slate-300 mt-1">إضافة وفلترة وحذف مهامك اليومية الأساسية والثانوية.</p>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">إضافة وفلترة وحذف مهامك اليومية.</p>
                     </div>
                     <button onclick="openModal('taskModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow-lg shadow-yellow-500/20">
                         + إضافة مهمة جديدة
@@ -243,7 +235,7 @@
                 <div class="flex flex-wrap justify-between items-center gap-4 mb-5">
                     <div>
                         <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📅</span> الجدول اليومي والروتين</h2>
-                        <p class="text-xs sm:text-sm text-slate-300 mt-1">نظّم أوقاتك لضمان أعلى مستوى من الانضباط والاستمرارية.</p>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">نظّم أوقاتك لضمان الانضباط.</p>
                     </div>
                     <button onclick="openModal('scheduleModal')" class="bg-yellow-500 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm">
                         + إضافة موعد في الروتين
@@ -277,7 +269,7 @@
                     </div>
                     <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-center">
                         <span class="text-xs text-slate-400 block mb-1">أيام الالتزام</span>
-                        <span id="repStreakDays" class="text-xl font-extrabold text-red-400">3 أيام</span>
+                        <span id="repStreakDays" class="text-xl font-extrabold text-red-400">0 أيام</span>
                     </div>
                 </div>
 
@@ -294,7 +286,7 @@
         <div id="view-profile" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
                 <h2 class="text-xl font-bold text-white mb-1 flex items-center gap-2"><span>👤</span> الملف الشخصي للمستخدم</h2>
-                <p class="text-xs sm:text-sm text-slate-300 mb-6">تحديث بياناتك الشخصية لتخصيص خطة الانضباط اليومي</p>
+                <p class="text-xs sm:text-sm text-slate-300 mb-6">تحديث بياناتك الشخصية</p>
 
                 <form id="profileForm" onsubmit="saveProfile(event)" class="space-y-4 max-w-2xl">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -323,8 +315,6 @@
     </main>
 
     <!-- MODALS SECTION -->
-
-    <!-- Modal: Add Task -->
     <div id="taskModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
             <h3 id="taskModalTitle" class="text-lg font-bold text-white mb-4">إضافة مهمة جديدة</h3>
@@ -332,7 +322,7 @@
                 <input type="hidden" id="editTaskId">
                 <div>
                     <label class="text-slate-300 font-bold block mb-1">عنوان المهمة *</label>
-                    <input type="text" id="taskTitleInput" placeholder="مثال: دراسة، تمرين، عمل..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+                    <input type="text" id="taskTitleInput" placeholder="مثال: دراسة، تمرين..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                 </div>
                 <div>
                     <label class="text-slate-300 font-bold block mb-1">الوصف (اختياري)</label>
@@ -359,14 +349,13 @@
         </div>
     </div>
 
-    <!-- Modal: Record Match / Football Session -->
     <div id="matchModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
             <h3 class="text-lg font-bold text-white mb-4">تسجيل مباراة أو تمرين كروي</h3>
             <div class="space-y-3.5 text-xs sm:text-sm">
                 <div>
                     <label class="text-slate-300 font-bold block mb-1">عنوان المباراة أو التمرين *</label>
-                    <input type="text" id="mOpponent" placeholder="مثال: مباراة ودية أو تمرين مهاري" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+                    <input type="text" id="mOpponent" placeholder="مثال: تمرين مهاري أو مباراة ودية" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
@@ -389,26 +378,25 @@
                     </div>
                 </div>
                 <div class="flex gap-3 pt-2">
-                    <button onclick="saveFootballMatch()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ السجل وتحديث التقييم</button>
+                    <button onclick="saveFootballMatch()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ وتحديث النشاط</button>
                     <button onclick="closeModal('matchModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal: Add Schedule Item -->
     <div id="scheduleModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
             <h3 class="text-lg font-bold text-white mb-4">إضافة موعد في الجدول اليومي</h3>
             <div class="space-y-3.5 text-xs sm:text-sm">
                 <div>
                     <label class="text-slate-300 font-bold block mb-1">عنوان النشاط / الموعد *</label>
-                    <input type="text" id="schedTitle" placeholder="مثال: فترة عمل أو تمرين" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+                    <input type="text" id="schedTitle" placeholder="مثال: جلسة عمل" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="text-slate-300 font-bold block mb-1">الوقت</label>
-                        <input type="text" id="schedTime" placeholder="مثال: 09:00 - 11:00 ص" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+                        <input type="text" id="schedTime" placeholder="مثال: 09:00 ص" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                     </div>
                     <div>
                         <label class="text-slate-300 font-bold block mb-1">التصنيف</label>
@@ -429,32 +417,78 @@
 
     <!-- APPLICATION LOGIC JS -->
     <script>
-        const DEFAULT_STATE = {
-            streak: 3,
+        const CLEAN_NEW_USER_STATE = {
+            streak: 0,
+            lastActiveDate: '',
+            activityLog: [],
             audioEnabled: true,
             currentTaskFilter: 'ALL',
             profile: {
-                name: 'المستخدم',
-                field: 'تطوير الذات والانضباط اليومي',
-                goals: 'الالتزام الكامل بجدول المهام اليومية وتطوير الأداء'
+                name: '',
+                field: '',
+                goals: ''
             },
-            tasks: [
-                { id: 't1', title: 'مراجعة وترتيب مهام اليوم', description: 'تخطيط الأولوية والتركيز', category: 'PRIMARY', time: '07:30 ص', completed: true },
-                { id: 't2', title: 'جلسة عمل عميق لمدة ساعتين', description: 'بدون مقاطعات', category: 'PRIMARY', time: '09:00 ص', completed: false }
-            ],
-            schedule: [
-                { id: 'sc1', title: 'جلسة العمل العميق الأولى', time: '09:00 - 11:30 ص', category: 'عمل/دراسة' }
-            ],
-            footballMatches: [
-                { id: 'fm1', date: '2026-09-28', opponent: 'مباراة ودية تنافسية', minutes: 90, goals: 1, assists: 1, rating: 8.5 }
-            ]
+            tasks: [],
+            schedule: [],
+            footballMatches: []
         };
 
-        let appData = JSON.parse(localStorage.getItem('rtp_football_matrix_v6')) || DEFAULT_STATE;
+        let appData = JSON.parse(localStorage.getItem('rtp_clean_discipline_v7')) || CLEAN_NEW_USER_STATE;
 
         function saveState() {
-            localStorage.setItem('rtp_football_matrix_v6', JSON.stringify(appData));
+            localStorage.setItem('rtp_clean_discipline_v7', JSON.stringify(appData));
             updateUI();
+        }
+
+        // --- STREAK MANAGEMENT ENGINE (CALENDAR-BASED) ---
+        function checkAndUpdateStreak() {
+            const todayStr = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+            const lastActive = appData.lastActiveDate;
+
+            if (!lastActive) {
+                // Brand new user, streak remains 0 until first activity
+                return;
+            }
+
+            const today = new Date(todayStr);
+            const last = new Date(lastActive);
+            const diffTime = today - last;
+            const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays > 1) {
+                // Missed a full calendar day, reset streak
+                appData.streak = 0;
+            }
+        }
+
+        function registerMeaningfulActivity() {
+            const todayStr = new Date().toISOString().slice(0, 10);
+            const lastActive = appData.lastActiveDate;
+
+            if (lastActive === todayStr) {
+                // Already counted today, do not increase streak again on refresh/repeat
+                return;
+            }
+
+            if (!lastActive) {
+                // First ever activity
+                appData.streak = 1;
+                appData.lastActiveDate = todayStr;
+            } else {
+                const today = new Date(todayStr);
+                const last = new Date(lastActive);
+                const diffDays = Math.round((today - last) / (1000 * 60 * 60 * 24));
+
+                if (diffDays === 1) {
+                    // Consecutive day active
+                    appData.streak += 1;
+                    appData.lastActiveDate = todayStr;
+                } else if (diffDays > 1) {
+                    // Gap of more than 1 day, reset and start new streak of 1
+                    appData.streak = 1;
+                    appData.lastActiveDate = todayStr;
+                }
+            }
         }
 
         // --- AUDIO ENGINE ---
@@ -525,7 +559,7 @@
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
             const downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `road_to_pro_backup_${new Date().toISOString().slice(0,10)}.json`);
+            downloadAnchor.setAttribute("download", `road_to_pro_clean_backup_${new Date().toISOString().slice(0,10)}.json`);
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();
@@ -539,7 +573,7 @@
                 try {
                     const imported = JSON.parse(e.target.result);
                     if (imported && typeof imported === 'object') {
-                        appData = { ...DEFAULT_STATE, ...imported };
+                        appData = { ...CLEAN_NEW_USER_STATE, ...imported };
                         saveState();
                         alert('تم استيراد البيانات بنجاح!');
                     }
@@ -548,12 +582,10 @@
             reader.readAsText(file);
         }
 
-        // --- FOOTBALL EVALUATION MATRIX LOGIC (AUTOMATIC ASSESSMENT) ---
+        // --- FOOTBALL MATRIX LOGIC ---
         let footballRadarInstance = null;
         function renderFootballMatrix() {
             const matches = appData.footballMatches || [];
-            
-            // Automatic calculation based on real recorded data
             let totalMatches = matches.length;
             let sumRating = 0;
             let totalGoals = 0;
@@ -565,34 +597,30 @@
                 totalAssists += parseInt(m.assists) || 0;
             });
 
-            const avgRating = totalMatches ? (sumRating / totalMatches) : 7.5;
-            
-            // Criteria scores from 1 to 5 derived from real data
-            const passingScore = Math.min(5, Math.max(2, (avgRating / 2) + (totalAssists * 0.2)));
-            const shootingScore = Math.min(5, Math.max(2, (avgRating / 2) + (totalGoals * 0.2)));
-            const dribblingScore = Math.min(5, Math.max(2.5, avgRating * 0.55));
-            const touchScore = Math.min(5, Math.max(2.5, avgRating * 0.52));
-            const speedScore = Math.min(5, Math.max(2.5, 3.8 + (totalMatches * 0.05)));
-            const staminaScore = Math.min(5, Math.max(2.5, 4.0));
+            const avgRating = totalMatches ? (sumRating / totalMatches) : 0;
+            const passingScore = totalMatches ? Math.min(5, Math.max(2, (avgRating / 2) + (totalAssists * 0.2))) : 0;
+            const shootingScore = totalMatches ? Math.min(5, Math.max(2, (avgRating / 2) + (totalGoals * 0.2))) : 0;
+            const dribblingScore = totalMatches ? Math.min(5, Math.max(2.5, avgRating * 0.55)) : 0;
+            const touchScore = totalMatches ? Math.min(5, Math.max(2.5, avgRating * 0.52)) : 0;
+            const speedScore = totalMatches ? Math.min(5, Math.max(2.5, 3.8 + (totalMatches * 0.05))) : 0;
+            const staminaScore = totalMatches ? Math.min(5, Math.max(2.5, 4.0)) : 0;
 
-            const overallOvr = Math.round(((passingScore + shootingScore + dribblingScore + touchScore + speedScore + staminaScore) / 6) * 18);
+            const overallOvr = totalMatches ? Math.round(((passingScore + shootingScore + dribblingScore + touchScore + speedScore + staminaScore) / 6) * 18) : 0;
 
-            // Level title
-            let levelTitle = "مستوى أساسي (Developing)";
-            let levelDesc = "سجل المزيد من المباريات والتمارين لرفع معدل أدائك الفني والبدني وتطوير مستواك.";
+            let levelTitle = "مستخدم جديد (New User)";
+            let levelDesc = "أضف مباراتك أو تمرينك الأول لتفعيل التحليل التلقائي لمستواك الكروي.";
             if (overallOvr >= 80) {
                 levelTitle = "مستوى احترافي متطور (Advanced Pro)";
-                levelDesc = "أدائك في المباريات المسجلة متميز للغاية ويعكس كفاءة عالية في التمرير والتسجيل والتمركز.";
-            } else if (overallOvr >= 70) {
+                levelDesc = "أدائك متميز للغاية ويعكس كفاءة عالية في المباريات.";
+            } else if (overallOvr > 0) {
                 levelTitle = "مستوى واعد ومنتظم (Solid Performer)";
-                levelDesc = "استمرارك في تسجيل المباريات والتدريب بانتظام يضعك على الطريق الصحيح للوصول للاحترافية.";
+                levelDesc = "استمرارك في تسجيل الأنشطة يعزز تقييمك العام.";
             }
 
             document.getElementById('evalLevelTitle').innerText = `مستوى اللاعب: ${levelTitle}`;
             document.getElementById('evalLevelDesc').innerText = levelDesc;
             document.getElementById('evalOvrScore').innerText = overallOvr;
 
-            // Render Criteria Grid
             const criteriaGrid = document.getElementById('matrixCriteriaGrid');
             criteriaGrid.innerHTML = `
                 <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800"><span class="text-xs text-slate-400 block">التمرير</span><span class="text-lg font-extrabold text-emerald-400">${passingScore.toFixed(1)} / 5</span></div>
@@ -603,7 +631,6 @@
                 <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800"><span class="text-xs text-slate-400 block">اللياقة والتحمل</span><span class="text-lg font-extrabold text-purple-400">${staminaScore.toFixed(1)} / 5</span></div>
             `;
 
-            // Render Radar Chart
             const ctx = document.getElementById('footballRadarChart').getContext('2d');
             if (footballRadarInstance) footballRadarInstance.destroy();
             footballRadarInstance = new Chart(ctx, {
@@ -632,11 +659,10 @@
                 }
             });
 
-            // Render Records Log
             const recContainer = document.getElementById('footballRecordsContainer');
             recContainer.innerHTML = '';
             if (matches.length === 0) {
-                recContainer.innerHTML = `<p class="text-xs text-slate-500 text-center py-4">لا توجد مباريات مسجلة بعد. أضف مباراة لتحديث التقييم التلقائي.</p>`;
+                recContainer.innerHTML = `<p class="text-xs text-slate-500 text-center py-4">لا توجد مباريات مسجلة حالياً.</p>`;
                 return;
             }
 
@@ -662,7 +688,7 @@
             if (!opponent) return;
 
             const minutes = parseInt(document.getElementById('mMinutes').value) || 90;
-            const rating = parseFloat(document.getElementById('mRating').value) || 7.5;
+            const rating = parseFloat(document.getElementById('mRating').value) || 8.0;
             const goals = parseInt(document.getElementById('mGoals').value) || 0;
             const assists = parseInt(document.getElementById('mAssists').value) || 0;
 
@@ -677,6 +703,7 @@
                 assists
             });
 
+            registerMeaningfulActivity();
             closeModal('matchModal');
             playSound('complete');
             saveState();
@@ -713,7 +740,7 @@
             else if (appData.currentTaskFilter === 'INCOMPLETE') filtered = appData.tasks.filter(t => !t.completed);
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="text-center py-8 text-slate-400 text-xs sm:text-sm">لا توجد مهام تطابق هذا الفلتر.</div>`;
+                container.innerHTML = `<div class="text-center py-8 text-slate-400 text-xs sm:text-sm">لا توجد مهام مسجلة. اضغط على "+ إضافة مهمة جديدة" للبدء.</div>`;
                 return;
             }
 
@@ -778,8 +805,12 @@
             const t = appData.tasks.find(x => x.id === id);
             if (t) {
                 t.completed = !t.completed;
-                if (t.completed) playSound('complete');
-                else playSound('click');
+                if (t.completed) {
+                    registerMeaningfulActivity();
+                    playSound('complete');
+                } else {
+                    playSound('click');
+                }
                 saveState();
             }
         }
@@ -792,6 +823,8 @@
 
         // --- DASHBOARD UPDATE ---
         function updateDashboard() {
+            checkAndUpdateStreak();
+
             const total = appData.tasks.length;
             const completed = appData.tasks.filter(t => t.completed).length;
             const pct = total ? Math.round((completed / total) * 100) : 0;
@@ -803,30 +836,24 @@
             document.getElementById('statCompletedToday').innerText = completed;
             document.getElementById('statTotalTasks').innerText = total;
 
-            document.getElementById('headerUserName').innerText = appData.profile.name || 'المستخدم';
+            document.getElementById('headerUserName').innerText = appData.profile.name || 'مستخدم جديد';
 
-            // Render Essential list on dashboard
             const essContainer = document.getElementById('dashboardEssentialContainer');
             essContainer.innerHTML = '';
             const essentialTasks = appData.tasks.filter(t => t.category === 'PRIMARY');
             if (essentialTasks.length === 0) {
-                essContainer.innerHTML = `<p class="text-xs text-slate-500">لا توجد مهام أساسية مسجلة.</p>`;
+                essContainer.innerHTML = `<p class="text-xs text-slate-500">لا توجد مهام أساسية. أضف مهامك الأولى للبدء.</p>`;
             } else {
-                essentialTasks.forEach(task => {
-                    essContainer.appendChild(createTaskCardElement(task));
-                });
+                essentialTasks.forEach(task => essContainer.appendChild(createTaskCardElement(task)));
             }
 
-            // Render Secondary list on dashboard
             const secContainer = document.getElementById('dashboardSecondaryContainer');
             secContainer.innerHTML = '';
             const secondaryTasks = appData.tasks.filter(t => t.category === 'SECONDARY');
             if (secondaryTasks.length === 0) {
-                secContainer.innerHTML = `<p class="text-xs text-slate-500">لا توجد مهام ثانوية مسجلة.</p>`;
+                secContainer.innerHTML = `<p class="text-xs text-slate-500">لا توجد مهام ثانوية.</p>`;
             } else {
-                secondaryTasks.forEach(task => {
-                    secContainer.appendChild(createTaskCardElement(task));
-                });
+                secondaryTasks.forEach(task => secContainer.appendChild(createTaskCardElement(task)));
             }
 
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -855,7 +882,7 @@
             container.innerHTML = '';
 
             if (appData.schedule.length === 0) {
-                container.innerHTML = `<div class="text-center py-8 text-slate-400 text-xs sm:text-sm">لا توجد مواعيد مضافة في الجدول اليومي.</div>`;
+                container.innerHTML = `<div class="text-center py-8 text-slate-400 text-xs sm:text-sm">لا توجد مواعيد مضافة في الجدول.</div>`;
                 return;
             }
 
@@ -903,6 +930,7 @@
             document.getElementById('repCompletedTasks').innerText = completed;
             document.getElementById('repPendingTasks').innerText = pending;
             document.getElementById('repCompletionRate').innerText = `${rate}%`;
+            document.getElementById('repStreakDays').innerText = `${appData.streak} أيام`;
 
             const ctx = document.getElementById('disciplineReportChart').getContext('2d');
             if (disciplineChartInstance) disciplineChartInstance.destroy();
@@ -942,8 +970,10 @@
 
         // --- GLOBAL UI UPDATE ---
         function updateUI() {
+            checkAndUpdateStreak();
+
             document.getElementById('streakCount').innerText = appData.streak;
-            document.getElementById('headerUserName').innerText = appData.profile.name || 'المستخدم';
+            document.getElementById('headerUserName').innerText = appData.profile.name || 'مستخدم جديد';
 
             document.getElementById('profName').value = appData.profile.name || '';
             document.getElementById('profField').value = appData.profile.field || '';
