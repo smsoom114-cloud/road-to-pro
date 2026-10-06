@@ -271,15 +271,15 @@
 
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
                     <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-center">
-                        <span class="text-xs text-slate-400 block mb-1">المهام المكتملة</span>
+                        <span class="text-xs text-slate-400 block mb-1">المهام المكتملة اليوم</span>
                         <span id="repCompletedTasks" class="text-xl font-extrabold text-emerald-400">0</span>
                     </div>
                     <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-center">
-                        <span class="text-xs text-slate-400 block mb-1">المهام المتبقية</span>
+                        <span class="text-xs text-slate-400 block mb-1">المهام المتبقية اليوم</span>
                         <span id="repPendingTasks" class="text-xl font-extrabold text-amber-400">0</span>
                     </div>
                     <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-center">
-                        <span class="text-xs text-slate-400 block mb-1">نسبة الإنجاز العامة</span>
+                        <span class="text-xs text-slate-400 block mb-1">نسبة إنجاز اليوم</span>
                         <span id="repCompletionRate" class="text-xl font-extrabold text-cyan-400">0%</span>
                     </div>
                     <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-center">
@@ -289,7 +289,7 @@
                 </div>
 
                 <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800">
-                    <h3 class="text-xs sm:text-sm font-bold text-slate-200 mb-4">رسم بياني لتوزيع وحالة المهام</h3>
+                    <h3 class="text-xs sm:text-sm font-bold text-slate-200 mb-4">رسم بياني لتوزيع وحالة المهام اليومية</h3>
                     <div class="w-full h-72">
                         <canvas id="disciplineReportChart"></canvas>
                     </div>
@@ -454,7 +454,7 @@
         const CLEAN_NEW_USER_STATE = {
             streak: 0,
             lastActiveDate: '',
-            activityLog: [],
+            activityDates: [], // Array of YYYY-MM-DD strings recording active days
             audioEnabled: true,
             currentTaskFilter: 'ALL',
             profile: {
@@ -462,22 +462,30 @@
                 field: '',
                 goals: ''
             },
-            tasks: [],
+            tasks: [], // Objects: { id, title, description, category, time, completedDates: [] }
             schedule: [],
             footballMatches: []
         };
 
-        let appData = JSON.parse(localStorage.getItem('rtp_clean_discipline_v8')) || CLEAN_NEW_USER_STATE;
+        let appData = JSON.parse(localStorage.getItem('rtp_clean_discipline_v9')) || CLEAN_NEW_USER_STATE;
         let taskIdToDelete = null;
 
-        // Enforce strict initialization hygiene for new/stale user states
-        if (!appData.lastActiveDate) {
-            appData.streak = 0;
-            appData.lastActiveDate = '';
+        // Date helpers using local timezone explicitly
+        function getLocalDateString(d = new Date()) {
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function getPrevLocalDateString(dateStr) {
+            const [y, m, d] = dateStr.split('-').map(Number);
+            const dateObj = new Date(y, m - 1, d - 1);
+            return getLocalDateString(dateObj);
         }
 
         function saveState() {
-            localStorage.setItem('rtp_clean_discipline_v8', JSON.stringify(appData));
+            localStorage.setItem('rtp_clean_discipline_v9', JSON.stringify(appData));
             updateUI();
         }
 
@@ -489,63 +497,65 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // --- STREAK MANAGEMENT ENGINE (STRICT LOCAL CALENDAR DAYS) ---
-        function getLocalDateString(d = new Date()) {
-            const year = d.getFullYear();
-            const month = String(d.getMonth() + 1).padStart(2, '0');
-            const day = String(d.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
+        // --- TASK DAILY COMPLETION STATE HELPER ---
+        function isTaskCompletedToday(task) {
+            const todayStr = getLocalDateString();
+            if (!Array.isArray(task.completedDates)) {
+                // Graceful legacy migration without deleting task definitions
+                if (task.completed) {
+                    task.completedDates = [getLocalDateString()];
+                } else {
+                    task.completedDates = [];
+                }
+            }
+            return task.completedDates.includes(todayStr);
         }
 
-        function getCalendarDaysDiff(dateStr1, dateStr2) {
-            if (!dateStr1 || !dateStr2) return 0;
-            const [y1, m1, d1] = dateStr1.split('-').map(Number);
-            const [y2, m2, d2] = dateStr2.split('-').map(Number);
-            const date1 = new Date(y1, m1 - 1, d1);
-            const date2 = new Date(y2, m2 - 1, d2);
-            const diffMs = date1.getTime() - date2.getTime();
-            return Math.round(diffMs / (1000 * 60 * 60 * 24));
-        }
-
-        function checkAndUpdateStreak() {
-            if (!appData.lastActiveDate) {
+        // --- STREAK ENGINE (HISTORICAL DATES VERIFICATION) ---
+        function updateStreakFromHistory() {
+            if (!Array.isArray(appData.activityDates) || appData.activityDates.length === 0) {
                 appData.streak = 0;
-                return;
+                appData.lastActiveDate = '';
+                return 0;
             }
 
             const todayStr = getLocalDateString();
-            const diffDays = getCalendarDaysDiff(todayStr, appData.lastActiveDate);
+            const yesterdayStr = getPrevLocalDateString(todayStr);
 
-            if (diffDays > 1 || diffDays < 0) {
-                // Missed a full calendar day or clock error -> reset streak
-                appData.streak = 0;
+            let checkAnchor = null;
+            if (appData.activityDates.includes(todayStr)) {
+                checkAnchor = todayStr;
+            } else if (appData.activityDates.includes(yesterdayStr)) {
+                checkAnchor = yesterdayStr;
             }
+
+            if (!checkAnchor) {
+                appData.streak = 0;
+                return 0;
+            }
+
+            let consecutiveCount = 0;
+            let currDate = checkAnchor;
+            while (appData.activityDates.includes(currDate)) {
+                consecutiveCount++;
+                currDate = getPrevLocalDateString(currDate);
+            }
+
+            appData.streak = consecutiveCount;
+            const sortedDates = [...appData.activityDates].sort();
+            appData.lastActiveDate = sortedDates[sortedDates.length - 1] || '';
+            return consecutiveCount;
         }
 
         function registerMeaningfulActivity() {
             const todayStr = getLocalDateString();
-            const lastActive = appData.lastActiveDate;
-
-            if (!lastActive) {
-                // First ever qualifying activity
-                appData.streak = 1;
-                appData.lastActiveDate = todayStr;
-            } else if (lastActive === todayStr) {
-                // Already registered activity today; do not increment streak again
-                return;
-            } else {
-                const diffDays = getCalendarDaysDiff(todayStr, lastActive);
-                if (diffDays === 1) {
-                    // Consecutive calendar day
-                    appData.streak += 1;
-                    appData.lastActiveDate = todayStr;
-                } else if (diffDays > 1 || diffDays < 0) {
-                    // Gap of >1 day
-                    appData.streak = 1;
-                    appData.lastActiveDate = todayStr;
-                }
+            if (!Array.isArray(appData.activityDates)) {
+                appData.activityDates = [];
             }
-            saveState();
+            if (!appData.activityDates.includes(todayStr)) {
+                appData.activityDates.push(todayStr);
+            }
+            updateStreakFromHistory();
         }
 
         // --- AUDIO ENGINE ---
@@ -622,7 +632,7 @@
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
             const downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `road_to_pro_clean_backup_${new Date().toISOString().slice(0,10)}.json`);
+            downloadAnchor.setAttribute("download", `road_to_pro_backup_${getLocalDateString()}.json`);
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();
@@ -801,8 +811,8 @@
             let filtered = appData.tasks;
             if (appData.currentTaskFilter === 'PRIMARY') filtered = appData.tasks.filter(t => t.category === 'PRIMARY');
             else if (appData.currentTaskFilter === 'SECONDARY') filtered = appData.tasks.filter(t => t.category === 'SECONDARY');
-            else if (appData.currentTaskFilter === 'COMPLETED') filtered = appData.tasks.filter(t => t.completed);
-            else if (appData.currentTaskFilter === 'INCOMPLETE') filtered = appData.tasks.filter(t => !t.completed);
+            else if (appData.currentTaskFilter === 'COMPLETED') filtered = appData.tasks.filter(t => isTaskCompletedToday(t));
+            else if (appData.currentTaskFilter === 'INCOMPLETE') filtered = appData.tasks.filter(t => !isTaskCompletedToday(t));
 
             if (filtered.length === 0) {
                 container.innerHTML = `<div class="text-center py-8 text-slate-400 text-xs sm:text-sm">لا توجد مهام مسجلة. اضغط على "+ إضافة مهمة جديدة" للبدء.</div>`;
@@ -811,14 +821,15 @@
 
             filtered.forEach(task => {
                 const isEssential = task.category === 'PRIMARY';
+                const completedToday = isTaskCompletedToday(task);
                 const card = document.createElement('div');
-                card.className = `p-4 rounded-2xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 transition ${task.completed ? 'bg-slate-900/40 border-slate-800 opacity-60' : 'bg-slate-900/90 border-slate-800'}`;
+                card.className = `p-4 rounded-2xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 transition ${completedToday ? 'bg-slate-900/40 border-slate-800 opacity-60' : 'bg-slate-900/90 border-slate-800'}`;
                 card.innerHTML = `
                     <div class="flex items-start sm:items-center gap-3">
-                        <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask('${task.id}')" class="w-5 h-5 accent-yellow-500 rounded cursor-pointer mt-1 sm:mt-0">
+                        <input type="checkbox" ${completedToday ? 'checked' : ''} onchange="toggleTask('${task.id}')" class="w-5 h-5 accent-yellow-500 rounded cursor-pointer mt-1 sm:mt-0">
                         <div>
                             <div class="flex items-center gap-2 flex-wrap">
-                                <span class="font-bold text-sm sm:text-base ${task.completed ? 'line-through text-slate-500' : 'text-white'}">${task.title}</span>
+                                <span class="font-bold text-sm sm:text-base ${completedToday ? 'line-through text-slate-500' : 'text-white'}">${task.title}</span>
                                 <span class="text-[10px] px-2 py-0.5 rounded-lg font-extrabold ${isEssential ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30' : 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30'}">${isEssential ? 'أساسية ⭐' : 'ثانوية 📌'}</span>
                                 ${task.time ? `<span class="text-[11px] text-slate-400">⏰ ${task.time}</span>` : ''}
                             </div>
@@ -847,7 +858,7 @@
                 appData.tasks = appData.tasks.map(t => String(t.id) === String(id) ? { ...t, title, description, category, time } : t);
                 showToast('تم تعديل المهمة بنجاح', '✏️');
             } else {
-                appData.tasks.push({ id: Date.now().toString(), title, description, category, time, completed: false });
+                appData.tasks.push({ id: Date.now().toString(), title, description, category, time, completedDates: [] });
                 showToast('تمت إضافة المهمة بنجاح', '➕');
             }
 
@@ -869,15 +880,23 @@
         }
 
         function toggleTask(id) {
+            const todayStr = getLocalDateString();
             const t = appData.tasks.find(x => String(x.id) === String(id));
             if (t) {
-                t.completed = !t.completed;
-                if (t.completed) {
+                if (!Array.isArray(t.completedDates)) {
+                    t.completedDates = [];
+                }
+                const index = t.completedDates.indexOf(todayStr);
+                if (index > -1) {
+                    // Uncheck task for today
+                    t.completedDates.splice(index, 1);
+                    playSound('click');
+                } else {
+                    // Complete task for today
+                    t.completedDates.push(todayStr);
                     registerMeaningfulActivity();
                     playSound('complete');
                     showToast('تم إنجاز المهمة بنجاح! أحسنت ⭐', '🎉');
-                } else {
-                    playSound('click');
                 }
                 saveState();
             }
@@ -912,17 +931,17 @@
 
         // --- DASHBOARD UPDATE ---
         function updateDashboard() {
-            checkAndUpdateStreak();
+            updateStreakFromHistory();
 
             const total = appData.tasks.length;
-            const completed = appData.tasks.filter(t => t.completed).length;
-            const pct = total ? Math.round((completed / total) * 100) : 0;
-            const remainingEssential = appData.tasks.filter(t => t.category === 'PRIMARY' && !t.completed).length;
+            const completedToday = appData.tasks.filter(t => isTaskCompletedToday(t)).length;
+            const pct = total ? Math.round((completedToday / total) * 100) : 0;
+            const remainingEssential = appData.tasks.filter(t => t.category === 'PRIMARY' && !isTaskCompletedToday(t)).length;
 
-            document.getElementById('progressText').innerText = `(${completed}/${total}) ${pct}%`;
+            document.getElementById('progressText').innerText = `(${completedToday}/${total}) ${pct}%`;
             document.getElementById('progressBar').style.width = `${pct}%`;
             document.getElementById('statRemainingEssential').innerText = remainingEssential;
-            document.getElementById('statCompletedToday').innerText = completed;
+            document.getElementById('statCompletedToday').innerText = completedToday;
             document.getElementById('statTotalTasks').innerText = total;
 
             document.getElementById('headerUserName').innerText = appData.profile.name || 'مستخدم جديد';
@@ -950,13 +969,14 @@
         }
 
         function createTaskCardElement(task) {
+            const completedToday = isTaskCompletedToday(task);
             const card = document.createElement('div');
-            card.className = `p-3.5 rounded-2xl border flex items-center justify-between transition ${task.completed ? 'bg-slate-900/40 border-slate-800 opacity-60' : 'bg-slate-900/90 border-slate-800'}`;
+            card.className = `p-3.5 rounded-2xl border flex items-center justify-between transition ${completedToday ? 'bg-slate-900/40 border-slate-800 opacity-60' : 'bg-slate-900/90 border-slate-800'}`;
             card.innerHTML = `
                 <div class="flex items-center gap-3">
-                    <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask('${task.id}')" class="w-4 h-4 accent-yellow-500 rounded cursor-pointer">
+                    <input type="checkbox" ${completedToday ? 'checked' : ''} onchange="toggleTask('${task.id}')" class="w-4 h-4 accent-yellow-500 rounded cursor-pointer">
                     <div>
-                        <span class="text-xs sm:text-sm font-semibold ${task.completed ? 'line-through text-slate-500' : 'text-slate-200'} block">${task.title}</span>
+                        <span class="text-xs sm:text-sm font-semibold ${completedToday ? 'line-through text-slate-500' : 'text-slate-200'} block">${task.title}</span>
                         ${task.time ? `<span class="text-[10px] text-slate-400">⏰ ${task.time}</span>` : ''}
                     </div>
                 </div>
@@ -1016,13 +1036,13 @@
         // --- REPORTS CHART ---
         let disciplineChartInstance = null;
         function renderReports() {
-            const completed = appData.tasks.filter(t => t.completed).length;
-            const pending = appData.tasks.filter(t => !t.completed).length;
+            const completedToday = appData.tasks.filter(t => isTaskCompletedToday(t)).length;
+            const pendingToday = appData.tasks.filter(t => !isTaskCompletedToday(t)).length;
             const total = appData.tasks.length;
-            const rate = total ? Math.round((completed / total) * 100) : 0;
+            const rate = total ? Math.round((completedToday / total) * 100) : 0;
 
-            document.getElementById('repCompletedTasks').innerText = completed;
-            document.getElementById('repPendingTasks').innerText = pending;
+            document.getElementById('repCompletedTasks').innerText = completedToday;
+            document.getElementById('repPendingTasks').innerText = pendingToday;
             document.getElementById('repCompletionRate').innerText = `${rate}%`;
             document.getElementById('repStreakDays').innerText = `${appData.streak} أيام`;
 
@@ -1032,9 +1052,9 @@
             disciplineChartInstance = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['المهام المكتملة', 'المهام المتبقية'],
+                    labels: ['المهام المكتملة اليوم', 'المهام المتبقية اليوم'],
                     datasets: [{
-                        data: [completed, pending],
+                        data: [completedToday, pendingToday],
                         backgroundColor: ['#10b981', '#f59e0b'],
                         borderWidth: 2,
                         borderColor: '#0f172a'
@@ -1064,7 +1084,7 @@
 
         // --- GLOBAL UI UPDATE ---
         function updateUI() {
-            checkAndUpdateStreak();
+            updateStreakFromHistory();
 
             document.getElementById('streakCount').innerText = appData.streak;
             document.getElementById('headerUserName').innerText = appData.profile.name || 'مستخدم جديد';
@@ -1080,9 +1100,14 @@
             if(!document.getElementById('view-reports').classList.contains('hidden')) renderReports();
         }
 
-        // INITIALIZE APP
+        // INITIALIZE APP & HANDLE DAY BOUNDARY DETECTION AUTOMATICALLY
         document.addEventListener('DOMContentLoaded', () => {
             updateUI();
+
+            // Re-check date boundary when app gets focus
+            window.addEventListener('focus', () => {
+                updateUI();
+            });
         });
     </script>
 </body>
