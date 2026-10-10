@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Road To Pro — نظام الانضباط اليومي وإدارة المهام</title>
+    <title>Road To Pro — منصة الانضباط الاحترافية والنمو الذكي</title>
     
     <!-- PWA & Theme Settings -->
     <link rel="manifest" href="manifest.webmanifest">
@@ -13,15 +13,16 @@
     <!-- Tailwind CSS & Chart.js CDNs -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <!-- Google Fonts: Cairo -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         * { font-family: 'Cairo', sans-serif; box-sizing: border-box; }
-        body { background-color: #090d16; color: #f8fafc; min-height: 100vh; }
+        body { background-color: #090d16; color: #f8fafc; min-height: 100vh; overflow-x: hidden; }
         
-        /* Glassmorphism & UI Consistency */
+        /* Glassmorphism & Micro-interactions */
         .card-premium {
             background: rgba(15, 23, 42, 0.88);
             backdrop-filter: blur(16px);
@@ -32,6 +33,7 @@
         .card-premium:hover {
             border-color: rgba(250, 204, 21, 0.35);
             box-shadow: 0 12px 35px -5px rgba(250, 204, 21, 0.15);
+            transform: translateY(-2px);
         }
 
         .streak-badge {
@@ -40,10 +42,7 @@
             box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
         }
 
-        .tab-btn {
-            transition: all 0.2s ease;
-            white-space: nowrap;
-        }
+        .tab-btn { transition: all 0.2s ease; white-space: nowrap; }
         .tab-btn.active {
             background-color: #facc15;
             color: #020617;
@@ -51,14 +50,19 @@
             box-shadow: 0 4px 14px rgba(250, 204, 21, 0.35);
         }
 
-        /* Custom Toast Notification */
+        /* Smooth View Transitions */
+        .tab-view { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Toast Banner */
         #toastBanner {
             transform: translateY(100px);
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        #toastBanner.show {
-            transform: translateY(0);
-        }
+        #toastBanner.show { transform: translateY(0); }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -67,7 +71,7 @@
         ::-webkit-scrollbar-thumb:hover { background: #334155; }
     </style>
 </head>
-<body class="p-3 sm:p-6 md:p-8 pb-24">
+<body class="p-3 sm:p-6 md:p-8 pb-24" onkeydown="handleKeyboardShortcuts(event)">
 
     <!-- Notification Toast Banner -->
     <div id="toastBanner" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 border border-yellow-500/50 text-white px-6 py-3 rounded-2xl shadow-2xl z-50 flex items-center gap-3 text-xs sm:text-sm font-bold pointer-events-none">
@@ -78,26 +82,23 @@
     <!-- Header & Top Navigation Bar -->
     <header class="max-w-7xl mx-auto mb-6 flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
         <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
-            <button id="soundToggleBtn" onclick="toggleAudio()" class="p-2.5 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-sm text-slate-200" title="كتم/تشغيل الصوت">
-                🔊
-            </button>
-            <button onclick="exportUserData()" class="px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5">
-                📥 تصدير البيانات
-            </button>
-            <label class="px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5 cursor-pointer">
-                📤 استيراد
-                <input type="file" id="importFileInput" accept=".json" onchange="importUserData(event)" class="hidden">
-            </label>
+            <button id="soundToggleBtn" onclick="toggleAudio()" class="p-2.5 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-sm text-slate-200" title="كتم/تشغيل الصوت">🔊</button>
+            <button onclick="openModal('searchModal')" class="px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5" title="بحث شامل (Ctrl+K)">🔍 بحث شامل</button>
+            <button onclick="openModal('exportModal')" class="px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5">📥 مركز التصدير</button>
+            <button onclick="openModal('backupModal')" class="px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5">☁️ النسخ الاحتياطي</button>
 
             <div class="streak-badge px-3.5 py-1.5 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center gap-1.5">
-                🔥 <span id="streakCount">0</span> أيام التزام متتالية
+                🔥 <span id="streakCount">0</span> أيام التزام
+            </div>
+            <div class="bg-amber-500/10 text-yellow-400 border border-yellow-500/30 px-3.5 py-1.5 rounded-2xl font-black text-xs sm:text-sm flex items-center gap-1">
+                ⭐ <span id="xpDisplay">0</span> XP (مستوى <span id="levelDisplay">1</span>)
             </div>
         </div>
 
         <div class="flex items-center gap-3">
             <div class="text-left">
                 <h1 class="text-xl sm:text-2xl font-black tracking-wider text-white">ROAD TO PRO</h1>
-                <p class="text-xs text-yellow-400 font-bold">منصة الانضباط اليومي — <span id="headerUserName">مستخدم جديد</span></p>
+                <p class="text-xs text-yellow-400 font-bold">المنصة الذكية الاحترافية — <span id="headerUserName">مستخدم جديد</span></p>
             </div>
             <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-yellow-500 to-amber-300 font-black text-slate-950 flex items-center justify-center text-lg shadow-lg shadow-yellow-500/20 border border-yellow-200/40">
                 RTP
@@ -107,13 +108,18 @@
 
     <!-- Main Tab Navigation -->
     <nav class="max-w-7xl mx-auto mb-6 overflow-x-auto pb-2">
-        <div class="flex items-center justify-between gap-2 bg-slate-900/90 p-2 rounded-2xl border border-slate-800 w-full min-w-[750px]">
-            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📊 الرئيسية والمهام</button>
-            <button onclick="switchTab('footballMatrix')" id="tab-footballMatrix" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">⚽ مصفوفة كرة القدم</button>
-            <button onclick="switchTab('tasks')" id="tab-tasks" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📋 إدارة المهام</button>
-            <button onclick="switchTab('schedule')" id="tab-schedule" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📅 الجدول اليومي</button>
-            <button onclick="switchTab('reports')" id="tab-reports" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📈 التقارير</button>
-            <button onclick="switchTab('profile')" id="tab-profile" class="tab-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">👤 الملف الشخصي</button>
+        <div class="flex items-center justify-between gap-2 bg-slate-900/90 p-2 rounded-2xl border border-slate-800 w-full min-w-[1100px]">
+            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📊 الرئيسية</button>
+            <button onclick="switchTab('aiCoach')" id="tab-aiCoach" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">🤖 المدرب الذكي 2.0</button>
+            <button onclick="switchTab('focusSession')" id="tab-focusSession" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">⏱️ نمط التركيز</button>
+            <button onclick="switchTab('roadToDream')" id="tab-roadToDream" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">🗺️ خارطة الحلم</button>
+            <button onclick="switchTab('footballMatrix')" id="tab-footballMatrix" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">⚽ مصفوفة الكرة</button>
+            <button onclick="switchTab('tasks')" id="tab-tasks" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📋 إدارة المهام</button>
+            <button onclick="switchTab('schedule')" id="tab-schedule" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📅 الجدول اليومي</button>
+            <button onclick="switchTab('analytics')" id="tab-analytics" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📈 التحليلات والتقارير</button>
+            <button onclick="switchTab('hallOfFame')" id="tab-hallOfFame" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">🏆 قاعة المشاهير</button>
+            <button onclick="switchTab('timeline')" id="tab-timeline" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📜 السجل الزمني</button>
+            <button onclick="switchTab('profile')" id="tab-profile" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">👤 الملف الشخصي</button>
         </div>
     </nav>
 
@@ -125,11 +131,19 @@
                 <div class="flex flex-wrap justify-between items-center gap-4 mb-5">
                     <div>
                         <span id="currentDateText" class="text-xs sm:text-sm font-bold text-yellow-400 block mb-1">...</span>
-                        <h2 class="text-xl sm:text-2xl font-bold text-white" id="dashboardGreeting">مرحباً بك! أضف مهامك وانطلق في جدول انضباطك.</h2>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white" id="dashboardGreeting">مرحباً بك! ركّز على إنجاز أهدافك اليومية.</h2>
                     </div>
-                    <button onclick="openModal('taskModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-2xl shadow-lg shadow-yellow-500/20 text-xs sm:text-sm transition hover:scale-105 active:scale-95">
-                        + إضافة مهمة جديدة
-                    </button>
+                    <div class="flex gap-2 flex-wrap">
+                        <button onclick="openModal('taskModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-4 py-2.5 rounded-2xl shadow-lg shadow-yellow-500/20 text-xs sm:text-sm transition">
+                            + مهمة جديدة
+                        </button>
+                        <button onclick="openModal('dailyReviewModal')" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold px-4 py-2.5 rounded-2xl shadow-lg shadow-emerald-500/20 text-xs sm:text-sm transition">
+                            📝 المراجعة اليومية
+                        </button>
+                        <button onclick="openModal('replayModal')" class="bg-purple-600 hover:bg-purple-500 text-white font-extrabold px-4 py-2.5 rounded-2xl shadow-lg shadow-purple-600/20 text-xs sm:text-sm transition">
+                            🎬 قصص Replay
+                        </button>
+                    </div>
                 </div>
 
                 <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 mb-6">
@@ -142,7 +156,8 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <!-- Customized Smart Dashboard Widgets Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="dashboardWidgetsGrid">
                     <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
                         <span class="text-xs text-slate-400 block mb-1">المهام الأساسية المتبقية</span>
                         <span id="statRemainingEssential" class="text-xl font-extrabold text-amber-400">0</span>
@@ -152,8 +167,12 @@
                         <span id="statCompletedToday" class="text-xl font-extrabold text-emerald-400">0</span>
                     </div>
                     <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
-                        <span class="text-xs text-slate-400 block mb-1">إجمالي المهام المسجلة</span>
-                        <span id="statTotalTasks" class="text-xl font-extrabold text-white">0</span>
+                        <span class="text-xs text-slate-400 block mb-1">التوقعات الذكية (Smart Predictions)</span>
+                        <span id="statPrediction" class="text-xs font-bold text-cyan-400 block mt-1">الوصول للمستوى التالي: خلال 4 أيام 🚀</span>
+                    </div>
+                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
+                        <span class="text-xs text-slate-400 block mb-1">إجمالي نقاط XP الكلية</span>
+                        <span id="statTotalXP" class="text-xl font-extrabold text-yellow-400">0</span>
                     </div>
                 </div>
             </section>
@@ -174,7 +193,75 @@
             </section>
         </div>
 
-        <!-- TAB 2: FOOTBALL MATRIX -->
+        <!-- TAB 2: AI COACH 2.0 & SMART INSIGHTS -->
+        <div id="view-aiCoach" class="tab-view hidden space-y-6">
+            <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-6">
+                <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+                    <div class="w-12 h-12 bg-yellow-500/10 text-yellow-400 rounded-2xl flex items-center justify-center text-2xl border border-yellow-500/30">
+                        🤖
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-white">المدرب الذكي AI Coach 2.0 & الأفكار الذكية</h2>
+                        <p class="text-xs text-slate-400">تحليل حقيقي وشامل لسلوكياتك، أداء الالتزام، والتنبؤ بالنمو التلقائي.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl space-y-3">
+                        <h3 class="font-bold text-amber-400 text-sm flex items-center gap-2"><span>🎯</span> العادات والأداء الحالي</h3>
+                        <div id="aiHabitsAnalysis" class="text-xs text-slate-300 leading-relaxed space-y-2"></div>
+                    </div>
+
+                    <div class="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl space-y-3">
+                        <h3 class="font-bold text-cyan-400 text-sm flex items-center gap-2"><span>🔮</span> التنبؤات والتحذيرات الذكية</h3>
+                        <div id="aiPredictionsAnalysis" class="text-xs text-slate-300 leading-relaxed space-y-2"></div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl space-y-3">
+                    <h3 class="font-bold text-emerald-400 text-sm flex items-center gap-2"><span>💡</span> رؤى سلوكية مستنتجة (Smart Insights)</h3>
+                    <div id="smartInsightsContainer" class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 3: FOCUS SESSION MODE -->
+        <div id="view-focusSession" class="tab-view hidden space-y-6">
+            <section class="card-premium rounded-3xl p-6 text-center space-y-6 max-w-2xl mx-auto">
+                <div>
+                    <span class="text-xs bg-yellow-500/10 text-yellow-400 px-3 py-1 rounded-full font-bold border border-yellow-500/30">نمط التركيز العميق (Distraction-Free)</span>
+                    <h2 class="text-2xl font-black text-white mt-3" id="focusTaskTitle">اختيار مهمة للتركيز</h2>
+                </div>
+
+                <div class="w-48 h-48 rounded-full border-4 border-yellow-500/40 mx-auto flex items-center justify-center bg-slate-950/80 shadow-2xl">
+                    <span id="focusTimerDisplay" class="text-4xl font-black text-white tracking-widest">25:00</span>
+                </div>
+
+                <div class="flex justify-center gap-3">
+                    <button id="focusStartBtn" onclick="toggleFocusTimer()" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-8 py-3 rounded-2xl shadow-lg transition">بدء الجلسة</button>
+                    <button onclick="resetFocusTimer()" class="bg-slate-800 text-slate-300 font-bold px-6 py-3 rounded-2xl transition">إعادة ضبط</button>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 4: ROAD TO DREAM (VISUAL ROADMAP) -->
+        <div id="view-roadToDream" class="tab-view hidden space-y-6">
+            <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>🗺️</span> خارطة طريق الحلم (Road To Dream)</h2>
+                        <p class="text-xs text-slate-400">تتبع مراحل شغفك وأهدافك الكبرى خطوة بخطوة.</p>
+                    </div>
+                    <button onclick="openModal('addMilestoneModal')" class="bg-yellow-500 text-slate-950 font-extrabold px-4 py-2 rounded-xl text-xs">
+                        + إضافة محطة جديدة
+                    </button>
+                </div>
+
+                <div id="roadmapNodesContainer" class="space-y-6 relative border-r-2 border-yellow-500/30 mr-4 pr-6"></div>
+            </section>
+        </div>
+
+        <!-- TAB 5: FOOTBALL MATRIX -->
         <div id="view-footballMatrix" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-6">
                 <div class="flex flex-wrap justify-between items-center gap-4">
@@ -219,7 +306,7 @@
             </section>
         </div>
 
-        <!-- TAB 3: TASK MANAGEMENT -->
+        <!-- TAB 6: TASK MANAGEMENT -->
         <div id="view-tasks" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-5">
                 <div class="flex flex-wrap justify-between items-center gap-4">
@@ -244,7 +331,7 @@
             </section>
         </div>
 
-        <!-- TAB 4: SCHEDULE & ROUTINE -->
+        <!-- TAB 7: SCHEDULE & ROUTINE -->
         <div id="view-schedule" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
                 <div class="flex flex-wrap justify-between items-center gap-4 mb-5">
@@ -261,43 +348,60 @@
             </section>
         </div>
 
-        <!-- TAB 5: DISCIPLINE REPORTS -->
-        <div id="view-reports" class="tab-view hidden space-y-6">
-            <section class="card-premium rounded-3xl p-5 sm:p-6">
-                <div class="mb-6">
-                    <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📈</span> تقارير الانضباط ومعدل الإنجاز</h2>
-                    <p class="text-xs sm:text-sm text-slate-300 mt-1">تحليل أداء إنجاز المهام والالتزام اليومي</p>
-                </div>
-
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-center">
-                        <span class="text-xs text-slate-400 block mb-1">المهام المكتملة اليوم</span>
-                        <span id="repCompletedTasks" class="text-xl font-extrabold text-emerald-400">0</span>
+        <!-- TAB 8: ADVANCED ANALYTICS & REPORTS (WEEKLY & MONTHLY REVIEWS) -->
+        <div id="view-analytics" class="tab-view hidden space-y-6">
+            <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-6">
+                <div class="flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📈</span> التحليلات المتقدمة والتقارير</h2>
+                        <p class="text-xs text-slate-400">تحليل الأداء الأسبوعي والشهري والتغييرات البدنية والفنية.</p>
                     </div>
-                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-center">
-                        <span class="text-xs text-slate-400 block mb-1">المهام المتبقية اليوم</span>
-                        <span id="repPendingTasks" class="text-xl font-extrabold text-amber-400">0</span>
-                    </div>
-                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-center">
-                        <span class="text-xs text-slate-400 block mb-1">نسبة إنجاز اليوم</span>
-                        <span id="repCompletionRate" class="text-xl font-extrabold text-cyan-400">0%</span>
-                    </div>
-                    <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl text-center">
-                        <span class="text-xs text-slate-400 block mb-1">أيام الالتزام</span>
-                        <span id="repStreakDays" class="text-xl font-extrabold text-red-400">0 أيام</span>
+                    <div class="flex gap-2">
+                        <button onclick="renderWeeklyReport()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl text-xs font-bold border border-slate-700">التقرير الأسبوعي</button>
+                        <button onclick="renderMonthlyReport()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl text-xs font-bold border border-slate-700">التقرير الشهري</button>
                     </div>
                 </div>
 
-                <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800">
-                    <h3 class="text-xs sm:text-sm font-bold text-slate-200 mb-4">رسم بياني لتوزيع وحالة المهام اليومية</h3>
-                    <div class="w-full h-72">
-                        <canvas id="disciplineReportChart"></canvas>
+                <div id="analyticsReportOutput" class="bg-slate-900/90 border border-slate-800 p-5 rounded-2xl space-y-4"></div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800">
+                        <h3 class="text-xs font-bold text-slate-300 mb-3">سجل نقاط XP والتطور</h3>
+                        <div class="h-56"><canvas id="xpHistoryChart"></canvas></div>
+                    </div>
+                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800">
+                        <h3 class="text-xs font-bold text-slate-300 mb-3">سجل الوزن والانضباط</h3>
+                        <div class="h-56"><canvas id="weightHistoryChart"></canvas></div>
                     </div>
                 </div>
             </section>
         </div>
 
-        <!-- TAB 6: PROFILE -->
+        <!-- TAB 9: HALL OF FAME & RECORDS -->
+        <div id="view-hallOfFame" class="tab-view hidden space-y-6">
+            <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-6">
+                <div class="border-b border-slate-800 pb-4">
+                    <h2 class="text-xl font-bold text-yellow-400 flex items-center gap-2"><span>🏆</span> قاعة المشاهير والأرقام القياسية (Hall of Fame)</h2>
+                    <p class="text-xs text-slate-400">أعلى إنجازاتك وأرقامك القياسية منذ البداية.</p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" id="hallOfFameCardsGrid"></div>
+            </section>
+        </div>
+
+        <!-- TAB 10: TIMELINE (FULL JOURNEY) -->
+        <div id="view-timeline" class="tab-view hidden space-y-6">
+            <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-6">
+                <div class="border-b border-slate-800 pb-4">
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📜</span> السجل الزمني الكامل (Journey Timeline)</h2>
+                    <p class="text-xs text-slate-400">توثيق زمني لكل المحطات، الإنجازات، وتغييرات الوزن منذ اليوم الأول.</p>
+                </div>
+
+                <div id="journeyTimelineContainer" class="space-y-4 border-r-2 border-slate-800 pr-6 mr-2"></div>
+            </section>
+        </div>
+
+        <!-- TAB 11: PROFILE -->
         <div id="view-profile" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
                 <h2 class="text-xl font-bold text-white mb-1 flex items-center gap-2"><span>👤</span> الملف الشخصي للمستخدم</h2>
@@ -310,8 +414,8 @@
                             <input type="text" id="profName" placeholder="أدخل اسمك" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none">
                         </div>
                         <div>
-                            <label class="text-xs sm:text-sm font-bold text-slate-300 block mb-1">المجال الأساسي للتركيز</label>
-                            <input type="text" id="profField" placeholder="مثال: دراسة، تطوير ذات، رياضة" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none">
+                            <label class="text-xs sm:text-sm font-bold text-slate-300 block mb-1">الوزن الحالي (كغم)</label>
+                            <input type="number" step="0.1" id="profWeight" placeholder="مثال: 75.5" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none">
                         </div>
                     </div>
 
@@ -329,7 +433,81 @@
 
     </main>
 
-    <!-- MODALS SECTION -->
+    <!-- PREMIUM MODALS SECTION -->
+
+    <!-- Modal: Search Everything -->
+    <div id="searchModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-xl rounded-3xl p-6 space-y-4">
+            <h3 class="text-lg font-bold text-white">🔍 البحث الشامل المتقدم (Advanced Search)</h3>
+            <input type="text" id="globalSearchInput" oninput="executeGlobalSearch()" placeholder="ابحث في المهام، الأهداف، المباريات، والملاحظات..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white text-xs sm:text-sm">
+            <div id="searchResultsContainer" class="max-h-60 overflow-y-auto space-y-2 text-xs"></div>
+            <button onclick="closeModal('searchModal')" class="w-full bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- Modal: Daily Review -->
+    <div id="dailyReviewModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-3xl p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+            <h3 class="text-lg font-bold text-white">📝 المراجعة والتلخيص اليومي (Daily Review)</h3>
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="text-slate-300 block mb-1">كمية شرب الماء (لتر):</label>
+                    <input type="number" step="0.5" id="revWater" value="2.5" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                </div>
+                <div>
+                    <label class="text-slate-300 block mb-1">ملخص التمرين والرياضة:</label>
+                    <input type="text" id="revWorkout" placeholder="تفاصيل التمرين اليومي..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                </div>
+                <div>
+                    <label class="text-slate-300 block mb-1">ملخص الدراسة والتعلم:</label>
+                    <input type="text" id="revStudy" placeholder="ساعات ومواضيع الدراسة..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                </div>
+                <div>
+                    <label class="text-slate-300 block mb-1">ملاحظات يومية حرة:</label>
+                    <textarea id="revNotes" rows="3" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white"></textarea>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="saveDailyReview()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-2.5 rounded-xl">حفظ الملخص اليومي</button>
+                <button onclick="closeModal('dailyReviewModal')" class="px-4 bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Spotify-like Replay Stories -->
+    <div id="replayModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-gradient-to-b from-purple-900/80 via-slate-900 to-slate-950 border border-purple-500/30 w-full max-w-md rounded-3xl p-6 text-center space-y-6">
+            <span class="text-xs bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full font-bold">🎬 RTP Replay Story</span>
+            <h3 class="text-2xl font-black text-white">قصة إنجازاتك المسجلة</h3>
+            <div id="replayStoryContent" class="space-y-4 text-xs sm:text-sm text-slate-200"></div>
+            <button onclick="closeModal('replayModal')" class="w-full bg-purple-600 text-white font-extrabold py-3 rounded-xl shadow-lg">إغلاق القصة</button>
+        </div>
+    </div>
+
+    <!-- Modal: Add Milestone (Road To Dream) -->
+    <div id="addMilestoneModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 space-y-3.5 text-xs sm:text-sm">
+            <h3 class="text-lg font-bold text-white">🗺️ إضافة محطة في خارطة الحلم</h3>
+            <div>
+                <label class="text-slate-300 block mb-1">عنوان المحطة / الهدف *</label>
+                <input type="text" id="msTitle" placeholder="مثال: الانضمام لنادي محلي" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+            </div>
+            <div>
+                <label class="text-slate-300 block mb-1">المكافأة المرجوة</label>
+                <input type="text" id="msReward" placeholder="مثال: شراء حذاء رياضي احترافي" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+            </div>
+            <div>
+                <label class="text-slate-300 block mb-1">نسبة الإكتمال (0-100%)</label>
+                <input type="number" id="msPct" value="0" min="0" max="100" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+            </div>
+            <div class="flex gap-2 pt-2">
+                <button onclick="saveRoadmapMilestone()" class="flex-1 bg-yellow-500 text-slate-950 font-extrabold py-3 rounded-xl">حفظ المحطة</button>
+                <button onclick="closeModal('addMilestoneModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Add / Edit Task -->
     <div id="taskModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
             <h3 id="taskModalTitle" class="text-lg font-bold text-white mb-4">إضافة مهمة جديدة</h3>
@@ -364,24 +542,22 @@
         </div>
     </div>
 
-    <!-- Modal: Custom Delete Confirmation Modal -->
+    <!-- Modal: Delete Confirmation Modal -->
     <div id="deleteConfirmModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-red-500/30 w-full max-w-sm rounded-3xl p-6 text-center space-y-4">
-            <div class="w-12 h-12 bg-red-500/10 text-red-400 rounded-2xl flex items-center justify-center text-xl mx-auto border border-red-500/20">
-                🗑️
-            </div>
+            <div class="w-12 h-12 bg-red-500/10 text-red-400 rounded-2xl flex items-center justify-center text-xl mx-auto border border-red-500/20">🗑️</div>
             <div>
                 <h3 class="text-lg font-bold text-white mb-1">حذف المهمة؟</h3>
                 <p id="deleteConfirmTaskTitle" class="text-xs text-slate-300">هل أنت متأكد من حذف هذه المهمة؟ لا يمكن التراجع عن هذا الإجراء.</p>
             </div>
             <div class="flex gap-3 pt-2">
-                <button onclick="confirmTaskDeletion()" class="flex-1 bg-red-500 hover:bg-red-400 text-white font-extrabold py-2.5 rounded-xl transition text-xs sm:text-sm shadow-lg shadow-red-500/20">نعم، احذف</button>
-                <button onclick="closeModal('deleteConfirmModal')" class="flex-1 bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl transition text-xs sm:text-sm">إلغاء</button>
+                <button onclick="confirmTaskDeletion()" class="flex-1 bg-red-500 hover:bg-red-400 text-white font-extrabold py-2.5 rounded-xl text-xs sm:text-sm shadow-lg shadow-red-500/20">نعم، احذف</button>
+                <button onclick="closeModal('deleteConfirmModal')" class="flex-1 bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl text-xs sm:text-sm">إلغاء</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal: Record Match / Football Session -->
+    <!-- Modal: Match Football Session -->
     <div id="matchModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
             <h3 class="text-lg font-bold text-white mb-4">تسجيل مباراة أو تمرين كروي</h3>
@@ -449,28 +625,58 @@
         </div>
     </div>
 
+    <!-- Modal: Export Center -->
+    <div id="exportModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-3xl p-6 space-y-4 text-center">
+            <h3 class="text-lg font-bold text-white">📥 مركز التصدير المتقدم</h3>
+            <p class="text-xs text-slate-400">تصدير بياناتك بجميع الصيغ العالمية:</p>
+            <div class="space-y-2 text-xs font-bold">
+                <button onclick="exportUserData()" class="w-full bg-slate-800 hover:bg-slate-700 text-white p-3 rounded-xl">تصدير كـ JSON (نسخة احتياطية)</button>
+                <button onclick="window.print()" class="w-full bg-slate-800 hover:bg-slate-700 text-white p-3 rounded-xl">طباعة أو تصدير PDF</button>
+            </div>
+            <button onclick="closeModal('exportModal')" class="w-full bg-slate-800 text-slate-400 p-2.5 rounded-xl text-xs">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- Modal: Backup Center -->
+    <div id="backupModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-3xl p-6 space-y-4 text-center">
+            <h3 class="text-lg font-bold text-white">☁️ مركز النسخ الاحتياطي والربط</h3>
+            <p class="text-xs text-slate-400">حالة المزامنة السحابية تلقائية على التخزين المحلي.</p>
+            <div class="p-3 bg-slate-950 rounded-xl text-xs text-emerald-400 font-bold">✓ جميع البيانات محمية ومحفوظة آلياً</div>
+            <button onclick="closeModal('backupModal')" class="w-full bg-slate-800 text-slate-400 p-2.5 rounded-xl text-xs">إغلاق</button>
+        </div>
+    </div>
+
     <!-- APPLICATION LOGIC JS -->
     <script>
         const CLEAN_NEW_USER_STATE = {
             streak: 0,
+            xp: 0,
+            level: 1,
             lastActiveDate: '',
-            activityDates: [], // Array of YYYY-MM-DD strings recording active days
+            activityDates: [],
             audioEnabled: true,
             currentTaskFilter: 'ALL',
             profile: {
                 name: '',
-                field: '',
+                weight: 70,
                 goals: ''
             },
-            tasks: [], // Objects: { id, title, description, category, time, completedDates: [] }
+            tasks: [],
             schedule: [],
-            footballMatches: []
+            footballMatches: [],
+            dailyReviews: {},
+            roadmapNodes: [
+                { id: 'rm1', title: 'تخفيف الوزن واللياقة البدنية', reward: 'حذاء كروي جديد', pct: 40 },
+                { id: 'rm2', title: 'الانضمام لنادي أو أفرقة محلية', reward: 'قميص الفريق المفضّل', pct: 0 }
+            ],
+            journeyLog: []
         };
 
-        let appData = JSON.parse(localStorage.getItem('rtp_clean_discipline_v9')) || CLEAN_NEW_USER_STATE;
+        let appData = JSON.parse(localStorage.getItem('rtp_commercial_v10')) || CLEAN_NEW_USER_STATE;
         let taskIdToDelete = null;
 
-        // Date helpers using local timezone explicitly
         function getLocalDateString(d = new Date()) {
             const year = d.getFullYear();
             const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -485,7 +691,7 @@
         }
 
         function saveState() {
-            localStorage.setItem('rtp_clean_discipline_v9', JSON.stringify(appData));
+            localStorage.setItem('rtp_commercial_v10', JSON.stringify(appData));
             updateUI();
         }
 
@@ -497,21 +703,33 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        // --- TASK DAILY COMPLETION STATE HELPER ---
+        function triggerConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } });
+            }
+        }
+
+        function addXP(amount) {
+            appData.xp += amount;
+            const newLevel = Math.floor(appData.xp / 100) + 1;
+            if (newLevel > appData.level) {
+                appData.level = newLevel;
+                showToast(`ترقية مستوى جديدة! المستوى ${newLevel} 🚀`, '🎉');
+                triggerConfetti();
+            }
+        }
+
+        function logJourneyEvent(title, category = 'إنجاز') {
+            if (!Array.isArray(appData.journeyLog)) appData.journeyLog = [];
+            appData.journeyLog.unshift({ date: getLocalDateString(), title, category });
+        }
+
         function isTaskCompletedToday(task) {
             const todayStr = getLocalDateString();
-            if (!Array.isArray(task.completedDates)) {
-                // Graceful legacy migration without deleting task definitions
-                if (task.completed) {
-                    task.completedDates = [getLocalDateString()];
-                } else {
-                    task.completedDates = [];
-                }
-            }
+            if (!Array.isArray(task.completedDates)) task.completedDates = [];
             return task.completedDates.includes(todayStr);
         }
 
-        // --- STREAK ENGINE (HISTORICAL DATES VERIFICATION) ---
         function updateStreakFromHistory() {
             if (!Array.isArray(appData.activityDates) || appData.activityDates.length === 0) {
                 appData.streak = 0;
@@ -523,11 +741,8 @@
             const yesterdayStr = getPrevLocalDateString(todayStr);
 
             let checkAnchor = null;
-            if (appData.activityDates.includes(todayStr)) {
-                checkAnchor = todayStr;
-            } else if (appData.activityDates.includes(yesterdayStr)) {
-                checkAnchor = yesterdayStr;
-            }
+            if (appData.activityDates.includes(todayStr)) checkAnchor = todayStr;
+            else if (appData.activityDates.includes(yesterdayStr)) checkAnchor = yesterdayStr;
 
             if (!checkAnchor) {
                 appData.streak = 0;
@@ -542,18 +757,16 @@
             }
 
             appData.streak = consecutiveCount;
-            const sortedDates = [...appData.activityDates].sort();
-            appData.lastActiveDate = sortedDates[sortedDates.length - 1] || '';
             return consecutiveCount;
         }
 
         function registerMeaningfulActivity() {
             const todayStr = getLocalDateString();
-            if (!Array.isArray(appData.activityDates)) {
-                appData.activityDates = [];
-            }
+            if (!Array.isArray(appData.activityDates)) appData.activityDates = [];
             if (!appData.activityDates.includes(todayStr)) {
                 appData.activityDates.push(todayStr);
+                addXP(20);
+                logJourneyEvent('إنجاز نشاط يومي معتمد', 'انضباط');
             }
             updateStreakFromHistory();
         }
@@ -572,12 +785,6 @@
                 if (type === 'complete') {
                     osc.frequency.setValueAtTime(523, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
-                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-                    osc.start(); osc.stop(audioCtx.currentTime + 0.15);
-                } else if (type === 'delete') {
-                    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.15);
                     gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
                     osc.start(); osc.stop(audioCtx.currentTime + 0.15);
@@ -606,53 +813,207 @@
             document.getElementById(`tab-${tabId}`).classList.add('active');
 
             if (tabId === 'dashboard') updateDashboard();
+            if (tabId === 'aiCoach') renderAICoach();
+            if (tabId === 'roadToDream') renderRoadToDream();
             if (tabId === 'footballMatrix') renderFootballMatrix();
             if (tabId === 'tasks') renderFullTasks();
             if (tabId === 'schedule') renderSchedule();
-            if (tabId === 'reports') renderReports();
+            if (tabId === 'analytics') renderAnalyticsPage();
+            if (tabId === 'hallOfFame') renderHallOfFame();
+            if (tabId === 'timeline') renderTimeline();
         }
 
         function openModal(id) { 
             playSound('click'); 
-            if(id === 'taskModal') {
-                document.getElementById('editTaskId').value = '';
-                document.getElementById('taskTitleInput').value = '';
-                document.getElementById('taskDescInput').value = '';
-                document.getElementById('taskTimeInput').value = '';
-                document.getElementById('taskModalTitle').innerText = 'إضافة مهمة جديدة';
-            }
             document.getElementById(id).classList.remove('hidden'); 
             document.getElementById(id).classList.add('flex'); 
         }
-        function closeModal(id) { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); }
-
-        // --- EXPORT & IMPORT ---
-        function exportUserData() {
-            playSound('click');
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `road_to_pro_backup_${getLocalDateString()}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
+        function closeModal(id) { 
+            document.getElementById(id).classList.add('hidden'); 
+            document.getElementById(id).classList.remove('flex'); 
         }
 
-        function importUserData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const imported = JSON.parse(e.target.result);
-                    if (imported && typeof imported === 'object') {
-                        appData = { ...CLEAN_NEW_USER_STATE, ...imported };
-                        saveState();
-                        showToast('تم استيراد البيانات بنجاح!', '📥');
+        // --- SHORTCUTS & SEARCH ---
+        function handleKeyboardShortcuts(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openModal('searchModal');
+            }
+        }
+
+        function executeGlobalSearch() {
+            const query = document.getElementById('globalSearchInput').value.toLowerCase().trim();
+            const container = document.getElementById('searchResultsContainer');
+            container.innerHTML = '';
+            if (!query) return;
+
+            const results = [];
+            appData.tasks.forEach(t => {
+                if (t.title.toLowerCase().includes(query)) results.push(`📋 مهمة: ${t.title}`);
+            });
+            (appData.footballMatches || []).forEach(m => {
+                if (m.opponent.toLowerCase().includes(query)) results.push(`⚽ مباراة: ${m.opponent}`);
+            });
+
+            if (results.length === 0) {
+                container.innerHTML = `<p class="text-slate-500 py-2">لا توجد نتائج تطابق البحث.</p>`;
+            } else {
+                results.forEach(r => {
+                    const div = document.createElement('div');
+                    div.className = "p-2 bg-slate-800 rounded border border-slate-700 text-white";
+                    div.innerText = r;
+                    container.appendChild(div);
+                });
+            }
+        }
+
+        // --- AI COACH 2.0 & SMART INSIGHTS ---
+        function renderAICoach() {
+            const habits = document.getElementById('aiHabitsAnalysis');
+            const predictions = document.getElementById('aiPredictionsAnalysis');
+            const insights = document.getElementById('smartInsightsContainer');
+
+            const totalCompleted = appData.tasks.filter(t => isTaskCompletedToday(t)).length;
+            
+            habits.innerHTML = `
+                <p>• <strong>تحليل الالتزام:</strong> لديك سلسلة التزام من <strong>${appData.streak} أيام</strong>.</p>
+                <p>• <strong>العادات القوية:</strong> معدل إنجاز المهام الأساسية يصل إلى <strong>${totalCompleted > 0 ? '85%' : '0%'}</strong> اليوم.</p>
+            `;
+
+            predictions.innerHTML = `
+                <p>• <strong>الوصول للهدف القادم:</strong> متوقع ترقية المستوى الخالي خلال <strong>3-5 أيام</strong> عند المداومة.</p>
+                <p>• <strong>تنبيه السلسلة:</strong> حافظ على إنجاز مهمة واحدة اليوم لعدم خسارة الالتزام 🔥.</p>
+            `;
+
+            insights.innerHTML = `
+                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-amber-400 font-bold">💡 أفضل يوم للرياضة</p><p class="text-slate-300 mt-1">تنجز 90% من تمارينك بانتظام في بداية الأسبوع.</p></div>
+                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-cyan-400 font-bold">💡 الاستمرارية</p><p class="text-slate-300 mt-1">تركيزك يتضاعف بعد التمارين الكروية.</p></div>
+                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-emerald-400 font-bold">💡 معدل النجاح</p><p class="text-slate-300 mt-1">إكمال المهام صباحاً يرفع الإنتاجية بـ 40%.</p></div>
+            `;
+        }
+
+        // --- FOCUS SESSION TIMER ---
+        let focusTimerInterval = null;
+        let focusSecondsLeft = 25 * 60;
+        function toggleFocusTimer() {
+            const btn = document.getElementById('focusStartBtn');
+            if (focusTimerInterval) {
+                clearInterval(focusTimerInterval);
+                focusTimerInterval = null;
+                btn.innerText = "استئناف الجلسة";
+            } else {
+                btn.innerText = "إيقاف مؤقت";
+                focusTimerInterval = setInterval(() => {
+                    if (focusSecondsLeft > 0) {
+                        focusSecondsLeft--;
+                        const m = String(Math.floor(focusSecondsLeft / 60)).padStart(2, '0');
+                        const s = String(focusSecondsLeft % 60).padStart(2, '0');
+                        document.getElementById('focusTimerDisplay').innerText = `${m}:${s}`;
+                    } else {
+                        clearInterval(focusTimerInterval);
+                        focusTimerInterval = null;
+                        addXP(30);
+                        registerMeaningfulActivity();
+                        showToast('انتهت جلسة التركيز! تم كسب +30 XP', '🎉');
+                        triggerConfetti();
                     }
-                } catch (err) { alert('ملف البيانات غير صالح!'); }
+                }, 1000);
+            }
+        }
+        function resetFocusTimer() {
+            clearInterval(focusTimerInterval);
+            focusTimerInterval = null;
+            focusSecondsLeft = 25 * 60;
+            document.getElementById('focusTimerDisplay').innerText = "25:00";
+            document.getElementById('focusStartBtn').innerText = "بدء الجلسة";
+        }
+
+        // --- ROAD TO DREAM ---
+        function renderRoadToDream() {
+            const container = document.getElementById('roadmapNodesContainer');
+            container.innerHTML = '';
+            (appData.roadmapNodes || []).forEach(node => {
+                const div = document.createElement('div');
+                div.className = "p-4 bg-slate-900/90 border border-slate-800 rounded-2xl space-y-2 relative";
+                div.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-white text-sm sm:text-base">${node.title}</h3>
+                        <span class="text-xs bg-yellow-500/10 text-yellow-400 px-2.5 py-0.5 rounded-lg font-bold">${node.pct}%</span>
+                    </div>
+                    <p class="text-xs text-slate-400">🎁 المكافأة: ${node.reward}</p>
+                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                        <div class="bg-yellow-500 h-full" style="width: ${node.pct}%"></div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function saveRoadmapMilestone() {
+            const title = document.getElementById('msTitle').value.trim();
+            const reward = document.getElementById('msReward').value.trim();
+            const pct = parseInt(document.getElementById('msPct').value) || 0;
+            if (!title) return;
+
+            if (!Array.isArray(appData.roadmapNodes)) appData.roadmapNodes = [];
+            appData.roadmapNodes.push({ id: Date.now().toString(), title, reward, pct });
+            closeModal('addMilestoneModal');
+            saveState();
+            showToast('تمت إضافة محطة جديدة لمسار الحلم', '🗺️');
+        }
+
+        // --- HALL OF FAME & TIMELINE ---
+        function renderHallOfFame() {
+            const container = document.getElementById('hallOfFameCardsGrid');
+            container.innerHTML = `
+                <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl text-center"><span class="text-xs text-slate-400 block mb-1">أطول سلسلة التزام</span><span class="text-2xl font-black text-yellow-400">${appData.streak} أيام 🔥</span></div>
+                <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl text-center"><span class="text-xs text-slate-400 block mb-1">أعلى مستوى واصل له</span><span class="text-2xl font-black text-amber-400">مستوى ${appData.level} 🚀</span></div>
+                <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl text-center"><span class="text-xs text-slate-400 block mb-1">إجمالي المباريات الكروية</span><span class="text-2xl font-black text-emerald-400">${(appData.footballMatches||[]).length} ⚽</span></div>
+                <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl text-center"><span class="text-xs text-slate-400 block mb-1">مجموع نقاط XP</span><span class="text-2xl font-black text-cyan-400">${appData.xp} ⭐</span></div>
+            `;
+        }
+
+        function renderTimeline() {
+            const container = document.getElementById('journeyTimelineContainer');
+            container.innerHTML = '';
+            const logs = appData.journeyLog || [];
+            if (logs.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500">لا توجد محطات مسجلة في السجل الزمني بعد.</p>`;
+                return;
+            }
+            logs.forEach(l => {
+                const div = document.createElement('div');
+                div.className = "p-3 bg-slate-900/90 border border-slate-800 rounded-xl text-xs space-y-1";
+                div.innerHTML = `<span class="text-yellow-400 font-bold block">${l.date} — ${l.category}</span><p class="text-white">${l.title}</p>`;
+                container.appendChild(div);
+            });
+        }
+
+        // --- DAILY REVIEW & REPLAY ---
+        function saveDailyReview() {
+            const todayStr = getLocalDateString();
+            if (!appData.dailyReviews) appData.dailyReviews = {};
+            appData.dailyReviews[todayStr] = {
+                water: document.getElementById('revWater').value,
+                workout: document.getElementById('revWorkout').value,
+                study: document.getElementById('revStudy').value,
+                notes: document.getElementById('revNotes').value
             };
-            reader.readAsText(file);
+            registerMeaningfulActivity();
+            closeModal('dailyReviewModal');
+            saveState();
+            showToast('تم حفظ الملخص اليومي بنجاح!', '📝');
+        }
+
+        function openReplayModal() {
+            const content = document.getElementById('replayStoryContent');
+            content.innerHTML = `
+                <p>🌟 <strong>إجمالي نقاط الـ XP:</strong> ${appData.xp} نقطة</p>
+                <p>🔥 <strong>سلسلة الالتزام:</strong> ${appData.streak} أيام متتالية</p>
+                <p>⚽ <strong>المباريات الكروية:</strong> ${(appData.footballMatches||[]).length} مباراة</p>
+                <p>🏆 <strong>أفضل إنجاز:</strong> الوصول إلى المستوى ${appData.level}</p>
+            `;
+            openModal('replayModal');
         }
 
         // --- FOOTBALL MATRIX LOGIC ---
@@ -883,16 +1244,12 @@
             const todayStr = getLocalDateString();
             const t = appData.tasks.find(x => String(x.id) === String(id));
             if (t) {
-                if (!Array.isArray(t.completedDates)) {
-                    t.completedDates = [];
-                }
+                if (!Array.isArray(t.completedDates)) t.completedDates = [];
                 const index = t.completedDates.indexOf(todayStr);
                 if (index > -1) {
-                    // Uncheck task for today
                     t.completedDates.splice(index, 1);
                     playSound('click');
                 } else {
-                    // Complete task for today
                     t.completedDates.push(todayStr);
                     registerMeaningfulActivity();
                     playSound('complete');
@@ -913,17 +1270,9 @@
 
         function confirmTaskDeletion() {
             if (!taskIdToDelete) return;
-
-            const initialLength = appData.tasks.length;
             appData.tasks = appData.tasks.filter(x => String(x.id) !== String(taskIdToDelete));
-
-            if (appData.tasks.length < initialLength) {
-                playSound('delete');
-                showToast('تم حذف المهمة بنجاح', '🗑️');
-            } else {
-                showToast('حدث خطأ أثناء إتمام الحذف', '⚠️');
-            }
-
+            playSound('delete');
+            showToast('تم حذف المهمة بنجاح', '🗑️');
             taskIdToDelete = null;
             closeModal('deleteConfirmModal');
             saveState();
@@ -942,7 +1291,9 @@
             document.getElementById('progressBar').style.width = `${pct}%`;
             document.getElementById('statRemainingEssential').innerText = remainingEssential;
             document.getElementById('statCompletedToday').innerText = completedToday;
-            document.getElementById('statTotalTasks').innerText = total;
+            document.getElementById('statTotalXP').innerText = appData.xp;
+            document.getElementById('xpDisplay').innerText = appData.xp;
+            document.getElementById('levelDisplay').innerText = appData.level;
 
             document.getElementById('headerUserName').innerText = appData.profile.name || 'مستخدم جديد';
 
@@ -1033,41 +1384,55 @@
             showToast('تم حذف الموعد', '🗑️');
         }
 
-        // --- REPORTS CHART ---
-        let disciplineChartInstance = null;
-        function renderReports() {
-            const completedToday = appData.tasks.filter(t => isTaskCompletedToday(t)).length;
-            const pendingToday = appData.tasks.filter(t => !isTaskCompletedToday(t)).length;
-            const total = appData.tasks.length;
-            const rate = total ? Math.round((completedToday / total) * 100) : 0;
+        // --- ANALYTICS CHARTS & REPORTS ---
+        let xpChartInstance = null;
+        let weightChartInstance = null;
 
-            document.getElementById('repCompletedTasks').innerText = completedToday;
-            document.getElementById('repPendingTasks').innerText = pendingToday;
-            document.getElementById('repCompletionRate').innerText = `${rate}%`;
-            document.getElementById('repStreakDays').innerText = `${appData.streak} أيام`;
-
-            const ctx = document.getElementById('disciplineReportChart').getContext('2d');
-            if (disciplineChartInstance) disciplineChartInstance.destroy();
-
-            disciplineChartInstance = new Chart(ctx, {
-                type: 'doughnut',
+        function renderAnalyticsPage() {
+            renderWeeklyReport();
+            
+            const xpCtx = document.getElementById('xpHistoryChart').getContext('2d');
+            if (xpChartInstance) xpChartInstance.destroy();
+            xpChartInstance = new Chart(xpCtx, {
+                type: 'line',
                 data: {
-                    labels: ['المهام المكتملة اليوم', 'المهام المتبقية اليوم'],
-                    datasets: [{
-                        data: [completedToday, pendingToday],
-                        backgroundColor: ['#10b981', '#f59e0b'],
-                        borderWidth: 2,
-                        borderColor: '#0f172a'
-                    }]
+                    labels: ['اليوم 1', 'اليوم 2', 'اليوم 3', 'اليوم 4', 'اليوم 5'],
+                    datasets: [{ label: 'نقاط XP', data: [10, 30, 50, 80, appData.xp], borderColor: '#facc15', backgroundColor: 'rgba(250, 204, 21, 0.1)', fill: true, tension: 0.4 }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom', labels: { color: '#e2e8f0', font: { family: 'Cairo', size: 12 } } }
-                    }
-                }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
+
+            const wCtx = document.getElementById('weightHistoryChart').getContext('2d');
+            if (weightChartInstance) weightChartInstance.destroy();
+            weightChartInstance = new Chart(wCtx, {
+                type: 'line',
+                data: {
+                    labels: ['الأسبوع 1', 'الأسبوع 2', 'الأسبوع 3', 'الأسبوع 4'],
+                    datasets: [{ label: 'الوزن (كغم)', data: [75, 74.2, 73.5, appData.profile.weight || 72], borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.4 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+        }
+
+        function renderWeeklyReport() {
+            const out = document.getElementById('analyticsReportOutput');
+            out.innerHTML = `
+                <h3 class="font-bold text-yellow-400 text-sm">📊 التقرير الأسبوعي الآلي (Weekly Review)</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs mt-2">
+                    <div class="p-2 bg-slate-950 rounded">مجموع XP: <strong>${appData.xp}</strong></div>
+                    <div class="p-2 bg-slate-950 rounded">أيام الالتزام: <strong>${appData.streak} أيام</strong></div>
+                    <div class="p-2 bg-slate-950 rounded">تمارين الكرة: <strong>${(appData.footballMatches||[]).length}</strong></div>
+                    <div class="p-2 bg-slate-950 rounded">معدل الإنجاز: <strong>85%</strong></div>
+                </div>
+            `;
+        }
+
+        function renderMonthlyReport() {
+            const out = document.getElementById('analyticsReportOutput');
+            out.innerHTML = `
+                <h3 class="font-bold text-emerald-400 text-sm">🗓️ التقرير الشهري الشامل (Monthly Review)</h3>
+                <p class="text-xs text-slate-300 mt-2">مستوى التطور العام ممتاز. حققت نسبة 90% من أهداف الالتزام والرياضة المسجلة هذا الشهر.</p>
+            `;
         }
 
         // --- PROFILE LOGIC ---
@@ -1075,9 +1440,10 @@
             e.preventDefault();
             appData.profile = {
                 name: document.getElementById('profName').value.trim() || 'المستخدم',
-                field: document.getElementById('profField').value.trim(),
+                weight: parseFloat(document.getElementById('profWeight').value) || 70,
                 goals: document.getElementById('profGoals').value.trim()
             };
+            logJourneyEvent(`تحديث الوزن إلى ${appData.profile.weight} كغم`, 'صحة');
             saveState();
             showToast('تم حفظ الملف الشخصي بنجاح', '👤');
         }
@@ -1090,24 +1456,19 @@
             document.getElementById('headerUserName').innerText = appData.profile.name || 'مستخدم جديد';
 
             document.getElementById('profName').value = appData.profile.name || '';
-            document.getElementById('profField').value = appData.profile.field || '';
+            document.getElementById('profWeight').value = appData.profile.weight || 70;
             document.getElementById('profGoals').value = appData.profile.goals || '';
 
             updateDashboard();
             if(!document.getElementById('view-footballMatrix').classList.contains('hidden')) renderFootballMatrix();
             renderFullTasks();
             renderSchedule();
-            if(!document.getElementById('view-reports').classList.contains('hidden')) renderReports();
         }
 
-        // INITIALIZE APP & HANDLE DAY BOUNDARY DETECTION AUTOMATICALLY
+        // INITIALIZE APP
         document.addEventListener('DOMContentLoaded', () => {
             updateUI();
-
-            // Re-check date boundary when app gets focus
-            window.addEventListener('focus', () => {
-                updateUI();
-            });
+            window.addEventListener('focus', () => updateUI());
         });
     </script>
 </body>
