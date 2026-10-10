@@ -22,7 +22,6 @@
         * { font-family: 'Cairo', sans-serif; box-sizing: border-box; }
         body { background-color: #090d16; color: #f8fafc; min-height: 100vh; overflow-x: hidden; }
         
-        /* Glassmorphism & Micro-interactions */
         .card-premium {
             background: rgba(15, 23, 42, 0.88);
             backdrop-filter: blur(16px);
@@ -42,7 +41,7 @@
             box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
         }
 
-        .tab-btn { transition: all 0.2s ease; white-space: nowrap; }
+        .tab-btn { transition: all 0.2s ease; white-space: nowrap; cursor: pointer; }
         .tab-btn.active {
             background-color: #facc15;
             color: #020617;
@@ -50,21 +49,18 @@
             box-shadow: 0 4px 14px rgba(250, 204, 21, 0.35);
         }
 
-        /* Smooth View Transitions */
         .tab-view { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Toast Banner */
         #toastBanner {
             transform: translateY(100px);
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         #toastBanner.show { transform: translateY(0); }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #090d16; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
@@ -83,9 +79,9 @@
     <header class="max-w-7xl mx-auto mb-6 flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
         <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
             <button id="soundToggleBtn" onclick="toggleAudio()" class="p-2.5 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-sm text-slate-200" title="كتم/تشغيل الصوت">🔊</button>
+            <button onclick="requestNotificationPermission()" class="px-3.5 py-2 bg-amber-500/25 hover:bg-amber-500/35 border border-yellow-500/40 rounded-2xl transition text-xs sm:text-sm font-bold text-yellow-300 flex items-center gap-1.5 shadow-lg">🔔 تفعيل التنبيهات (3 مرات)</button>
             <button onclick="openModal('searchModal')" class="px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5" title="بحث شامل (Ctrl+K)">🔍 بحث شامل</button>
-            <button onclick="openModal('exportModal')" class="px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5">📥 مركز التصدير</button>
-            <button onclick="openModal('backupModal')" class="px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5">☁️ النسخ الاحتياطي</button>
+            <button onclick="openModal('exportModal')" class="px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5">📥 التصدير</button>
 
             <div class="streak-badge px-3.5 py-1.5 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center gap-1.5">
                 🔥 <span id="streakCount">0</span> أيام التزام
@@ -156,7 +152,6 @@
                     </div>
                 </div>
 
-                <!-- Customized Smart Dashboard Widgets Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="dashboardWidgetsGrid">
                     <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
                         <span class="text-xs text-slate-400 block mb-1">المهام الأساسية المتبقية</span>
@@ -167,7 +162,7 @@
                         <span id="statCompletedToday" class="text-xl font-extrabold text-emerald-400">0</span>
                     </div>
                     <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
-                        <span class="text-xs text-slate-400 block mb-1">التوقعات الذكية (Smart Predictions)</span>
+                        <span class="text-xs text-slate-400 block mb-1">التوقعات الذكية</span>
                         <span id="statPrediction" class="text-xs font-bold text-cyan-400 block mt-1">ابدأ بأول إنجاز تفعيلي اليوم 🚀</span>
                     </div>
                     <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
@@ -193,16 +188,14 @@
             </section>
         </div>
 
-        <!-- TAB 2: AI COACH 2.0 & SMART INSIGHTS -->
+        <!-- TAB 2: AI COACH 2.0 -->
         <div id="view-aiCoach" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-6">
                 <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
-                    <div class="w-12 h-12 bg-yellow-500/10 text-yellow-400 rounded-2xl flex items-center justify-center text-2xl border border-yellow-500/30">
-                        🤖
-                    </div>
+                    <div class="w-12 h-12 bg-yellow-500/10 text-yellow-400 rounded-2xl flex items-center justify-center text-2xl border border-yellow-500/30">🤖</div>
                     <div>
-                        <h2 class="text-xl font-bold text-white">المدرب الذكي AI Coach 2.0 & الأفكار الذكية</h2>
-                        <p class="text-xs text-slate-400">تحليل حقيقي وشامل لسلوكياتك، أداء الالتزام، والتنبؤ بالنمو التلقائي.</p>
+                        <h2 class="text-xl font-bold text-white">المدرب الذكي AI Coach 2.0 & والأفكار الذكية</h2>
+                        <p class="text-xs text-slate-400">تحليل حقيقي وشامل لسلوكياتك وأداء الالتزام التلقائي.</p>
                     </div>
                 </div>
 
@@ -230,7 +223,7 @@
             <section class="card-premium rounded-3xl p-6 text-center space-y-6 max-w-2xl mx-auto">
                 <div>
                     <span class="text-xs bg-yellow-500/10 text-yellow-400 px-3 py-1 rounded-full font-bold border border-yellow-500/30">نمط التركيز العميق (Distraction-Free)</span>
-                    <h2 class="text-2xl font-black text-white mt-3" id="focusTaskTitle">اختيار مهمة للتركيز</h2>
+                    <h2 class="text-2xl font-black text-white mt-3" id="focusTaskTitle">جلسة تركيز</h2>
                 </div>
 
                 <div class="w-48 h-48 rounded-full border-4 border-yellow-500/40 mx-auto flex items-center justify-center bg-slate-950/80 shadow-2xl">
@@ -244,7 +237,7 @@
             </section>
         </div>
 
-        <!-- TAB 4: ROAD TO DREAM (VISUAL ROADMAP) -->
+        <!-- TAB 4: ROAD TO DREAM -->
         <div id="view-roadToDream" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-6">
                 <div class="flex justify-between items-center border-b border-slate-800 pb-4">
@@ -277,7 +270,7 @@
                 <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-emerald-950/40 p-5 sm:p-6 rounded-2xl border border-emerald-500/30 flex flex-col md:flex-row justify-between items-center gap-6">
                     <div class="space-y-2 text-center md:text-right">
                         <span class="text-xs bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full font-extrabold inline-block">تقييم آلي مستند للبيانات</span>
-                        <h3 class="text-xl sm:text-2xl font-black text-white" id="evalLevelTitle">مستوى اللاعب: في بداية الطريق (New User)</h3>
+                        <h3 class="text-xl sm:text-2xl font-black text-white" id="evalLevelTitle">مستوى اللاعب: في بداية الطريق</h3>
                         <p class="text-xs sm:text-sm text-slate-300 max-w-xl" id="evalLevelDesc">سجل مباراتك أو تمرينك الأول لتفعيل التحليل التلقائي.</p>
                     </div>
                     <div class="bg-slate-950/80 border border-slate-800 p-4 rounded-2xl text-center min-w-[150px]">
@@ -331,7 +324,7 @@
             </section>
         </div>
 
-        <!-- TAB 7: SCHEDULE & ROUTINE -->
+        <!-- TAB 7: SCHEDULE -->
         <div id="view-schedule" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6">
                 <div class="flex flex-wrap justify-between items-center gap-4 mb-5">
@@ -348,17 +341,13 @@
             </section>
         </div>
 
-        <!-- TAB 8: ADVANCED ANALYTICS & REPORTS (WEEKLY & MONTHLY REVIEWS) -->
+        <!-- TAB 8: ANALYTICS -->
         <div id="view-analytics" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-6">
                 <div class="flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
                     <div>
                         <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📈</span> التحليلات المتقدمة والتقارير</h2>
                         <p class="text-xs text-slate-400">تحليل الأداء الأسبوعي والشهري والتغييرات البدنية والفنية.</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="renderWeeklyReport()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl text-xs font-bold border border-slate-700">التقرير الأسبوعي</button>
-                        <button onclick="renderMonthlyReport()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl text-xs font-bold border border-slate-700">التقرير الشهري</button>
                     </div>
                 </div>
 
@@ -377,11 +366,11 @@
             </section>
         </div>
 
-        <!-- TAB 9: HALL OF FAME & RECORDS -->
+        <!-- TAB 9: HALL OF FAME -->
         <div id="view-hallOfFame" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-6">
                 <div class="border-b border-slate-800 pb-4">
-                    <h2 class="text-xl font-bold text-yellow-400 flex items-center gap-2"><span>🏆</span> قاعة المشاهير والأرقام القياسية (Hall of Fame)</h2>
+                    <h2 class="text-xl font-bold text-yellow-400 flex items-center gap-2"><span>🏆</span> قاعة المشاهير والأرقام القياسية</h2>
                     <p class="text-xs text-slate-400">أعلى إنجازاتك وأرقامك القياسية منذ البداية.</p>
                 </div>
 
@@ -389,12 +378,12 @@
             </section>
         </div>
 
-        <!-- TAB 10: TIMELINE (FULL JOURNEY) -->
+        <!-- TAB 10: TIMELINE -->
         <div id="view-timeline" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-6">
                 <div class="border-b border-slate-800 pb-4">
-                    <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📜</span> السجل الزمني الكامل (Journey Timeline)</h2>
-                    <p class="text-xs text-slate-400">توثيق زمني لكل المحطات، الإنجازات، وتغييرات الوزن منذ اليوم الأول.</p>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📜</span> السجل الزمني الكامل</h2>
+                    <p class="text-xs text-slate-400">توثيق زمني لكل المحطات والإنجازات منذ اليوم الأول.</p>
                 </div>
 
                 <div id="journeyTimelineContainer" class="space-y-4 border-r-2 border-slate-800 pr-6 mr-2"></div>
@@ -433,22 +422,22 @@
 
     </main>
 
-    <!-- PREMIUM MODALS SECTION -->
+    <!-- MODALS SECTION -->
 
-    <!-- Modal: Search Everything -->
+    <!-- Search Modal -->
     <div id="searchModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-xl rounded-3xl p-6 space-y-4">
-            <h3 class="text-lg font-bold text-white">🔍 البحث الشامل المتقدم (Advanced Search)</h3>
-            <input type="text" id="globalSearchInput" oninput="executeGlobalSearch()" placeholder="ابحث في المهام، الأهداف، المباريات، والملاحظات..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white text-xs sm:text-sm">
+            <h3 class="text-lg font-bold text-white">🔍 البحث الشامل المتقدم</h3>
+            <input type="text" id="globalSearchInput" oninput="executeGlobalSearch()" placeholder="ابحث في المهام، الأهداف والمباريات..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white text-xs sm:text-sm">
             <div id="searchResultsContainer" class="max-h-60 overflow-y-auto space-y-2 text-xs"></div>
             <button onclick="closeModal('searchModal')" class="w-full bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl">إغلاق</button>
         </div>
     </div>
 
-    <!-- Modal: Daily Review -->
+    <!-- Daily Review Modal -->
     <div id="dailyReviewModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-3xl p-6 space-y-4 max-h-[90vh] overflow-y-auto">
-            <h3 class="text-lg font-bold text-white">📝 المراجعة والتلخيص اليومي (Daily Review)</h3>
+            <h3 class="text-lg font-bold text-white">📝 المراجعة اليومية</h3>
             <div class="space-y-3 text-xs">
                 <div>
                     <label class="text-slate-300 block mb-1">كمية شرب الماء (لتر):</label>
@@ -456,7 +445,7 @@
                 </div>
                 <div>
                     <label class="text-slate-300 block mb-1">ملخص التمرين والرياضة:</label>
-                    <input type="text" id="revWorkout" placeholder="تفاصيل التمرين اليومي..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
+                    <input type="text" id="revWorkout" placeholder="تفاصيل التمرين..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
                 </div>
                 <div>
                     <label class="text-slate-300 block mb-1">ملخص الدراسة والتعلم:</label>
@@ -464,50 +453,27 @@
                 </div>
                 <div>
                     <label class="text-slate-300 block mb-1">ملاحظات يومية حرة:</label>
-                    <textarea id="revNotes" rows="3" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white"></textarea>
+                    <textarea id="revNotes" rows="3" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white" placeholder="اكتب ملاحظاتك..."></textarea>
                 </div>
             </div>
             <div class="flex gap-2">
-                <button onclick="saveDailyReview()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-2.5 rounded-xl">حفظ الملخص اليومي</button>
+                <button onclick="saveDailyReview()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-2.5 rounded-xl">حفظ</button>
                 <button onclick="closeModal('dailyReviewModal')" class="px-4 bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl">إلغاء</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal: Spotify-like Replay Stories -->
+    <!-- Replay Modal -->
     <div id="replayModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-gradient-to-b from-purple-900/80 via-slate-900 to-slate-950 border border-purple-500/30 w-full max-w-md rounded-3xl p-6 text-center space-y-6">
-            <span class="text-xs bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full font-bold">🎬 RTP Replay Story</span>
-            <h3 class="text-2xl font-black text-white">قصة إنجازاتك المسجلة</h3>
+            <span class="text-xs bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full font-bold">🎬 RTP Replay</span>
+            <h3 class="text-2xl font-black text-white">قصة إنجازاتك</h3>
             <div id="replayStoryContent" class="space-y-4 text-xs sm:text-sm text-slate-200"></div>
-            <button onclick="closeModal('replayModal')" class="w-full bg-purple-600 text-white font-extrabold py-3 rounded-xl shadow-lg">إغلاق القصة</button>
+            <button onclick="closeModal('replayModal')" class="w-full bg-purple-600 text-white font-extrabold py-3 rounded-xl shadow-lg">إغلاق</button>
         </div>
     </div>
 
-    <!-- Modal: Add Milestone (Road To Dream) -->
-    <div id="addMilestoneModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 space-y-3.5 text-xs sm:text-sm">
-            <h3 class="text-lg font-bold text-white">🗺️ إضافة محطة في خارطة الحلم</h3>
-            <div>
-                <label class="text-slate-300 block mb-1">عنوان المحطة / الهدف *</label>
-                <input type="text" id="msTitle" placeholder="مثال: الانضمام لنادي محلي" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-            </div>
-            <div>
-                <label class="text-slate-300 block mb-1">المكافأة المرجوة</label>
-                <input type="text" id="msReward" placeholder="مثال: شراء حذاء رياضي احترافي" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-            </div>
-            <div>
-                <label class="text-slate-300 block mb-1">نسبة الإكتمال (0-100%)</label>
-                <input type="number" id="msPct" value="0" min="0" max="100" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-            </div>
-            <div class="flex gap-2 pt-2">
-                <button onclick="saveRoadmapMilestone()" class="flex-1 bg-yellow-500 text-slate-950 font-extrabold py-3 rounded-xl">حفظ المحطة</button>
-                <button onclick="closeModal('addMilestoneModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl">إلغاء</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Add / Edit Task -->
+    <!-- Task Modal -->
     <div id="taskModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
             <h3 id="taskModalTitle" class="text-lg font-bold text-white mb-4">إضافة مهمة جديدة</h3>
@@ -542,29 +508,14 @@
         </div>
     </div>
 
-    <!-- Modal: Delete Confirmation Modal -->
-    <div id="deleteConfirmModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-slate-900 border border-red-500/30 w-full max-w-sm rounded-3xl p-6 text-center space-y-4">
-            <div class="w-12 h-12 bg-red-500/10 text-red-400 rounded-2xl flex items-center justify-center text-xl mx-auto border border-red-500/20">🗑️</div>
-            <div>
-                <h3 class="text-lg font-bold text-white mb-1">حذف المهمة؟</h3>
-                <p id="deleteConfirmTaskTitle" class="text-xs text-slate-300">هل أنت متأكد من حذف هذه المهمة؟ لا يمكن التراجع عن هذا الإجراء.</p>
-            </div>
-            <div class="flex gap-3 pt-2">
-                <button onclick="confirmTaskDeletion()" class="flex-1 bg-red-500 hover:bg-red-400 text-white font-extrabold py-2.5 rounded-xl text-xs sm:text-sm shadow-lg shadow-red-500/20">نعم، احذف</button>
-                <button onclick="closeModal('deleteConfirmModal')" class="flex-1 bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl text-xs sm:text-sm">إلغاء</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: Match Football Session -->
+    <!-- Match Modal -->
     <div id="matchModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
             <h3 class="text-lg font-bold text-white mb-4">تسجيل مباراة أو تمرين كروي</h3>
             <div class="space-y-3.5 text-xs sm:text-sm">
                 <div>
                     <label class="text-slate-300 font-bold block mb-1">عنوان المباراة أو التمرين *</label>
-                    <input type="text" id="mOpponent" placeholder="مثال: تمرين مهاري أو مباراة ودية" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+                    <input type="text" id="mOpponent" placeholder="مثال: تمرين مهاري أو مباراة" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
@@ -576,75 +527,35 @@
                         <input type="number" id="mRating" step="0.1" value="8.0" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="text-slate-300 font-bold block mb-1">الأهداف</label>
-                        <input type="number" id="mGoals" value="1" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                    </div>
-                    <div>
-                        <label class="text-slate-300 font-bold block mb-1">التمريرات الحاسمة</label>
-                        <input type="number" id="mAssists" value="1" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                    </div>
-                </div>
                 <div class="flex gap-3 pt-2">
-                    <button onclick="saveFootballMatch()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ وتحديث النشاط</button>
+                    <button onclick="saveFootballMatch()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ</button>
                     <button onclick="closeModal('matchModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal: Schedule Modal -->
-    <div id="scheduleModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
-            <h3 class="text-lg font-bold text-white mb-4">إضافة موعد في الجدول اليومي</h3>
-            <div class="space-y-3.5 text-xs sm:text-sm">
-                <div>
-                    <label class="text-slate-300 font-bold block mb-1">عنوان النشاط / الموعد *</label>
-                    <input type="text" id="schedTitle" placeholder="مثال: جلسة عمل" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="text-slate-300 font-bold block mb-1">الوقت</label>
-                        <input type="text" id="schedTime" placeholder="مثال: 09:00 ص" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                    </div>
-                    <div>
-                        <label class="text-slate-300 font-bold block mb-1">التصنيف</label>
-                        <select id="schedCategory" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-                            <option value="عمل/دراسة">عمل / دراسة</option>
-                            <option value="رياضة">رياضة وتدريب</option>
-                            <option value="استراحة">استراحة</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="flex gap-3 pt-2">
-                    <button onclick="saveScheduleItem()" class="flex-1 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold py-3 rounded-xl transition">حفظ الموعد</button>
-                    <button onclick="closeModal('scheduleModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl transition">إلغاء</button>
-                </div>
+    <!-- Milestone Modal -->
+    <div id="addMilestoneModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 space-y-3.5 text-xs sm:text-sm">
+            <h3 class="text-lg font-bold text-white">🗺️ إضافة محطة في خارطة الحلم</h3>
+            <div>
+                <label class="text-slate-300 block mb-1">عنوان المحطة *</label>
+                <input type="text" id="msTitle" placeholder="مثال: الانضمام لنادي محلي" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+            </div>
+            <div class="flex gap-2 pt-2">
+                <button onclick="saveRoadmapMilestone()" class="flex-1 bg-yellow-500 text-slate-950 font-extrabold py-3 rounded-xl">حفظ</button>
+                <button onclick="closeModal('addMilestoneModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl">إلغاء</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal: Export Center -->
+    <!-- Export Modal -->
     <div id="exportModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-3xl p-6 space-y-4 text-center">
-            <h3 class="text-lg font-bold text-white">📥 مركز التصدير المتقدم</h3>
-            <p class="text-xs text-slate-400">تصدير بياناتك بجميع الصيغ العالمية:</p>
-            <div class="space-y-2 text-xs font-bold">
-                <button onclick="exportUserData()" class="w-full bg-slate-800 hover:bg-slate-700 text-white p-3 rounded-xl">تصدير كـ JSON (نسخة احتياطية)</button>
-                <button onclick="window.print()" class="w-full bg-slate-800 hover:bg-slate-700 text-white p-3 rounded-xl">طباعة أو تصدير PDF</button>
-            </div>
-            <button onclick="closeModal('exportModal')" class="w-full bg-slate-800 text-slate-400 p-2.5 rounded-xl text-xs">إغلاق</button>
-        </div>
-    </div>
-
-    <!-- Modal: Backup Center -->
-    <div id="backupModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-3xl p-6 space-y-4 text-center">
-            <h3 class="text-lg font-bold text-white">☁️ مركز النسخ الاحتياطي والربط</h3>
-            <p class="text-xs text-slate-400">حالة المزامنة السحابية تلقائية على التخزين المحلي.</p>
-            <div class="p-3 bg-slate-950 rounded-xl text-xs text-emerald-400 font-bold">✓ جميع البيانات محمية ومحفوظة آلياً</div>
-            <button onclick="closeModal('backupModal')" class="w-full bg-slate-800 text-slate-400 p-2.5 rounded-xl text-xs">إغلاق</button>
+            <h3 class="text-lg font-bold text-white">📥 مركز التصدير</h3>
+            <button onclick="exportUserData()" class="w-full bg-slate-800 text-white p-3 rounded-xl font-bold text-xs">تصدير كـ JSON (نسخة احتياطية)</button>
+            <button onclick="closeModal('exportModal')" class="w-full bg-slate-800 text-slate-400 p-2 rounded-xl text-xs">إغلاق</button>
         </div>
     </div>
 
@@ -658,11 +569,7 @@
             activityDates: [],
             audioEnabled: true,
             currentTaskFilter: 'ALL',
-            profile: {
-                name: '',
-                weight: null,
-                goals: ''
-            },
+            profile: { name: '', weight: null, goals: '' },
             tasks: [],
             schedule: [],
             footballMatches: [],
@@ -671,7 +578,7 @@
             journeyLog: []
         };
 
-        let appData = JSON.parse(localStorage.getItem('rtp_commercial_v11')) || CLEAN_NEW_USER_STATE;
+        let appData = JSON.parse(localStorage.getItem('rtp_commercial_v12')) || CLEAN_NEW_USER_STATE;
         let taskIdToDelete = null;
 
         function getLocalDateString(d = new Date()) {
@@ -688,7 +595,7 @@
         }
 
         function saveState() {
-            localStorage.setItem('rtp_commercial_v11', JSON.stringify(appData));
+            localStorage.setItem('rtp_commercial_v12', JSON.stringify(appData));
             updateUI();
         }
 
@@ -700,19 +607,12 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        function triggerConfetti() {
-            if (typeof confetti === 'function') {
-                confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } });
-            }
-        }
-
         function addXP(amount) {
             appData.xp += amount;
             const newLevel = Math.floor(appData.xp / 100) + 1;
             if (newLevel > appData.level) {
                 appData.level = newLevel;
                 showToast(`ترقية مستوى جديدة! المستوى ${newLevel} 🚀`, '🎉');
-                triggerConfetti();
             }
         }
 
@@ -730,7 +630,6 @@
         function updateStreakFromHistory() {
             if (!Array.isArray(appData.activityDates) || appData.activityDates.length === 0) {
                 appData.streak = 0;
-                appData.lastActiveDate = '';
                 return 0;
             }
 
@@ -768,41 +667,46 @@
             updateStreakFromHistory();
         }
 
-        // --- AUDIO ENGINE ---
-        let audioCtx = null;
-        function playSound(type = 'click') {
-            if (!appData.audioEnabled) return;
-            try {
-                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
+        // --- NOTIFICATION ENGINE (3 Times Daily) ---
+        function requestNotificationPermission() {
+            if ('Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        showToast('تم تفعيل تذكيرات المدرب الذكي (3 مرات يومياً) 🔔', '🔔');
+                        scheduleNotificationsCheck();
+                    } else {
+                        alert('يرجى السماح بالإشعارات من إعدادات المتصفح لتصلك التنبيهات.');
+                    }
+                });
+            } else {
+                alert('المتصفح الحالي لا يدعم الإشعارات المباشرة.');
+            }
+        }
 
-                if (type === 'complete') {
-                    osc.frequency.setValueAtTime(523, audioCtx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
-                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-                    osc.start(); osc.stop(audioCtx.currentTime + 0.15);
-                } else {
-                    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-                    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
-                    osc.start(); osc.stop(audioCtx.currentTime + 0.05);
+        function scheduleNotificationsCheck() {
+            setInterval(() => {
+                if (Notification.permission !== 'granted') return;
+                const now = new Date();
+                const h = now.getHours();
+                const m = now.getMinutes();
+
+                // 1. 2:00 PM
+                if (h === 14 && m === 0) {
+                    new Notification('🤖 المدرب الذكي (RTP)', { body: 'حان وقت المتابعة اليومية! هل أنجزت مهام النهار؟', icon: 'icon.png' });
                 }
-            } catch (e) {}
+                // 2. 7:00 PM
+                if (h === 19 && m === 0) {
+                    new Notification('⚽ المدرب الذكي (RTP)', { body: 'بقي بضع ساعات على المساء! الوقت ممتاز لإنجاز تمارينك ومهامك.', icon: 'icon.png' });
+                }
+                // 3. 10:00 PM
+                if (h === 22 && m === 0) {
+                    new Notification('🔥 إنقاذ السلسلة (RTP)', { body: 'فرصتك الأخيرة اليوم! تفقد مهامك وحافظ على سلسلة الالتزام.', icon: 'icon.png' });
+                }
+            }, 60000);
         }
 
-        function toggleAudio() {
-            appData.audioEnabled = !appData.audioEnabled;
-            document.getElementById('soundToggleBtn').innerText = appData.audioEnabled ? '🔊' : '🔇';
-            saveState();
-        }
-
-        // --- NAVIGATION ---
+        // --- NAVIGATION & MODALS ---
         function switchTab(tabId) {
-            playSound('click');
             document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
             document.getElementById(`view-${tabId}`).classList.remove('hidden');
 
@@ -814,57 +718,22 @@
             if (tabId === 'roadToDream') renderRoadToDream();
             if (tabId === 'footballMatrix') renderFootballMatrix();
             if (tabId === 'tasks') renderFullTasks();
-            if (tabId === 'schedule') renderSchedule();
             if (tabId === 'analytics') renderAnalyticsPage();
             if (tabId === 'hallOfFame') renderHallOfFame();
             if (tabId === 'timeline') renderTimeline();
         }
 
-        function openModal(id) { 
-            playSound('click'); 
-            document.getElementById(id).classList.remove('hidden'); 
-            document.getElementById(id).classList.add('flex'); 
-        }
-        function closeModal(id) { 
-            document.getElementById(id).classList.add('hidden'); 
-            document.getElementById(id).classList.remove('flex'); 
+        function openModal(id) {
+            const m = document.getElementById(id);
+            if(m) { m.classList.remove('hidden'); m.classList.add('flex'); }
         }
 
-        // --- SHORTCUTS & SEARCH ---
-        function handleKeyboardShortcuts(e) {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                e.preventDefault();
-                openModal('searchModal');
-            }
+        function closeModal(id) {
+            const m = document.getElementById(id);
+            if(m) { m.classList.add('hidden'); m.classList.remove('flex'); }
         }
 
-        function executeGlobalSearch() {
-            const query = document.getElementById('globalSearchInput').value.toLowerCase().trim();
-            const container = document.getElementById('searchResultsContainer');
-            container.innerHTML = '';
-            if (!query) return;
-
-            const results = [];
-            appData.tasks.forEach(t => {
-                if (t.title.toLowerCase().includes(query)) results.push(`📋 مهمة: ${t.title}`);
-            });
-            (appData.footballMatches || []).forEach(m => {
-                if (m.opponent.toLowerCase().includes(query)) results.push(`⚽ مباراة: ${m.opponent}`);
-            });
-
-            if (results.length === 0) {
-                container.innerHTML = `<p class="text-slate-500 py-2">لا توجد نتائج تطابق البحث.</p>`;
-            } else {
-                results.forEach(r => {
-                    const div = document.createElement('div');
-                    div.className = "p-2 bg-slate-800 rounded border border-slate-700 text-white";
-                    div.innerText = r;
-                    container.appendChild(div);
-                });
-            }
-        }
-
-        // --- DYNAMIC AI COACH 2.0 & SMART INSIGHTS ---
+        // --- DYNAMIC AI COACH ---
         function renderAICoach() {
             const habits = document.getElementById('aiHabitsAnalysis');
             const predictions = document.getElementById('aiPredictionsAnalysis');
@@ -873,385 +742,32 @@
             const totalTasks = appData.tasks.length;
             const completedToday = appData.tasks.filter(t => isTaskCompletedToday(t)).length;
             const completionPct = totalTasks > 0 ? Math.round((completedToday / totalTasks) * 100) : 0;
-            const matchesCount = (appData.footballMatches || []).length;
 
-            if (totalTasks === 0 && matchesCount === 0 && appData.streak === 0) {
-                habits.innerHTML = `<p class="text-slate-400">👋 مرحباً بك! أنت في بداية طريقك. أضف مهامك الأولى وسجل نشاطك لتفعّل التحليل الذكي لعاداتك.</p>`;
-                predictions.innerHTML = `<p class="text-slate-400">🚀 أضف مهمتك الأولى اليوم لتوليد التوقعات والتنبيهات المخصصة لك.</p>`;
-                insights.innerHTML = `
-                    <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 col-span-3 text-center"><p class="text-slate-400">ستظهر الرؤى السلوكية هنا تلقائياً بعد بناء سجل إنجازاتك اليومية.</p></div>
-                `;
+            if (totalTasks === 0 && appData.streak === 0) {
+                habits.innerHTML = `<p class="text-slate-400">👋 أهلاً بك! اضغط على "+ مهمة جديدة" وابدأ رحلتك لتفعيل التحليل التلقائي.</p>`;
+                predictions.innerHTML = `<p class="text-slate-400">🚀 أنجز أول مهمة اليوم لتوقع المستويات السريعة القادمة.</p>`;
+                insights.innerHTML = `<div class="p-3 bg-slate-950 rounded-xl border border-slate-800 col-span-3 text-center"><p class="text-slate-400">ستظهر الرؤى السلوكية هنا فور تسجيل أول نشاط.</p></div>`;
                 return;
             }
 
-            habits.innerHTML = `
-                <p>• <strong>تحليل الالتزام:</strong> سجل الالتزام الحالي يصل إلى <strong>${appData.streak} أيام متتالية</strong>.</p>
-                <p>• <strong>معدل الإنجاز اليومي:</strong> حققت نسبة إنجاز للمهام قدرها <strong>${completionPct}%</strong> اليوم.</p>
-            `;
-
-            predictions.innerHTML = `
-                <p>• <strong>الترقية القادمة:</strong> تحاج إلى <strong>${100 - (appData.xp % 100)} XP</strong> إضافية للوصول للمستوى التالي.</p>
-                <p>• <strong>تنبيه الالتزام:</strong> ${appData.streak > 0 ? 'حافظ على إكمال مهمة واحدة اليوم لحماية السلسلة 🔥' : 'أكمل مهمتك الأولى لتفعيل السلسلة الكروية اليوم.'}</p>
-            `;
-
-            insights.innerHTML = `
-                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-amber-400 font-bold">💡 الإنتاجية</p><p class="text-slate-300 mt-1">نسبة إنجاز المهام المسجلة هي ${completionPct}%.</p></div>
-                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-cyan-400 font-bold">💡 النشاط الكروي</p><p class="text-slate-300 mt-1">تم تسجيل ${matchesCount} مباراة/تمرين في المصفوفة.</p></div>
-                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-emerald-400 font-bold">💡 المستوى الحالي</p><p class="text-slate-300 mt-1">أنت حالياً في المستوى ${appData.level} بـ ${appData.xp} XP.</p></div>
-            `;
+            habits.innerHTML = `<p>• الالتزام الحالي: <strong>${appData.streak} أيام متتالية 🔥</strong></p><p>• نسبة إنجاز اليوم: <strong>${completionPct}%</strong></p>`;
+            predictions.innerHTML = `<p>• الترقية للمستوى التالي تحتاج: <strong>${100 - (appData.xp % 100)} XP</strong></p>`;
+            insights.innerHTML = `<div class="p-3 bg-slate-950 rounded-xl border border-slate-800 col-span-3"><p class="text-amber-400 font-bold">💡 ملخص النشاط</p><p class="text-slate-300 mt-1">نسبة الإنجاز الحالية ${completionPct}%.</p></div>`;
         }
 
-        // --- FOCUS SESSION TIMER ---
-        let focusTimerInterval = null;
-        let focusSecondsLeft = 25 * 60;
-        function toggleFocusTimer() {
-            const btn = document.getElementById('focusStartBtn');
-            if (focusTimerInterval) {
-                clearInterval(focusTimerInterval);
-                focusTimerInterval = null;
-                btn.innerText = "استئناف الجلسة";
-            } else {
-                btn.innerText = "إيقاف مؤقت";
-                focusTimerInterval = setInterval(() => {
-                    if (focusSecondsLeft > 0) {
-                        focusSecondsLeft--;
-                        const m = String(Math.floor(focusSecondsLeft / 60)).padStart(2, '0');
-                        const s = String(focusSecondsLeft % 60).padStart(2, '0');
-                        document.getElementById('focusTimerDisplay').innerText = `${m}:${s}`;
-                    } else {
-                        clearInterval(focusTimerInterval);
-                        focusTimerInterval = null;
-                        addXP(30);
-                        registerMeaningfulActivity();
-                        showToast('انتهت جلسة التركيز! تم كسب +30 XP', '🎉');
-                        triggerConfetti();
-                    }
-                }, 1000);
-            }
-        }
-        function resetFocusTimer() {
-            clearInterval(focusTimerInterval);
-            focusTimerInterval = null;
-            focusSecondsLeft = 25 * 60;
-            document.getElementById('focusTimerDisplay').innerText = "25:00";
-            document.getElementById('focusStartBtn').innerText = "بدء الجلسة";
-        }
-
-        // --- ROAD TO DREAM ---
-        function renderRoadToDream() {
-            const container = document.getElementById('roadmapNodesContainer');
-            container.innerHTML = '';
-            const nodes = appData.roadmapNodes || [];
-            if (nodes.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-500">لا توجد محطات في خارطة الطريق بعد. اضغط على "+ إضافة محطة جديدة" للبدء.</p>`;
-                return;
-            }
-            nodes.forEach(node => {
-                const div = document.createElement('div');
-                div.className = "p-4 bg-slate-900/90 border border-slate-800 rounded-2xl space-y-2 relative";
-                div.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-white text-sm sm:text-base">${node.title}</h3>
-                        <span class="text-xs bg-yellow-500/10 text-yellow-400 px-2.5 py-0.5 rounded-lg font-bold">${node.pct}%</span>
-                    </div>
-                    <p class="text-xs text-slate-400">🎁 المكافأة: ${node.reward || 'بدون مكافأة محددة'}</p>
-                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                        <div class="bg-yellow-500 h-full" style="width: ${node.pct}%"></div>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function saveRoadmapMilestone() {
-            const title = document.getElementById('msTitle').value.trim();
-            const reward = document.getElementById('msReward').value.trim();
-            const pct = parseInt(document.getElementById('msPct').value) || 0;
-            if (!title) return;
-
-            if (!Array.isArray(appData.roadmapNodes)) appData.roadmapNodes = [];
-            appData.roadmapNodes.push({ id: Date.now().toString(), title, reward, pct });
-            closeModal('addMilestoneModal');
-            saveState();
-            showToast('تمت إضافة محطة جديدة لمسار الحلم', '🗺️');
-        }
-
-        // --- HALL OF FAME & TIMELINE ---
-        function renderHallOfFame() {
-            const container = document.getElementById('hallOfFameCardsGrid');
-            container.innerHTML = `
-                <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl text-center"><span class="text-xs text-slate-400 block mb-1">أطول سلسلة التزام</span><span class="text-2xl font-black text-yellow-400">${appData.streak} أيام 🔥</span></div>
-                <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl text-center"><span class="text-xs text-slate-400 block mb-1">أعلى مستوى واصل له</span><span class="text-2xl font-black text-amber-400">مستوى ${appData.level} 🚀</span></div>
-                <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl text-center"><span class="text-xs text-slate-400 block mb-1">إجمالي المباريات الكروية</span><span class="text-2xl font-black text-emerald-400">${(appData.footballMatches||[]).length} ⚽</span></div>
-                <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl text-center"><span class="text-xs text-slate-400 block mb-1">مجموع نقاط XP</span><span class="text-2xl font-black text-cyan-400">${appData.xp} ⭐</span></div>
-            `;
-        }
-
-        function renderTimeline() {
-            const container = document.getElementById('journeyTimelineContainer');
-            container.innerHTML = '';
-            const logs = appData.journeyLog || [];
-            if (logs.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-500">لا توجد محطات مسجلة في السجل الزمني بعد.</p>`;
-                return;
-            }
-            logs.forEach(l => {
-                const div = document.createElement('div');
-                div.className = "p-3 bg-slate-900/90 border border-slate-800 rounded-xl text-xs space-y-1";
-                div.innerHTML = `<span class="text-yellow-400 font-bold block">${l.date} — ${l.category}</span><p class="text-white">${l.title}</p>`;
-                container.appendChild(div);
-            });
-        }
-
-        // --- DAILY REVIEW & REPLAY ---
-        function saveDailyReview() {
-            const todayStr = getLocalDateString();
-            if (!appData.dailyReviews) appData.dailyReviews = {};
-            appData.dailyReviews[todayStr] = {
-                water: document.getElementById('revWater').value,
-                workout: document.getElementById('revWorkout').value,
-                study: document.getElementById('revStudy').value,
-                notes: document.getElementById('revNotes').value
-            };
-            registerMeaningfulActivity();
-            closeModal('dailyReviewModal');
-            saveState();
-            showToast('تم حفظ الملخص اليومي بنجاح!', '📝');
-        }
-
-        function openReplayModal() {
-            const content = document.getElementById('replayStoryContent');
-            content.innerHTML = `
-                <p>🌟 <strong>إجمالي نقاط الـ XP:</strong> ${appData.xp} نقطة</p>
-                <p>🔥 <strong>سلسلة الالتزام:</strong> ${appData.streak} أيام متتالية</p>
-                <p>⚽ <strong>المباريات الكروية:</strong> ${(appData.footballMatches||[]).length} مباراة</p>
-                <p>🏆 <strong>أفضل إنجاز:</strong> الوصول إلى المستوى ${appData.level}</p>
-            `;
-            openModal('replayModal');
-        }
-
-        // --- FOOTBALL MATRIX LOGIC ---
-        let footballRadarInstance = null;
-        function renderFootballMatrix() {
-            const matches = appData.footballMatches || [];
-            let totalMatches = matches.length;
-            let sumRating = 0;
-            let totalGoals = 0;
-            let totalAssists = 0;
-
-            matches.forEach(m => {
-                sumRating += parseFloat(m.rating) || 7.5;
-                totalGoals += parseInt(m.goals) || 0;
-                totalAssists += parseInt(m.assists) || 0;
-            });
-
-            const avgRating = totalMatches ? (sumRating / totalMatches) : 0;
-            const passingScore = totalMatches ? Math.min(5, Math.max(2, (avgRating / 2) + (totalAssists * 0.2))) : 0;
-            const shootingScore = totalMatches ? Math.min(5, Math.max(2, (avgRating / 2) + (totalGoals * 0.2))) : 0;
-            const dribblingScore = totalMatches ? Math.min(5, Math.max(2.5, avgRating * 0.55)) : 0;
-            const touchScore = totalMatches ? Math.min(5, Math.max(2.5, avgRating * 0.52)) : 0;
-            const speedScore = totalMatches ? Math.min(5, Math.max(2.5, 3.8 + (totalMatches * 0.05))) : 0;
-            const staminaScore = totalMatches ? Math.min(5, Math.max(2.5, 4.0)) : 0;
-
-            const overallOvr = totalMatches ? Math.round(((passingScore + shootingScore + dribblingScore + touchScore + speedScore + staminaScore) / 6) * 18) : 0;
-
-            let levelTitle = "مستخدم جديد (New User)";
-            let levelDesc = "أضف مباراتك أو تمرينك الأول لتفعيل التحليل التلقائي لمستواك الكروي.";
-            if (overallOvr >= 80) {
-                levelTitle = "مستوى احترافي متطور (Advanced Pro)";
-                levelDesc = "أدائك متميز للغاية ويعكس كفاءة عالية في المباريات.";
-            } else if (overallOvr > 0) {
-                levelTitle = "مستوى واعد ومنتظم (Solid Performer)";
-                levelDesc = "استمرارك في تسجيل الأنشطة يعزز تقييمك العام.";
-            }
-
-            document.getElementById('evalLevelTitle').innerText = `مستوى اللاعب: ${levelTitle}`;
-            document.getElementById('evalLevelDesc').innerText = levelDesc;
-            document.getElementById('evalOvrScore').innerText = overallOvr;
-
-            const criteriaGrid = document.getElementById('matrixCriteriaGrid');
-            criteriaGrid.innerHTML = `
-                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800"><span class="text-xs text-slate-400 block">التمرير</span><span class="text-lg font-extrabold text-emerald-400">${passingScore.toFixed(1)} / 5</span></div>
-                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800"><span class="text-xs text-slate-400 block">التسديد</span><span class="text-lg font-extrabold text-yellow-400">${shootingScore.toFixed(1)} / 5</span></div>
-                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800"><span class="text-xs text-slate-400 block">المراوغة</span><span class="text-lg font-extrabold text-cyan-400">${dribblingScore.toFixed(1)} / 5</span></div>
-                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800"><span class="text-xs text-slate-400 block">اللمسة الأولى</span><span class="text-lg font-extrabold text-amber-400">${touchScore.toFixed(1)} / 5</span></div>
-                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800"><span class="text-xs text-slate-400 block">السرعة</span><span class="text-lg font-extrabold text-blue-400">${speedScore.toFixed(1)} / 5</span></div>
-                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800"><span class="text-xs text-slate-400 block">اللياقة والتحمل</span><span class="text-lg font-extrabold text-purple-400">${staminaScore.toFixed(1)} / 5</span></div>
-            `;
-
-            const ctx = document.getElementById('footballRadarChart').getContext('2d');
-            if (footballRadarInstance) footballRadarInstance.destroy();
-            footballRadarInstance = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: ['التمرير', 'التسديد', 'المراوغة', 'اللمسة الأولى', 'السرعة', 'اللياقة'],
-                    datasets: [{
-                        data: [passingScore, shootingScore, dribblingScore, touchScore, speedScore, staminaScore],
-                        backgroundColor: 'rgba(16, 185, 129, 0.25)',
-                        borderColor: '#10b981',
-                        borderWidth: 2.5,
-                        pointBackgroundColor: '#10b981'
-                    }]
-                },
-                options: {
-                    scales: {
-                        r: {
-                            min: 0,
-                            max: 5,
-                            ticks: { display: false },
-                            grid: { color: 'rgba(255,255,255,0.15)' },
-                            pointLabels: { color: '#e2e8f0', font: { size: 11, family: 'Cairo', weight: 'bold' } }
-                        }
-                    },
-                    plugins: { legend: { display: false } }
-                }
-            });
-
-            const recContainer = document.getElementById('footballRecordsContainer');
-            recContainer.innerHTML = '';
-            if (matches.length === 0) {
-                recContainer.innerHTML = `<p class="text-xs text-slate-500 text-center py-4">لا توجد مباريات مسجلة حالياً.</p>`;
-                return;
-            }
-
-            matches.forEach(m => {
-                const item = document.createElement('div');
-                item.className = "p-3 bg-slate-900/90 border border-slate-800 rounded-xl flex justify-between items-center text-xs sm:text-sm";
-                item.innerHTML = `
-                    <div>
-                        <span class="font-bold text-white">${m.opponent}</span>
-                        <span class="text-xs text-slate-400 block mt-0.5">${m.date} • ${m.minutes} دقيقة | ⚽ ${m.goals} | 👟 ${m.assists}</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="bg-yellow-500/10 text-yellow-400 px-2 py-0.5 rounded font-bold">⭐ ${m.rating}</span>
-                        <button onclick="deleteFootballMatch('${m.id}')" class="text-red-400 hover:text-red-300 p-1">🗑️</button>
-                    </div>
-                `;
-                recContainer.appendChild(item);
-            });
-        }
-
-        function saveFootballMatch() {
-            const opponent = document.getElementById('mOpponent').value.trim();
-            if (!opponent) return;
-
-            const minutes = parseInt(document.getElementById('mMinutes').value) || 90;
-            const rating = parseFloat(document.getElementById('mRating').value) || 8.0;
-            const goals = parseInt(document.getElementById('mGoals').value) || 0;
-            const assists = parseInt(document.getElementById('mAssists').value) || 0;
-
-            if(!appData.footballMatches) appData.footballMatches = [];
-            appData.footballMatches.unshift({
-                id: Date.now().toString(),
-                date: getLocalDateString(),
-                opponent,
-                minutes,
-                rating,
-                goals,
-                assists
-            });
-
-            registerMeaningfulActivity();
-            closeModal('matchModal');
-            playSound('complete');
-            saveState();
-            showToast('تم حفظ سجل المباراة وتحديث التقييم', '⚽');
-        }
-
-        function deleteFootballMatch(id) {
-            appData.footballMatches = appData.footballMatches.filter(m => String(m.id) !== String(id));
-            saveState();
-            showToast('تم حذف المباراة', '🗑️');
-        }
-
-        // --- TASK MANAGEMENT LOGIC ---
-        function setTaskFilter(filter) {
-            playSound('click');
-            appData.currentTaskFilter = filter;
-            ['ALL', 'PRIMARY', 'SECONDARY', 'COMPLETED', 'INCOMPLETE'].forEach(f => {
-                const btnId = 'filter' + (f === 'ALL' ? 'All' : f === 'PRIMARY' ? 'Primary' : f === 'SECONDARY' ? 'Secondary' : f === 'COMPLETED' ? 'Completed' : 'Incomplete');
-                const btn = document.getElementById(btnId);
-                if (btn) {
-                    if (f === filter) btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold bg-yellow-500 text-slate-950";
-                    else btn.className = "px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700";
-                }
-            });
-            renderFullTasks();
-        }
-
-        function renderFullTasks() {
-            const container = document.getElementById('fullTasksContainer');
-            container.innerHTML = '';
-
-            let filtered = appData.tasks;
-            if (appData.currentTaskFilter === 'PRIMARY') filtered = appData.tasks.filter(t => t.category === 'PRIMARY');
-            else if (appData.currentTaskFilter === 'SECONDARY') filtered = appData.tasks.filter(t => t.category === 'SECONDARY');
-            else if (appData.currentTaskFilter === 'COMPLETED') filtered = appData.tasks.filter(t => isTaskCompletedToday(t));
-            else if (appData.currentTaskFilter === 'INCOMPLETE') filtered = appData.tasks.filter(t => !isTaskCompletedToday(t));
-
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="text-center py-8 text-slate-400 text-xs sm:text-sm">لا توجد مهام مسجلة. اضغط على "+ إضافة مهمة جديدة" للبدء.</div>`;
-                return;
-            }
-
-            filtered.forEach(task => {
-                const isEssential = task.category === 'PRIMARY';
-                const completedToday = isTaskCompletedToday(task);
-                const card = document.createElement('div');
-                card.className = `p-4 rounded-2xl border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 transition ${completedToday ? 'bg-slate-900/40 border-slate-800 opacity-60' : 'bg-slate-900/90 border-slate-800'}`;
-                card.innerHTML = `
-                    <div class="flex items-start sm:items-center gap-3">
-                        <input type="checkbox" ${completedToday ? 'checked' : ''} onchange="toggleTask('${task.id}')" class="w-5 h-5 accent-yellow-500 rounded cursor-pointer mt-1 sm:mt-0">
-                        <div>
-                            <div class="flex items-center gap-2 flex-wrap">
-                                <span class="font-bold text-sm sm:text-base ${completedToday ? 'line-through text-slate-500' : 'text-white'}">${task.title}</span>
-                                <span class="text-[10px] px-2 py-0.5 rounded-lg font-extrabold ${isEssential ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30' : 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30'}">${isEssential ? 'أساسية ⭐' : 'ثانوية 📌'}</span>
-                                ${task.time ? `<span class="text-[11px] text-slate-400">⏰ ${task.time}</span>` : ''}
-                            </div>
-                            ${task.description ? `<p class="text-xs text-slate-400 mt-1">${task.description}</p>` : ''}
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2 self-end sm:self-center">
-                        <button onclick="editTask('${task.id}')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl font-bold">تعديل</button>
-                        <button onclick="requestTaskDeletion('${task.id}')" class="text-xs bg-red-500/10 hover:bg-red-500/20 text-red-400 px-3 py-1.5 rounded-xl font-bold">حذف</button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
+        // --- TASKS ---
         function saveTask() {
-            const id = document.getElementById('editTaskId').value;
             const title = document.getElementById('taskTitleInput').value.trim();
             const description = document.getElementById('taskDescInput').value.trim();
             const category = document.getElementById('taskCategoryInput').value;
             const time = document.getElementById('taskTimeInput').value.trim();
 
-            if (!title) { alert('يرجى إدخال عنوان المهمة'); return; }
+            if (!title) { alert('أدخل عنوان المهمة'); return; }
 
-            if (id) {
-                appData.tasks = appData.tasks.map(t => String(t.id) === String(id) ? { ...t, title, description, category, time } : t);
-                showToast('تم تعديل المهمة بنجاح', '✏️');
-            } else {
-                appData.tasks.push({ id: Date.now().toString(), title, description, category, time, completedDates: [] });
-                showToast('تمت إضافة المهمة بنجاح', '➕');
-            }
-
+            appData.tasks.push({ id: Date.now().toString(), title, description, category, time, completedDates: [] });
             closeModal('taskModal');
-            playSound('complete');
             saveState();
-        }
-
-        function editTask(id) {
-            const t = appData.tasks.find(x => String(x.id) === String(id));
-            if (!t) return;
-            document.getElementById('editTaskId').value = t.id;
-            document.getElementById('taskTitleInput').value = t.title;
-            document.getElementById('taskDescInput').value = t.description || '';
-            document.getElementById('taskCategoryInput').value = t.category;
-            document.getElementById('taskTimeInput').value = t.time || '';
-            document.getElementById('taskModalTitle').innerText = 'تعديل المهمة';
-            openModal('taskModal');
+            showToast('تمت إضافة المهمة بنجاح', '➕');
         }
 
         function toggleTask(id) {
@@ -1262,164 +778,108 @@
                 const index = t.completedDates.indexOf(todayStr);
                 if (index > -1) {
                     t.completedDates.splice(index, 1);
-                    playSound('click');
                 } else {
                     t.completedDates.push(todayStr);
                     registerMeaningfulActivity();
-                    playSound('complete');
-                    showToast('تم إنجاز المهمة بنجاح! أحسنت ⭐', '🎉');
+                    showToast('تم إنجاز المهمة! أحسنت ⭐', '🎉');
                 }
                 saveState();
             }
         }
 
-        function requestTaskDeletion(id) {
-            const targetTask = appData.tasks.find(t => String(t.id) === String(id));
-            if (!targetTask) return;
-
-            taskIdToDelete = String(id);
-            document.getElementById('deleteConfirmTaskTitle').innerText = `هل أنت متأكد من حذف مهمة "${targetTask.title}"؟ لا يمكن التراجع بعد الحذف.`;
-            openModal('deleteConfirmModal');
+        function renderFullTasks() {
+            const container = document.getElementById('fullTasksContainer');
+            container.innerHTML = '';
+            if (appData.tasks.length === 0) {
+                container.innerHTML = `<p class="text-center py-6 text-slate-500 text-xs">لا توجد مهام مسجلة بعد.</p>`;
+                return;
+            }
+            appData.tasks.forEach(task => {
+                const completedToday = isTaskCompletedToday(task);
+                const card = document.createElement('div');
+                card.className = "p-3 bg-slate-900 border border-slate-800 rounded-xl flex justify-between items-center text-xs";
+                card.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" ${completedToday ? 'checked' : ''} onchange="toggleTask('${task.id}')" class="w-4 h-4 accent-yellow-500 rounded">
+                        <span class="${completedToday ? 'line-through text-slate-500' : 'text-white'} font-bold">${task.title}</span>
+                    </div>
+                    <button onclick="deleteTask('${task.id}')" class="text-red-400 font-bold">حذف</button>
+                `;
+                container.appendChild(card);
+            });
         }
 
-        function confirmTaskDeletion() {
-            if (!taskIdToDelete) return;
-            appData.tasks = appData.tasks.filter(x => String(x.id) !== String(taskIdToDelete));
-            playSound('delete');
-            showToast('تم حذف المهمة بنجاح', '🗑️');
-            taskIdToDelete = null;
-            closeModal('deleteConfirmModal');
+        function deleteTask(id) {
+            appData.tasks = appData.tasks.filter(t => String(t.id) !== String(id));
             saveState();
         }
 
-        // --- DASHBOARD UPDATE ---
+        // --- DASHBOARD ---
         function updateDashboard() {
             updateStreakFromHistory();
-
             const total = appData.tasks.length;
             const completedToday = appData.tasks.filter(t => isTaskCompletedToday(t)).length;
             const pct = total ? Math.round((completedToday / total) * 100) : 0;
-            const remainingEssential = appData.tasks.filter(t => t.category === 'PRIMARY' && !isTaskCompletedToday(t)).length;
 
             document.getElementById('progressText').innerText = `(${completedToday}/${total}) ${pct}%`;
             document.getElementById('progressBar').style.width = `${pct}%`;
-            document.getElementById('statRemainingEssential').innerText = remainingEssential;
             document.getElementById('statCompletedToday').innerText = completedToday;
             document.getElementById('statTotalXP').innerText = appData.xp;
             document.getElementById('xpDisplay').innerText = appData.xp;
             document.getElementById('levelDisplay').innerText = appData.level;
-
-            document.getElementById('headerUserName').innerText = appData.profile.name || 'مستخدم جديد';
+            document.getElementById('streakCount').innerText = appData.streak;
 
             const essContainer = document.getElementById('dashboardEssentialContainer');
             essContainer.innerHTML = '';
-            const essentialTasks = appData.tasks.filter(t => t.category === 'PRIMARY');
-            if (essentialTasks.length === 0) {
-                essContainer.innerHTML = `<p class="text-xs text-slate-500">لا توجد مهام أساسية. أضف مهامك الأولى للبدء.</p>`;
+            const essentials = appData.tasks.filter(t => t.category === 'PRIMARY');
+            if (essentials.length === 0) {
+                essContainer.innerHTML = `<p class="text-xs text-slate-500">لا توجد مهام أساسية مسجلة.</p>`;
             } else {
-                essentialTasks.forEach(task => essContainer.appendChild(createTaskCardElement(task)));
-            }
-
-            const secContainer = document.getElementById('dashboardSecondaryContainer');
-            secContainer.innerHTML = '';
-            const secondaryTasks = appData.tasks.filter(t => t.category === 'SECONDARY');
-            if (secondaryTasks.length === 0) {
-                secContainer.innerHTML = `<p class="text-xs text-slate-500">لا توجد مهام ثانوية.</p>`;
-            } else {
-                secondaryTasks.forEach(task => secContainer.appendChild(createTaskCardElement(task)));
+                essentials.forEach(t => {
+                    const c = isTaskCompletedToday(t);
+                    const div = document.createElement('div');
+                    div.className = "p-3 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-between text-xs";
+                    div.innerHTML = `
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" ${c ? 'checked' : ''} onchange="toggleTask('${t.id}')" class="w-4 h-4 accent-yellow-500 rounded">
+                            <span class="${c ? 'line-through text-slate-500' : 'text-slate-200'} font-bold">${t.title}</span>
+                        </div>
+                    `;
+                    essContainer.appendChild(div);
+                });
             }
 
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('currentDateText').innerText = new Date().toLocaleDateString('ar-EG', options);
         }
 
-        function createTaskCardElement(task) {
-            const completedToday = isTaskCompletedToday(task);
-            const card = document.createElement('div');
-            card.className = `p-3.5 rounded-2xl border flex items-center justify-between transition ${completedToday ? 'bg-slate-900/40 border-slate-800 opacity-60' : 'bg-slate-900/90 border-slate-800'}`;
-            card.innerHTML = `
-                <div class="flex items-center gap-3">
-                    <input type="checkbox" ${completedToday ? 'checked' : ''} onchange="toggleTask('${task.id}')" class="w-4 h-4 accent-yellow-500 rounded cursor-pointer">
-                    <div>
-                        <span class="text-xs sm:text-sm font-semibold ${completedToday ? 'line-through text-slate-500' : 'text-slate-200'} block">${task.title}</span>
-                        ${task.time ? `<span class="text-[10px] text-slate-400">⏰ ${task.time}</span>` : ''}
-                    </div>
-                </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="editTask('${task.id}')" class="text-xs text-slate-400 hover:text-yellow-400 font-bold">تعديل</button>
-                    <button onclick="requestTaskDeletion('${task.id}')" class="text-xs text-red-400 hover:text-red-300 font-bold">حذف</button>
-                </div>
-            `;
-            return card;
-        }
-
-        // --- SCHEDULE LOGIC ---
-        function renderSchedule() {
-            const container = document.getElementById('scheduleContainer');
-            container.innerHTML = '';
-
-            if (appData.schedule.length === 0) {
-                container.innerHTML = `<div class="text-center py-8 text-slate-400 text-xs sm:text-sm">لا توجد مواعيد مضافة في الجدول.</div>`;
-                return;
-            }
-
-            appData.schedule.forEach(item => {
-                const card = document.createElement('div');
-                card.className = "p-4 bg-slate-900/90 border border-slate-800 rounded-2xl flex justify-between items-center text-xs sm:text-sm";
-                card.innerHTML = `
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="font-bold text-white text-sm sm:text-base">${item.title}</span>
-                            <span class="bg-slate-800 text-yellow-400 text-xs px-2.5 py-0.5 rounded-lg font-bold">${item.category}</span>
-                        </div>
-                        <span class="text-xs text-slate-400">⏰ ${item.time}</span>
-                    </div>
-                    <button onclick="deleteScheduleItem('${item.id}')" class="text-red-400 hover:text-red-300 font-bold text-xs">🗑️ حذف</button>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function saveScheduleItem() {
-            const title = document.getElementById('schedTitle').value.trim();
-            const time = document.getElementById('schedTime').value.trim();
-            const category = document.getElementById('schedCategory').value;
-
-            if (!title) return;
-            appData.schedule.push({ id: Date.now().toString(), title, time, category });
-            closeModal('scheduleModal');
-            saveState();
-            showToast('تمت إضافة الموعد للجدول', '📅');
-        }
-
-        function deleteScheduleItem(id) {
-            appData.schedule = appData.schedule.filter(s => String(s.id) !== String(id));
-            saveState();
-            showToast('تم حذف الموعد', '🗑️');
-        }
-
-        // --- DYNAMIC ANALYTICS CHARTS & REPORTS ---
-        let xpChartInstance = null;
-        let weightChartInstance = null;
-
         function renderAnalyticsPage() {
-            renderWeeklyReport();
-            
-            const xpCtx = document.getElementById('xpHistoryChart').getContext('2d');
-            if (xpChartInstance) xpChartInstance.destroy();
-            xpChartInstance = new Chart(xpCtx, {
-                type: 'line',
-                data: {
-                    labels: appData.activityDates.length ? appData.activityDates : ['اليوم'],
-                    datasets: [{ label: 'نقاط XP', data: appData.activityDates.length ? appData.activityDates.map((_, i) => (i + 1) * 20) : [appData.xp], borderColor: '#facc15', backgroundColor: 'rgba(250, 204, 21, 0.1)', fill: true, tension: 0.4 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-            });
+            const out = document.getElementById('analyticsReportOutput');
+            out.innerHTML = `<p class="text-xs text-slate-300">تقرير الالتزام التراكمي: إجمالي النقاط <strong>${appData.xp} XP</strong> والسلسلة <strong>${appData.streak} أيام</strong>.</p>`;
+        }
 
-            const wCtx = document.getElementById('weightHistoryChart').getContext('2d');
-            if (weightChartInstance) weightChartInstance.destroy();
-            weightChartInstance = new Chart(wCtx, {
-                type: 'line',
-                data: {
-                    labels: appData.profile.weight ? ['الوزن المسجل'] : ['لا يوجد سجل'],
-                    datasets: [{ label: 'الوزن (كغم)', data: appData.profile.weight ? [appData.profile.weight] : [0], borderColor: '#10b981', backgroundColor: 'rgba(16, 185,
+        function renderHallOfFame() {
+            const container = document.getElementById('hallOfFameCardsGrid');
+            container.innerHTML = `
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl text-center"><span class="text-xs text-slate-400 block mb-1">أطول سلسلة</span><span class="text-2xl font-black text-yellow-400">${appData.streak} أيام 🔥</span></div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl text-center"><span class="text-xs text-slate-400 block mb-1">المستوى</span><span class="text-2xl font-black text-amber-400">مستوى ${appData.level} 🚀</span></div>
+            `;
+        }
+
+        function renderTimeline() {
+            const container = document.getElementById('journeyTimelineContainer');
+            container.innerHTML = (appData.journeyLog || []).map(l => `<div class="p-2 bg-slate-900 rounded border border-slate-800 text-xs"><span class="text-yellow-400 font-bold">${l.date}</span>: ${l.title}</div>`).join('') || `<p class="text-xs text-slate-500">لا يوجد سجل زمني بعد.</p>`;
+        }
+
+        function updateUI() {
+            updateDashboard();
+            renderFullTasks();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUI();
+            scheduleNotificationsCheck();
+        });
+    </script>
+</body>
+</html>
