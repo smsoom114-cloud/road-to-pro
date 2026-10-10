@@ -130,14 +130,8 @@
                         <h2 class="text-xl sm:text-2xl font-bold text-white" id="dashboardGreeting">مرحباً بك! ركّز على إنجاز أهدافك اليومية.</h2>
                     </div>
                     <div class="flex gap-2 flex-wrap">
-                        <button onclick="openModal('taskModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-4 py-2.5 rounded-2xl shadow-lg shadow-yellow-500/20 text-xs sm:text-sm transition">
+                        <button onclick="openModal('taskModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-2xl shadow-lg shadow-yellow-500/20 text-xs sm:text-sm transition">
                             + مهمة جديدة
-                        </button>
-                        <button onclick="openModal('dailyReviewModal')" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold px-4 py-2.5 rounded-2xl shadow-lg shadow-emerald-500/20 text-xs sm:text-sm transition">
-                            📝 المراجعة اليومية
-                        </button>
-                        <button onclick="openModal('replayModal')" class="bg-purple-600 hover:bg-purple-500 text-white font-extrabold px-4 py-2.5 rounded-2xl shadow-lg shadow-purple-600/20 text-xs sm:text-sm transition">
-                            🎬 قصص Replay
                         </button>
                     </div>
                 </div>
@@ -305,7 +299,7 @@
                 <div class="flex flex-wrap justify-between items-center gap-4">
                     <div>
                         <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📋</span> إدارة المهام الشاملة</h2>
-                        <p class="text-xs sm:text-sm text-slate-300 mt-1">إضافة وفلترة وحذف مهامك اليومية.</p>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">إضافة وفلترة وتعديل وحذف مهامك اليومية.</p>
                     </div>
                     <button onclick="openModal('taskModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow-lg shadow-yellow-500/20">
                         + إضافة مهمة جديدة
@@ -434,46 +428,7 @@
         </div>
     </div>
 
-    <!-- Daily Review Modal -->
-    <div id="dailyReviewModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-3xl p-6 space-y-4 max-h-[90vh] overflow-y-auto">
-            <h3 class="text-lg font-bold text-white">📝 المراجعة اليومية</h3>
-            <div class="space-y-3 text-xs">
-                <div>
-                    <label class="text-slate-300 block mb-1">كمية شرب الماء (لتر):</label>
-                    <input type="number" step="0.5" id="revWater" value="2.5" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
-                </div>
-                <div>
-                    <label class="text-slate-300 block mb-1">ملخص التمرين والرياضة:</label>
-                    <input type="text" id="revWorkout" placeholder="تفاصيل التمرين..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
-                </div>
-                <div>
-                    <label class="text-slate-300 block mb-1">ملخص الدراسة والتعلم:</label>
-                    <input type="text" id="revStudy" placeholder="ساعات ومواضيع الدراسة..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white">
-                </div>
-                <div>
-                    <label class="text-slate-300 block mb-1">ملاحظات يومية حرة:</label>
-                    <textarea id="revNotes" rows="3" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-white" placeholder="اكتب ملاحظاتك..."></textarea>
-                </div>
-            </div>
-            <div class="flex gap-2">
-                <button onclick="saveDailyReview()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-2.5 rounded-xl">حفظ</button>
-                <button onclick="closeModal('dailyReviewModal')" class="px-4 bg-slate-800 text-slate-300 font-bold py-2.5 rounded-xl">إلغاء</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Replay Modal -->
-    <div id="replayModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-gradient-to-b from-purple-900/80 via-slate-900 to-slate-950 border border-purple-500/30 w-full max-w-md rounded-3xl p-6 text-center space-y-6">
-            <span class="text-xs bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full font-bold">🎬 RTP Replay</span>
-            <h3 class="text-2xl font-black text-white">قصة إنجازاتك</h3>
-            <div id="replayStoryContent" class="space-y-4 text-xs sm:text-sm text-slate-200"></div>
-            <button onclick="closeModal('replayModal')" class="w-full bg-purple-600 text-white font-extrabold py-3 rounded-xl shadow-lg">إغلاق</button>
-        </div>
-    </div>
-
-    <!-- Task Modal -->
+    <!-- Task Modal (Create & Edit) -->
     <div id="taskModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
             <h3 id="taskModalTitle" class="text-lg font-bold text-white mb-4">إضافة مهمة جديدة</h3>
@@ -747,12 +702,171 @@
 
         function openModal(id) {
             const m = document.getElementById(id);
-            if(m) { m.classList.remove('hidden'); m.classList.add('flex'); }
+            if(m) { 
+                if(id === 'taskModal' && !document.getElementById('editTaskId').value) {
+                    document.getElementById('taskModalTitle').innerText = 'إضافة مهمة جديدة';
+                    document.getElementById('taskTitleInput').value = '';
+                    document.getElementById('taskDescInput').value = '';
+                    document.getElementById('taskTimeInput').value = '';
+                }
+                m.classList.remove('hidden'); 
+                m.classList.add('flex'); 
+            }
         }
 
         function closeModal(id) {
             const m = document.getElementById(id);
-            if(m) { m.classList.add('hidden'); m.classList.remove('flex'); }
+            if(m) { 
+                m.classList.add('hidden'); 
+                m.classList.remove('flex'); 
+                if(id === 'taskModal') document.getElementById('editTaskId').value = '';
+            }
+        }
+
+        // --- TASKS (Create, Edit, Delete, Toggle) ---
+        function saveTask() {
+            const editId = document.getElementById('editTaskId').value;
+            const title = document.getElementById('taskTitleInput').value.trim();
+            const description = document.getElementById('taskDescInput').value.trim();
+            const category = document.getElementById('taskCategoryInput').value;
+            const time = document.getElementById('taskTimeInput').value.trim();
+
+            if (!title) { alert('أدخل عنوان المهمة'); return; }
+
+            if (editId) {
+                const task = appData.tasks.find(t => String(t.id) === String(editId));
+                if (task) {
+                    task.title = title;
+                    task.description = description;
+                    task.category = category;
+                    task.time = time;
+                    showToast('تم تعديل المهمة بنجاح ✏️', '✏️');
+                }
+            } else {
+                appData.tasks.push({ id: Date.now().toString(), title, description, category, time, completedDates: [] });
+                showToast('تمت إضافة المهمة بنجاح ➕', '➕');
+            }
+
+            closeModal('taskModal');
+            saveState();
+        }
+
+        function editTask(id) {
+            const task = appData.tasks.find(t => String(t.id) === String(id));
+            if (task) {
+                document.getElementById('editTaskId').value = task.id;
+                document.getElementById('taskTitleInput').value = task.title || '';
+                document.getElementById('taskDescInput').value = task.description || '';
+                document.getElementById('taskCategoryInput').value = task.category || 'PRIMARY';
+                document.getElementById('taskTimeInput').value = task.time || '';
+                document.getElementById('taskModalTitle').innerText = 'تعديل المهمة';
+                openModal('taskModal');
+            }
+        }
+
+        function deleteTask(id) {
+            appData.tasks = appData.tasks.filter(t => String(t.id) !== String(id));
+            saveState();
+            showToast('تم حذف المهمة 🗑️', '🗑️');
+        }
+
+        function toggleTask(id) {
+            const todayStr = getLocalDateString();
+            const t = appData.tasks.find(x => String(x.id) === String(id));
+            if (t) {
+                if (!Array.isArray(t.completedDates)) t.completedDates = [];
+                const index = t.completedDates.indexOf(todayStr);
+                if (index > -1) {
+                    t.completedDates.splice(index, 1);
+                } else {
+                    t.completedDates.push(todayStr);
+                    registerMeaningfulActivity();
+                    showToast('تم إنجاز المهمة! أحسنت ⭐', '🎉');
+                }
+                saveState();
+            }
+        }
+
+        function renderTaskItem(task) {
+            const completedToday = isTaskCompletedToday(task);
+            return `
+                <div class="p-3 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-between text-xs gap-2">
+                    <div class="flex items-center gap-2 overflow-hidden">
+                        <input type="checkbox" ${completedToday ? 'checked' : ''} onchange="toggleTask('${task.id}')" class="w-4 h-4 accent-yellow-500 rounded cursor-pointer shrink-0">
+                        <div class="truncate">
+                            <span class="${completedToday ? 'line-through text-slate-500' : 'text-slate-200'} font-bold block truncate">${task.title}</span>
+                            ${task.time ? `<span class="text-yellow-400/80 text-[10px] block">${task.time}</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 shrink-0">
+                        <button onclick="editTask('${task.id}')" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-amber-400 rounded-lg transition" title="تعديل">✏️</button>
+                        <button onclick="deleteTask('${task.id}')" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-red-400 rounded-lg transition" title="حذف">🗑️</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderFullTasks() {
+            const container = document.getElementById('fullTasksContainer');
+            container.innerHTML = '';
+            if (appData.tasks.length === 0) {
+                container.innerHTML = `<p class="text-center py-6 text-slate-500 text-xs">لا توجد مهام مسجلة بعد.</p>`;
+                return;
+            }
+
+            let filtered = appData.tasks;
+            if (appData.currentTaskFilter === 'PRIMARY') filtered = appData.tasks.filter(t => t.category === 'PRIMARY');
+            if (appData.currentTaskFilter === 'SECONDARY') filtered = appData.tasks.filter(t => t.category === 'SECONDARY');
+            if (appData.currentTaskFilter === 'COMPLETED') filtered = appData.tasks.filter(t => isTaskCompletedToday(t));
+            if (appData.currentTaskFilter === 'INCOMPLETE') filtered = appData.tasks.filter(t => !isTaskCompletedToday(t));
+
+            filtered.forEach(task => {
+                container.innerHTML += renderTaskItem(task);
+            });
+        }
+
+        function setTaskFilter(filter) {
+            appData.currentTaskFilter = filter;
+            renderFullTasks();
+        }
+
+        // --- DASHBOARD ---
+        function updateDashboard() {
+            updateStreakFromHistory();
+            const total = appData.tasks.length;
+            const completedToday = appData.tasks.filter(t => isTaskCompletedToday(t)).length;
+            const pct = total ? Math.round((completedToday / total) * 100) : 0;
+
+            document.getElementById('progressText').innerText = `(${completedToday}/${total}) ${pct}%`;
+            document.getElementById('progressBar').style.width = `${pct}%`;
+            document.getElementById('statCompletedToday').innerText = completedToday;
+            document.getElementById('statTotalXP').innerText = appData.xp;
+            document.getElementById('xpDisplay').innerText = appData.xp;
+            document.getElementById('levelDisplay').innerText = appData.level;
+            document.getElementById('streakCount').innerText = appData.streak;
+
+            const essContainer = document.getElementById('dashboardEssentialContainer');
+            const secContainer = document.getElementById('dashboardSecondaryContainer');
+            essContainer.innerHTML = '';
+            secContainer.innerHTML = '';
+
+            const essentials = appData.tasks.filter(t => t.category === 'PRIMARY');
+            const secondaries = appData.tasks.filter(t => t.category === 'SECONDARY');
+
+            if (essentials.length === 0) {
+                essContainer.innerHTML = `<p class="text-xs text-slate-500">لا توجد مهام أساسية مسجلة.</p>`;
+            } else {
+                essentials.forEach(t => { essContainer.innerHTML += renderTaskItem(t); });
+            }
+
+            if (secondaries.length === 0) {
+                secContainer.innerHTML = `<p class="text-xs text-slate-500">لا توجد مهام ثانوية مسجلة.</p>`;
+            } else {
+                secondaries.forEach(t => { secContainer.innerHTML += renderTaskItem(t); });
+            }
+
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDateText').innerText = new Date().toLocaleDateString('ar-EG', options);
         }
 
         // --- FOOTBALL MATRIX & RADAR CHART ---
@@ -871,7 +985,7 @@
             saveState();
         }
 
-        // --- DYNAMIC AI COACH ---
+        // --- AI COACH ---
         function renderAICoach() {
             const habits = document.getElementById('aiHabitsAnalysis');
             const predictions = document.getElementById('aiPredictionsAnalysis');
@@ -895,80 +1009,6 @@
                 <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-cyan-400 font-bold">⚡ أداء المهام</p><p class="text-slate-300 mt-1">تم إكمال ${completedToday} من أصل ${totalTasks} مهام اليوم.</p></div>
                 <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-emerald-400 font-bold">⚽ المستوى الكروي</p><p class="text-slate-300 mt-1">تم تسجيل ${appData.footballMatches.length} تمارين ومباريات.</p></div>
             `;
-        }
-
-        // --- TASKS ---
-        function saveTask() {
-            const title = document.getElementById('taskTitleInput').value.trim();
-            const description = document.getElementById('taskDescInput').value.trim();
-            const category = document.getElementById('taskCategoryInput').value;
-            const time = document.getElementById('taskTimeInput').value.trim();
-
-            if (!title) { alert('أدخل عنوان المهمة'); return; }
-
-            appData.tasks.push({ id: Date.now().toString(), title, description, category, time, completedDates: [] });
-            closeModal('taskModal');
-            saveState();
-            showToast('تمت إضافة المهمة بنجاح', '➕');
-        }
-
-        function toggleTask(id) {
-            const todayStr = getLocalDateString();
-            const t = appData.tasks.find(x => String(x.id) === String(id));
-            if (t) {
-                if (!Array.isArray(t.completedDates)) t.completedDates = [];
-                const index = t.completedDates.indexOf(todayStr);
-                if (index > -1) {
-                    t.completedDates.splice(index, 1);
-                } else {
-                    t.completedDates.push(todayStr);
-                    registerMeaningfulActivity();
-                    showToast('تم إنجاز المهمة! أحسنت ⭐', '🎉');
-                }
-                saveState();
-            }
-        }
-
-        function renderFullTasks() {
-            const container = document.getElementById('fullTasksContainer');
-            container.innerHTML = '';
-            if (appData.tasks.length === 0) {
-                container.innerHTML = `<p class="text-center py-6 text-slate-500 text-xs">لا توجد مهام مسجلة بعد.</p>`;
-                return;
-            }
-
-            let filtered = appData.tasks;
-            if (appData.currentTaskFilter === 'PRIMARY') filtered = appData.tasks.filter(t => t.category === 'PRIMARY');
-            if (appData.currentTaskFilter === 'SECONDARY') filtered = appData.tasks.filter(t => t.category === 'SECONDARY');
-            if (appData.currentTaskFilter === 'COMPLETED') filtered = appData.tasks.filter(t => isTaskCompletedToday(t));
-            if (appData.currentTaskFilter === 'INCOMPLETE') filtered = appData.tasks.filter(t => !isTaskCompletedToday(t));
-
-            filtered.forEach(task => {
-                const completedToday = isTaskCompletedToday(task);
-                const card = document.createElement('div');
-                card.className = "p-3 bg-slate-900 border border-slate-800 rounded-xl flex justify-between items-center text-xs";
-                card.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" ${completedToday ? 'checked' : ''} onchange="toggleTask('${task.id}')" class="w-4 h-4 accent-yellow-500 rounded">
-                        <div>
-                            <span class="${completedToday ? 'line-through text-slate-500' : 'text-white'} font-bold block">${task.title}</span>
-                            ${task.description ? `<span class="text-slate-400 text-[10px] block">${task.description}</span>` : ''}
-                        </div>
-                    </div>
-                    <button onclick="deleteTask('${task.id}')" class="text-red-400 font-bold">حذف</button>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function setTaskFilter(filter) {
-            appData.currentTaskFilter = filter;
-            renderFullTasks();
-        }
-
-        function deleteTask(id) {
-            appData.tasks = appData.tasks.filter(t => String(t.id) !== String(id));
-            saveState();
         }
 
         // --- SCHEDULE ---
@@ -1009,68 +1049,7 @@
             saveState();
         }
 
-        // --- DASHBOARD ---
-        function updateDashboard() {
-            updateStreakFromHistory();
-            const total = appData.tasks.length;
-            const completedToday = appData.tasks.filter(t => isTaskCompletedToday(t)).length;
-            const pct = total ? Math.round((completedToday / total) * 100) : 0;
-
-            document.getElementById('progressText').innerText = `(${completedToday}/${total}) ${pct}%`;
-            document.getElementById('progressBar').style.width = `${pct}%`;
-            document.getElementById('statCompletedToday').innerText = completedToday;
-            document.getElementById('statTotalXP').innerText = appData.xp;
-            document.getElementById('xpDisplay').innerText = appData.xp;
-            document.getElementById('levelDisplay').innerText = appData.level;
-            document.getElementById('streakCount').innerText = appData.streak;
-
-            const essContainer = document.getElementById('dashboardEssentialContainer');
-            const secContainer = document.getElementById('dashboardSecondaryContainer');
-            essContainer.innerHTML = '';
-            secContainer.innerHTML = '';
-
-            const essentials = appData.tasks.filter(t => t.category === 'PRIMARY');
-            const secondaries = appData.tasks.filter(t => t.category === 'SECONDARY');
-
-            if (essentials.length === 0) {
-                essContainer.innerHTML = `<p class="text-xs text-slate-500">لا توجد مهام أساسية مسجلة.</p>`;
-            } else {
-                essentials.forEach(t => {
-                    const c = isTaskCompletedToday(t);
-                    const div = document.createElement('div');
-                    div.className = "p-3 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-between text-xs";
-                    div.innerHTML = `
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" ${c ? 'checked' : ''} onchange="toggleTask('${t.id}')" class="w-4 h-4 accent-yellow-500 rounded">
-                            <span class="${c ? 'line-through text-slate-500' : 'text-slate-200'} font-bold">${t.title}</span>
-                        </div>
-                    `;
-                    essContainer.appendChild(div);
-                });
-            }
-
-            if (secondaries.length === 0) {
-                secContainer.innerHTML = `<p class="text-xs text-slate-500">لا توجد مهام ثانوية مسجلة.</p>`;
-            } else {
-                secondaries.forEach(t => {
-                    const c = isTaskCompletedToday(t);
-                    const div = document.createElement('div');
-                    div.className = "p-3 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-between text-xs";
-                    div.innerHTML = `
-                        <div class="flex items-center gap-2">
-                            <input type="checkbox" ${c ? 'checked' : ''} onchange="toggleTask('${t.id}')" class="w-4 h-4 accent-yellow-500 rounded">
-                            <span class="${c ? 'line-through text-slate-500' : 'text-slate-200'} font-bold">${t.title}</span>
-                        </div>
-                    `;
-                    secContainer.appendChild(div);
-                });
-            }
-
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('currentDateText').innerText = new Date().toLocaleDateString('ar-EG', options);
-        }
-
-        // --- ANALYTICS PAGE & CHARTS ---
+        // --- ANALYTICS ---
         function renderAnalyticsPage() {
             const out = document.getElementById('analyticsReportOutput');
             out.innerHTML = `<p class="text-xs text-slate-300">تقرير الالتزام التراكمي: إجمالي النقاط <strong>${appData.xp} XP</strong> والسلسلة <strong>${appData.streak} أيام</strong>.</p>`;
@@ -1177,7 +1156,7 @@
             saveState();
         }
 
-        // --- PROFILE & REVIEWS ---
+        // --- PROFILE ---
         function saveProfile(e) {
             e.preventDefault();
             appData.profile.name = document.getElementById('profName').value.trim();
@@ -1193,20 +1172,6 @@
                 document.getElementById('profWeight').value = appData.profile.weight || '';
                 document.getElementById('profGoals').value = appData.profile.goals || '';
             }
-        }
-
-        function saveDailyReview() {
-            const todayStr = getLocalDateString();
-            appData.dailyReviews[todayStr] = {
-                water: document.getElementById('revWater').value,
-                workout: document.getElementById('revWorkout').value,
-                study: document.getElementById('revStudy').value,
-                notes: document.getElementById('revNotes').value
-            };
-            registerMeaningfulActivity();
-            closeModal('dailyReviewModal');
-            saveState();
-            showToast('تم حفظ المراجعة اليومية 📝', '📝');
         }
 
         function renderHallOfFame() {
