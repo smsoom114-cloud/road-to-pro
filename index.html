@@ -67,7 +67,7 @@
         ::-webkit-scrollbar-thumb:hover { background: #334155; }
     </style>
 </head>
-<body class="p-3 sm:p-6 md:p-8 pb-24" onkeydown="handleKeyboardShortcuts(event)">
+<body class="p-3 sm:p-6 md:p-8 pb-24">
 
     <!-- Notification Toast Banner -->
     <div id="toastBanner" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 border border-yellow-500/50 text-white px-6 py-3 rounded-2xl shadow-2xl z-50 flex items-center gap-3 text-xs sm:text-sm font-bold pointer-events-none">
@@ -80,7 +80,7 @@
         <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
             <button id="soundToggleBtn" onclick="toggleAudio()" class="p-2.5 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-sm text-slate-200" title="كتم/تشغيل الصوت">🔊</button>
             <button onclick="requestNotificationPermission()" class="px-3.5 py-2 bg-amber-500/25 hover:bg-amber-500/35 border border-yellow-500/40 rounded-2xl transition text-xs sm:text-sm font-bold text-yellow-300 flex items-center gap-1.5 shadow-lg">🔔 تفعيل التنبيهات (3 مرات)</button>
-            <button onclick="openModal('searchModal')" class="px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5" title="بحث شامل (Ctrl+K)">🔍 بحث شامل</button>
+            <button onclick="openModal('searchModal')" class="px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5">🔍 بحث شامل</button>
             <button onclick="openModal('exportModal')" class="px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5">📥 التصدير</button>
 
             <div class="streak-badge px-3.5 py-1.5 rounded-2xl font-extrabold text-xs sm:text-sm flex items-center gap-1.5">
@@ -152,7 +152,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="dashboardWidgetsGrid">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
                         <span class="text-xs text-slate-400 block mb-1">المهام الأساسية المتبقية</span>
                         <span id="statRemainingEssential" class="text-xl font-extrabold text-amber-400">0</span>
@@ -194,7 +194,7 @@
                 <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
                     <div class="w-12 h-12 bg-yellow-500/10 text-yellow-400 rounded-2xl flex items-center justify-center text-2xl border border-yellow-500/30">🤖</div>
                     <div>
-                        <h2 class="text-xl font-bold text-white">المدرب الذكي AI Coach 2.0 & والأفكار الذكية</h2>
+                        <h2 class="text-xl font-bold text-white">المدرب الذكي AI Coach 2.0 & الأفكار الذكية</h2>
                         <p class="text-xs text-slate-400">تحليل حقيقي وشامل لسلوكياتك وأداء الالتزام التلقائي.</p>
                     </div>
                 </div>
@@ -280,9 +280,9 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-                    <div class="lg:col-span-5 flex flex-col items-center justify-center bg-slate-900/80 p-5 rounded-2xl border border-slate-800">
+                    <div class="lg:col-span-5 flex flex-col items-center justify-center bg-slate-900/80 p-5 rounded-2xl border border-slate-800 min-h-[300px]">
                         <span class="text-xs sm:text-sm font-bold text-slate-300 mb-2">مخطط رادار المهارات الحالية</span>
-                        <div class="w-full max-w-[260px] h-[260px]">
+                        <div class="w-full max-w-[260px] h-[260px] relative">
                             <canvas id="footballRadarChart"></canvas>
                         </div>
                     </div>
@@ -312,7 +312,7 @@
                     </button>
                 </div>
 
-                <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-4" id="taskFilterButtons">
+                <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-4">
                     <button onclick="setTaskFilter('ALL')" id="filterAll" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-yellow-500 text-slate-950">الكل</button>
                     <button onclick="setTaskFilter('PRIMARY')" id="filterPrimary" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">الأساسية ⭐</button>
                     <button onclick="setTaskFilter('SECONDARY')" id="filterSecondary" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">الثانوية 📌</button>
@@ -356,11 +356,11 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800">
                         <h3 class="text-xs font-bold text-slate-300 mb-3">سجل نقاط XP والتطور</h3>
-                        <div class="h-56"><canvas id="xpHistoryChart"></canvas></div>
+                        <div class="h-56 relative"><canvas id="xpHistoryChart"></canvas></div>
                     </div>
                     <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800">
                         <h3 class="text-xs font-bold text-slate-300 mb-3">سجل الوزن والانضباط</h3>
-                        <div class="h-56"><canvas id="weightHistoryChart"></canvas></div>
+                        <div class="h-56 relative"><canvas id="weightHistoryChart"></canvas></div>
                     </div>
                 </div>
             </section>
@@ -550,11 +550,30 @@
         </div>
     </div>
 
+    <!-- Schedule Modal -->
+    <div id="scheduleModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 space-y-3.5 text-xs sm:text-sm">
+            <h3 class="text-lg font-bold text-white">📅 إضافة موعد في الروتين</h3>
+            <div>
+                <label class="text-slate-300 block mb-1">الوقت (مثال: 05:00 م)</label>
+                <input type="text" id="schedTime" placeholder="مثال: 05:00 م" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+            </div>
+            <div>
+                <label class="text-slate-300 block mb-1">النشاط المخصص</label>
+                <input type="text" id="schedTitle" placeholder="مثال: تمرين اللياقة والسرعة" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+            </div>
+            <div class="flex gap-2 pt-2">
+                <button onclick="saveScheduleItem()" class="flex-1 bg-yellow-500 text-slate-950 font-extrabold py-3 rounded-xl">حفظ</button>
+                <button onclick="closeModal('scheduleModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Export Modal -->
     <div id="exportModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-3xl p-6 space-y-4 text-center">
             <h3 class="text-lg font-bold text-white">📥 مركز التصدير</h3>
-            <button onclick="exportUserData()" class="w-full bg-slate-800 text-white p-3 rounded-xl font-bold text-xs">تصدير كـ JSON (نسخة احتياطية)</button>
+            <button onclick="exportUserData()" class="w-full bg-slate-800 hover:bg-slate-700 text-white p-3 rounded-xl font-bold text-xs">تصدير كـ JSON (نسخة احتياطية)</button>
             <button onclick="closeModal('exportModal')" class="w-full bg-slate-800 text-slate-400 p-2 rounded-xl text-xs">إغلاق</button>
         </div>
     </div>
@@ -579,7 +598,11 @@
         };
 
         let appData = JSON.parse(localStorage.getItem('rtp_commercial_v12')) || CLEAN_NEW_USER_STATE;
-        let taskIdToDelete = null;
+
+        // Global Chart Instances
+        let footballRadarChartInstance = null;
+        let xpChartInstance = null;
+        let weightChartInstance = null;
 
         function getLocalDateString(d = new Date()) {
             const year = d.getFullYear();
@@ -667,7 +690,7 @@
             updateStreakFromHistory();
         }
 
-        // --- NOTIFICATION ENGINE (3 Times Daily) ---
+        // --- NOTIFICATION ENGINE ---
         function requestNotificationPermission() {
             if ('Notification' in window) {
                 Notification.requestPermission().then(permission => {
@@ -675,7 +698,7 @@
                         showToast('تم تفعيل تذكيرات المدرب الذكي (3 مرات يومياً) 🔔', '🔔');
                         scheduleNotificationsCheck();
                     } else {
-                        alert('يرجى السماح بالإشعارات من إعدادات المتصفح لتصلك التنبيهات.');
+                        alert('يرجى السماح بالإشعارات من إعدادات المتصفح تصلك التنبيهات.');
                     }
                 });
             } else {
@@ -690,15 +713,12 @@
                 const h = now.getHours();
                 const m = now.getMinutes();
 
-                // 1. 2:00 PM
                 if (h === 14 && m === 0) {
                     new Notification('🤖 المدرب الذكي (RTP)', { body: 'حان وقت المتابعة اليومية! هل أنجزت مهام النهار؟', icon: 'icon.png' });
                 }
-                // 2. 7:00 PM
                 if (h === 19 && m === 0) {
                     new Notification('⚽ المدرب الذكي (RTP)', { body: 'بقي بضع ساعات على المساء! الوقت ممتاز لإنجاز تمارينك ومهامك.', icon: 'icon.png' });
                 }
-                // 3. 10:00 PM
                 if (h === 22 && m === 0) {
                     new Notification('🔥 إنقاذ السلسلة (RTP)', { body: 'فرصتك الأخيرة اليوم! تفقد مهامك وحافظ على سلسلة الالتزام.', icon: 'icon.png' });
                 }
@@ -718,9 +738,11 @@
             if (tabId === 'roadToDream') renderRoadToDream();
             if (tabId === 'footballMatrix') renderFootballMatrix();
             if (tabId === 'tasks') renderFullTasks();
+            if (tabId === 'schedule') renderSchedule();
             if (tabId === 'analytics') renderAnalyticsPage();
             if (tabId === 'hallOfFame') renderHallOfFame();
             if (tabId === 'timeline') renderTimeline();
+            if (tabId === 'profile') loadProfileData();
         }
 
         function openModal(id) {
@@ -731,6 +753,122 @@
         function closeModal(id) {
             const m = document.getElementById(id);
             if(m) { m.classList.add('hidden'); m.classList.remove('flex'); }
+        }
+
+        // --- FOOTBALL MATRIX & RADAR CHART ---
+        function renderFootballMatrix() {
+            const container = document.getElementById('footballRecordsContainer');
+            const criteriaGrid = document.getElementById('matrixCriteriaGrid');
+            
+            container.innerHTML = '';
+            if (!Array.isArray(appData.footballMatches)) appData.footballMatches = [];
+
+            let totalMatches = appData.footballMatches.length;
+            let avgRating = 0;
+
+            if (totalMatches > 0) {
+                const sum = appData.footballMatches.reduce((acc, curr) => acc + (parseFloat(curr.rating) || 0), 0);
+                avgRating = (sum / totalMatches).toFixed(1);
+
+                document.getElementById('evalLevelTitle').innerText = `مستوى اللاعب: لاعب نشط (التقييم ${avgRating})`;
+                document.getElementById('evalLevelDesc').innerText = `بناءً على سجل ${totalMatches} تمارين ومباريات مسجلة.`;
+                document.getElementById('evalOvrScore').innerText = Math.round(avgRating * 10);
+
+                appData.footballMatches.forEach(m => {
+                    const item = document.createElement('div');
+                    item.className = "p-3 bg-slate-900 border border-slate-800 rounded-xl flex justify-between items-center text-xs";
+                    item.innerHTML = `
+                        <div>
+                            <span class="font-bold text-white block">${m.opponent}</span>
+                            <span class="text-slate-400">${m.minutes} دقيقة | التقييم: ${m.rating}</span>
+                        </div>
+                        <button onclick="deleteFootballMatch('${m.id}')" class="text-red-400 font-bold">حذف</button>
+                    `;
+                    container.appendChild(item);
+                });
+            } else {
+                document.getElementById('evalLevelTitle').innerText = 'مستوى اللاعب: في بداية الطريق';
+                document.getElementById('evalLevelDesc').innerText = 'سجل مباراتك أو تمرينك الأول لتفعيل التحليل التلقائي.';
+                document.getElementById('evalOvrScore').innerText = '0';
+                container.innerHTML = `<p class="text-center py-4 text-slate-500 text-xs">لا توجد مباريات مسجلة بعد.</p>`;
+            }
+
+            const baseVal = totalMatches > 0 ? Math.min(5, (avgRating / 2).toFixed(1)) : 0;
+            const criteria = [
+                { name: 'التمرير', val: baseVal },
+                { name: 'التسديد', val: baseVal },
+                { name: 'اللياقة', val: baseVal },
+                { name: 'التكتيك', val: baseVal },
+                { name: 'المراوغة', val: baseVal },
+                { name: 'الدفاع', val: baseVal }
+            ];
+
+            criteriaGrid.innerHTML = criteria.map(c => `
+                <div class="bg-slate-900 border border-slate-800 p-3 rounded-xl text-center">
+                    <span class="text-xs text-slate-400 block">${c.name}</span>
+                    <span class="text-lg font-black text-emerald-400">${c.val}/5</span>
+                </div>
+            `).join('');
+
+            renderFootballRadarChart([baseVal, baseVal, baseVal, baseVal, baseVal, baseVal]);
+        }
+
+        function renderFootballRadarChart(values) {
+            const canvas = document.getElementById('footballRadarChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (footballRadarChartInstance) footballRadarChartInstance.destroy();
+
+            footballRadarChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['التمرير', 'التسديد', 'اللياقة', 'التكتيك', 'المراوغة', 'الدفاع'],
+                    datasets: [{
+                        label: 'المستوى الحالي',
+                        data: values,
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                        borderColor: '#10b981',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#10b981'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            min: 0,
+                            max: 5,
+                            ticks: { display: false },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            pointLabels: { color: '#94a3b8', font: { family: 'Cairo', size: 10 } }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function saveFootballMatch() {
+            const opponent = document.getElementById('mOpponent').value.trim();
+            const minutes = document.getElementById('mMinutes').value;
+            const rating = document.getElementById('mRating').value;
+
+            if (!opponent) { alert('أدخل عنوان المباراة أو التمرين'); return; }
+
+            if (!Array.isArray(appData.footballMatches)) appData.footballMatches = [];
+            appData.footballMatches.push({ id: Date.now().toString(), opponent, minutes, rating, date: getLocalDateString() });
+
+            registerMeaningfulActivity();
+            closeModal('matchModal');
+            saveState();
+            showToast('تم تسجيل المباراة والتحليل بنجاح ⚽', '⚽');
+        }
+
+        function deleteFootballMatch(id) {
+            appData.footballMatches = appData.footballMatches.filter(m => String(m.id) !== String(id));
+            saveState();
         }
 
         // --- DYNAMIC AI COACH ---
@@ -752,7 +890,11 @@
 
             habits.innerHTML = `<p>• الالتزام الحالي: <strong>${appData.streak} أيام متتالية 🔥</strong></p><p>• نسبة إنجاز اليوم: <strong>${completionPct}%</strong></p>`;
             predictions.innerHTML = `<p>• الترقية للمستوى التالي تحتاج: <strong>${100 - (appData.xp % 100)} XP</strong></p>`;
-            insights.innerHTML = `<div class="p-3 bg-slate-950 rounded-xl border border-slate-800 col-span-3"><p class="text-amber-400 font-bold">💡 ملخص النشاط</p><p class="text-slate-300 mt-1">نسبة الإنجاز الحالية ${completionPct}%.</p></div>`;
+            insights.innerHTML = `
+                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-amber-400 font-bold">💡 الاستمرارية</p><p class="text-slate-300 mt-1">محافظة ممتازة على الالتزام لمدة ${appData.streak} أيام.</p></div>
+                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-cyan-400 font-bold">⚡ أداء المهام</p><p class="text-slate-300 mt-1">تم إكمال ${completedToday} من أصل ${totalTasks} مهام اليوم.</p></div>
+                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-emerald-400 font-bold">⚽ المستوى الكروي</p><p class="text-slate-300 mt-1">تم تسجيل ${appData.footballMatches.length} تمارين ومباريات.</p></div>
+            `;
         }
 
         // --- TASKS ---
@@ -794,14 +936,24 @@
                 container.innerHTML = `<p class="text-center py-6 text-slate-500 text-xs">لا توجد مهام مسجلة بعد.</p>`;
                 return;
             }
-            appData.tasks.forEach(task => {
+
+            let filtered = appData.tasks;
+            if (appData.currentTaskFilter === 'PRIMARY') filtered = appData.tasks.filter(t => t.category === 'PRIMARY');
+            if (appData.currentTaskFilter === 'SECONDARY') filtered = appData.tasks.filter(t => t.category === 'SECONDARY');
+            if (appData.currentTaskFilter === 'COMPLETED') filtered = appData.tasks.filter(t => isTaskCompletedToday(t));
+            if (appData.currentTaskFilter === 'INCOMPLETE') filtered = appData.tasks.filter(t => !isTaskCompletedToday(t));
+
+            filtered.forEach(task => {
                 const completedToday = isTaskCompletedToday(task);
                 const card = document.createElement('div');
                 card.className = "p-3 bg-slate-900 border border-slate-800 rounded-xl flex justify-between items-center text-xs";
                 card.innerHTML = `
                     <div class="flex items-center gap-2">
                         <input type="checkbox" ${completedToday ? 'checked' : ''} onchange="toggleTask('${task.id}')" class="w-4 h-4 accent-yellow-500 rounded">
-                        <span class="${completedToday ? 'line-through text-slate-500' : 'text-white'} font-bold">${task.title}</span>
+                        <div>
+                            <span class="${completedToday ? 'line-through text-slate-500' : 'text-white'} font-bold block">${task.title}</span>
+                            ${task.description ? `<span class="text-slate-400 text-[10px] block">${task.description}</span>` : ''}
+                        </div>
                     </div>
                     <button onclick="deleteTask('${task.id}')" class="text-red-400 font-bold">حذف</button>
                 `;
@@ -809,8 +961,51 @@
             });
         }
 
+        function setTaskFilter(filter) {
+            appData.currentTaskFilter = filter;
+            renderFullTasks();
+        }
+
         function deleteTask(id) {
             appData.tasks = appData.tasks.filter(t => String(t.id) !== String(id));
+            saveState();
+        }
+
+        // --- SCHEDULE ---
+        function saveScheduleItem() {
+            const time = document.getElementById('schedTime').value.trim();
+            const title = document.getElementById('schedTitle').value.trim();
+
+            if (!title) { alert('أدخل النشاط'); return; }
+
+            if (!Array.isArray(appData.schedule)) appData.schedule = [];
+            appData.schedule.push({ id: Date.now().toString(), time, title });
+            closeModal('scheduleModal');
+            saveState();
+        }
+
+        function renderSchedule() {
+            const container = document.getElementById('scheduleContainer');
+            container.innerHTML = '';
+            if (!Array.isArray(appData.schedule) || appData.schedule.length === 0) {
+                container.innerHTML = `<p class="text-center py-6 text-slate-500 text-xs">لا يوجد جدول يومي بعد.</p>`;
+                return;
+            }
+            appData.schedule.forEach(s => {
+                const div = document.createElement('div');
+                div.className = "p-3 bg-slate-900 border border-slate-800 rounded-xl flex justify-between items-center text-xs";
+                div.innerHTML = `
+                    <div>
+                        <span class="text-yellow-400 font-bold">${s.time}</span> — <span class="text-white">${s.title}</span>
+                    </div>
+                    <button onclick="deleteSchedule('${s.id}')" class="text-red-400 font-bold">حذف</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function deleteSchedule(id) {
+            appData.schedule = appData.schedule.filter(s => String(s.id) !== String(id));
             saveState();
         }
 
@@ -830,8 +1025,13 @@
             document.getElementById('streakCount').innerText = appData.streak;
 
             const essContainer = document.getElementById('dashboardEssentialContainer');
+            const secContainer = document.getElementById('dashboardSecondaryContainer');
             essContainer.innerHTML = '';
+            secContainer.innerHTML = '';
+
             const essentials = appData.tasks.filter(t => t.category === 'PRIMARY');
+            const secondaries = appData.tasks.filter(t => t.category === 'SECONDARY');
+
             if (essentials.length === 0) {
                 essContainer.innerHTML = `<p class="text-xs text-slate-500">لا توجد مهام أساسية مسجلة.</p>`;
             } else {
@@ -849,13 +1049,164 @@
                 });
             }
 
+            if (secondaries.length === 0) {
+                secContainer.innerHTML = `<p class="text-xs text-slate-500">لا توجد مهام ثانوية مسجلة.</p>`;
+            } else {
+                secondaries.forEach(t => {
+                    const c = isTaskCompletedToday(t);
+                    const div = document.createElement('div');
+                    div.className = "p-3 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-between text-xs";
+                    div.innerHTML = `
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" ${c ? 'checked' : ''} onchange="toggleTask('${t.id}')" class="w-4 h-4 accent-yellow-500 rounded">
+                            <span class="${c ? 'line-through text-slate-500' : 'text-slate-200'} font-bold">${t.title}</span>
+                        </div>
+                    `;
+                    secContainer.appendChild(div);
+                });
+            }
+
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('currentDateText').innerText = new Date().toLocaleDateString('ar-EG', options);
         }
 
+        // --- ANALYTICS PAGE & CHARTS ---
         function renderAnalyticsPage() {
             const out = document.getElementById('analyticsReportOutput');
             out.innerHTML = `<p class="text-xs text-slate-300">تقرير الالتزام التراكمي: إجمالي النقاط <strong>${appData.xp} XP</strong> والسلسلة <strong>${appData.streak} أيام</strong>.</p>`;
+
+            renderXPAnalyticsChart();
+            renderWeightAnalyticsChart();
+        }
+
+        function renderXPAnalyticsChart() {
+            const canvas = document.getElementById('xpHistoryChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (xpChartInstance) xpChartInstance.destroy();
+
+            xpChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['اليوم'],
+                    datasets: [{
+                        label: 'نقاط XP',
+                        data: [appData.xp],
+                        borderColor: '#facc15',
+                        backgroundColor: 'rgba(250, 204, 21, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
+                    }
+                }
+            });
+        }
+
+        function renderWeightAnalyticsChart() {
+            const canvas = document.getElementById('weightHistoryChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (weightChartInstance) weightChartInstance.destroy();
+
+            const weightVal = appData.profile.weight || 0;
+
+            weightChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['اليوم'],
+                    datasets: [{
+                        label: 'الوزن (كغم)',
+                        data: [weightVal],
+                        borderColor: '#38bdf8',
+                        backgroundColor: 'rgba(56, 189, 248, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
+                    }
+                }
+            });
+        }
+
+        // --- ROADMAP & MILESTONES ---
+        function saveRoadmapMilestone() {
+            const title = document.getElementById('msTitle').value.trim();
+            if (!title) return;
+
+            if (!Array.isArray(appData.roadmapNodes)) appData.roadmapNodes = [];
+            appData.roadmapNodes.push({ id: Date.now().toString(), title, completed: false });
+            closeModal('addMilestoneModal');
+            saveState();
+        }
+
+        function renderRoadToDream() {
+            const container = document.getElementById('roadmapNodesContainer');
+            container.innerHTML = '';
+            if (!Array.isArray(appData.roadmapNodes) || appData.roadmapNodes.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500">لا توجد محطات مسجلة بعد.</p>`;
+                return;
+            }
+            appData.roadmapNodes.forEach(node => {
+                const div = document.createElement('div');
+                div.className = "bg-slate-900 border border-slate-800 p-4 rounded-xl flex justify-between items-center text-xs";
+                div.innerHTML = `
+                    <span class="font-bold text-white">${node.title}</span>
+                    <button onclick="deleteRoadmapNode('${node.id}')" class="text-red-400">حذف</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function deleteRoadmapNode(id) {
+            appData.roadmapNodes = appData.roadmapNodes.filter(n => String(n.id) !== String(id));
+            saveState();
+        }
+
+        // --- PROFILE & REVIEWS ---
+        function saveProfile(e) {
+            e.preventDefault();
+            appData.profile.name = document.getElementById('profName').value.trim();
+            appData.profile.weight = parseFloat(document.getElementById('profWeight').value) || null;
+            appData.profile.goals = document.getElementById('profGoals').value.trim();
+            saveState();
+            showToast('تم حفظ البيانات الشخصية بنجاح 👤', '👤');
+        }
+
+        function loadProfileData() {
+            if (appData.profile) {
+                document.getElementById('profName').value = appData.profile.name || '';
+                document.getElementById('profWeight').value = appData.profile.weight || '';
+                document.getElementById('profGoals').value = appData.profile.goals || '';
+            }
+        }
+
+        function saveDailyReview() {
+            const todayStr = getLocalDateString();
+            appData.dailyReviews[todayStr] = {
+                water: document.getElementById('revWater').value,
+                workout: document.getElementById('revWorkout').value,
+                study: document.getElementById('revStudy').value,
+                notes: document.getElementById('revNotes').value
+            };
+            registerMeaningfulActivity();
+            closeModal('dailyReviewModal');
+            saveState();
+            showToast('تم حفظ المراجعة اليومية 📝', '📝');
         }
 
         function renderHallOfFame() {
@@ -863,17 +1214,21 @@
             container.innerHTML = `
                 <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl text-center"><span class="text-xs text-slate-400 block mb-1">أطول سلسلة</span><span class="text-2xl font-black text-yellow-400">${appData.streak} أيام 🔥</span></div>
                 <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl text-center"><span class="text-xs text-slate-400 block mb-1">المستوى</span><span class="text-2xl font-black text-amber-400">مستوى ${appData.level} 🚀</span></div>
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl text-center"><span class="text-xs text-slate-400 block mb-1">XP الكلي</span><span class="text-2xl font-black text-emerald-400">${appData.xp} XP ⭐</span></div>
             `;
         }
 
         function renderTimeline() {
             const container = document.getElementById('journeyTimelineContainer');
-            container.innerHTML = (appData.journeyLog || []).map(l => `<div class="p-2 bg-slate-900 rounded border border-slate-800 text-xs"><span class="text-yellow-400 font-bold">${l.date}</span>: ${l.title}</div>`).join('') || `<p class="text-xs text-slate-500">لا يوجد سجل زمني بعد.</p>`;
+            container.innerHTML = (appData.journeyLog || []).map(l => `<div class="p-2.5 bg-slate-900 rounded-xl border border-slate-800 text-xs"><span class="text-yellow-400 font-bold">${l.date}</span>: ${l.title}</div>`).join('') || `<p class="text-xs text-slate-500">لا يوجد سجل زمني بعد.</p>`;
         }
 
         function updateUI() {
             updateDashboard();
             renderFullTasks();
+            if (appData.profile.name) {
+                document.getElementById('headerUserName').innerText = appData.profile.name;
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
