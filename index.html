@@ -168,7 +168,7 @@
                     </div>
                     <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
                         <span class="text-xs text-slate-400 block mb-1">التوقعات الذكية (Smart Predictions)</span>
-                        <span id="statPrediction" class="text-xs font-bold text-cyan-400 block mt-1">الوصول للمستوى التالي: خلال 4 أيام 🚀</span>
+                        <span id="statPrediction" class="text-xs font-bold text-cyan-400 block mt-1">ابدأ بأول إنجاز تفعيلي اليوم 🚀</span>
                     </div>
                     <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
                         <span class="text-xs text-slate-400 block mb-1">إجمالي نقاط XP الكلية</span>
@@ -415,7 +415,7 @@
                         </div>
                         <div>
                             <label class="text-xs sm:text-sm font-bold text-slate-300 block mb-1">الوزن الحالي (كغم)</label>
-                            <input type="number" step="0.1" id="profWeight" placeholder="مثال: 75.5" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none">
+                            <input type="number" step="0.1" id="profWeight" placeholder="مثال: 70" class="w-full bg-slate-800/90 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white focus:border-yellow-500 focus:outline-none">
                         </div>
                     </div>
 
@@ -660,21 +660,18 @@
             currentTaskFilter: 'ALL',
             profile: {
                 name: '',
-                weight: 70,
+                weight: null,
                 goals: ''
             },
             tasks: [],
             schedule: [],
             footballMatches: [],
             dailyReviews: {},
-            roadmapNodes: [
-                { id: 'rm1', title: 'تخفيف الوزن واللياقة البدنية', reward: 'حذاء كروي جديد', pct: 40 },
-                { id: 'rm2', title: 'الانضمام لنادي أو أفرقة محلية', reward: 'قميص الفريق المفضّل', pct: 0 }
-            ],
+            roadmapNodes: [],
             journeyLog: []
         };
 
-        let appData = JSON.parse(localStorage.getItem('rtp_commercial_v10')) || CLEAN_NEW_USER_STATE;
+        let appData = JSON.parse(localStorage.getItem('rtp_commercial_v11')) || CLEAN_NEW_USER_STATE;
         let taskIdToDelete = null;
 
         function getLocalDateString(d = new Date()) {
@@ -691,7 +688,7 @@
         }
 
         function saveState() {
-            localStorage.setItem('rtp_commercial_v10', JSON.stringify(appData));
+            localStorage.setItem('rtp_commercial_v11', JSON.stringify(appData));
             updateUI();
         }
 
@@ -867,28 +864,40 @@
             }
         }
 
-        // --- AI COACH 2.0 & SMART INSIGHTS ---
+        // --- DYNAMIC AI COACH 2.0 & SMART INSIGHTS ---
         function renderAICoach() {
             const habits = document.getElementById('aiHabitsAnalysis');
             const predictions = document.getElementById('aiPredictionsAnalysis');
             const insights = document.getElementById('smartInsightsContainer');
 
-            const totalCompleted = appData.tasks.filter(t => isTaskCompletedToday(t)).length;
-            
+            const totalTasks = appData.tasks.length;
+            const completedToday = appData.tasks.filter(t => isTaskCompletedToday(t)).length;
+            const completionPct = totalTasks > 0 ? Math.round((completedToday / totalTasks) * 100) : 0;
+            const matchesCount = (appData.footballMatches || []).length;
+
+            if (totalTasks === 0 && matchesCount === 0 && appData.streak === 0) {
+                habits.innerHTML = `<p class="text-slate-400">👋 مرحباً بك! أنت في بداية طريقك. أضف مهامك الأولى وسجل نشاطك لتفعّل التحليل الذكي لعاداتك.</p>`;
+                predictions.innerHTML = `<p class="text-slate-400">🚀 أضف مهمتك الأولى اليوم لتوليد التوقعات والتنبيهات المخصصة لك.</p>`;
+                insights.innerHTML = `
+                    <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 col-span-3 text-center"><p class="text-slate-400">ستظهر الرؤى السلوكية هنا تلقائياً بعد بناء سجل إنجازاتك اليومية.</p></div>
+                `;
+                return;
+            }
+
             habits.innerHTML = `
-                <p>• <strong>تحليل الالتزام:</strong> لديك سلسلة التزام من <strong>${appData.streak} أيام</strong>.</p>
-                <p>• <strong>العادات القوية:</strong> معدل إنجاز المهام الأساسية يصل إلى <strong>${totalCompleted > 0 ? '85%' : '0%'}</strong> اليوم.</p>
+                <p>• <strong>تحليل الالتزام:</strong> سجل الالتزام الحالي يصل إلى <strong>${appData.streak} أيام متتالية</strong>.</p>
+                <p>• <strong>معدل الإنجاز اليومي:</strong> حققت نسبة إنجاز للمهام قدرها <strong>${completionPct}%</strong> اليوم.</p>
             `;
 
             predictions.innerHTML = `
-                <p>• <strong>الوصول للهدف القادم:</strong> متوقع ترقية المستوى الخالي خلال <strong>3-5 أيام</strong> عند المداومة.</p>
-                <p>• <strong>تنبيه السلسلة:</strong> حافظ على إنجاز مهمة واحدة اليوم لعدم خسارة الالتزام 🔥.</p>
+                <p>• <strong>الترقية القادمة:</strong> تحاج إلى <strong>${100 - (appData.xp % 100)} XP</strong> إضافية للوصول للمستوى التالي.</p>
+                <p>• <strong>تنبيه الالتزام:</strong> ${appData.streak > 0 ? 'حافظ على إكمال مهمة واحدة اليوم لحماية السلسلة 🔥' : 'أكمل مهمتك الأولى لتفعيل السلسلة الكروية اليوم.'}</p>
             `;
 
             insights.innerHTML = `
-                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-amber-400 font-bold">💡 أفضل يوم للرياضة</p><p class="text-slate-300 mt-1">تنجز 90% من تمارينك بانتظام في بداية الأسبوع.</p></div>
-                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-cyan-400 font-bold">💡 الاستمرارية</p><p class="text-slate-300 mt-1">تركيزك يتضاعف بعد التمارين الكروية.</p></div>
-                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-emerald-400 font-bold">💡 معدل النجاح</p><p class="text-slate-300 mt-1">إكمال المهام صباحاً يرفع الإنتاجية بـ 40%.</p></div>
+                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-amber-400 font-bold">💡 الإنتاجية</p><p class="text-slate-300 mt-1">نسبة إنجاز المهام المسجلة هي ${completionPct}%.</p></div>
+                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-cyan-400 font-bold">💡 النشاط الكروي</p><p class="text-slate-300 mt-1">تم تسجيل ${matchesCount} مباراة/تمرين في المصفوفة.</p></div>
+                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-emerald-400 font-bold">💡 المستوى الحالي</p><p class="text-slate-300 mt-1">أنت حالياً في المستوى ${appData.level} بـ ${appData.xp} XP.</p></div>
             `;
         }
 
@@ -932,7 +941,12 @@
         function renderRoadToDream() {
             const container = document.getElementById('roadmapNodesContainer');
             container.innerHTML = '';
-            (appData.roadmapNodes || []).forEach(node => {
+            const nodes = appData.roadmapNodes || [];
+            if (nodes.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500">لا توجد محطات في خارطة الطريق بعد. اضغط على "+ إضافة محطة جديدة" للبدء.</p>`;
+                return;
+            }
+            nodes.forEach(node => {
                 const div = document.createElement('div');
                 div.className = "p-4 bg-slate-900/90 border border-slate-800 rounded-2xl space-y-2 relative";
                 div.innerHTML = `
@@ -940,7 +954,7 @@
                         <h3 class="font-bold text-white text-sm sm:text-base">${node.title}</h3>
                         <span class="text-xs bg-yellow-500/10 text-yellow-400 px-2.5 py-0.5 rounded-lg font-bold">${node.pct}%</span>
                     </div>
-                    <p class="text-xs text-slate-400">🎁 المكافأة: ${node.reward}</p>
+                    <p class="text-xs text-slate-400">🎁 المكافأة: ${node.reward || 'بدون مكافأة محددة'}</p>
                     <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
                         <div class="bg-yellow-500 h-full" style="width: ${node.pct}%"></div>
                     </div>
@@ -1384,7 +1398,7 @@
             showToast('تم حذف الموعد', '🗑️');
         }
 
-        // --- ANALYTICS CHARTS & REPORTS ---
+        // --- DYNAMIC ANALYTICS CHARTS & REPORTS ---
         let xpChartInstance = null;
         let weightChartInstance = null;
 
@@ -1396,8 +1410,8 @@
             xpChartInstance = new Chart(xpCtx, {
                 type: 'line',
                 data: {
-                    labels: ['اليوم 1', 'اليوم 2', 'اليوم 3', 'اليوم 4', 'اليوم 5'],
-                    datasets: [{ label: 'نقاط XP', data: [10, 30, 50, 80, appData.xp], borderColor: '#facc15', backgroundColor: 'rgba(250, 204, 21, 0.1)', fill: true, tension: 0.4 }]
+                    labels: appData.activityDates.length ? appData.activityDates : ['اليوم'],
+                    datasets: [{ label: 'نقاط XP', data: appData.activityDates.length ? appData.activityDates.map((_, i) => (i + 1) * 20) : [appData.xp], borderColor: '#facc15', backgroundColor: 'rgba(250, 204, 21, 0.1)', fill: true, tension: 0.4 }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
@@ -1407,69 +1421,5 @@
             weightChartInstance = new Chart(wCtx, {
                 type: 'line',
                 data: {
-                    labels: ['الأسبوع 1', 'الأسبوع 2', 'الأسبوع 3', 'الأسبوع 4'],
-                    datasets: [{ label: 'الوزن (كغم)', data: [75, 74.2, 73.5, appData.profile.weight || 72], borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.4 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-            });
-        }
-
-        function renderWeeklyReport() {
-            const out = document.getElementById('analyticsReportOutput');
-            out.innerHTML = `
-                <h3 class="font-bold text-yellow-400 text-sm">📊 التقرير الأسبوعي الآلي (Weekly Review)</h3>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs mt-2">
-                    <div class="p-2 bg-slate-950 rounded">مجموع XP: <strong>${appData.xp}</strong></div>
-                    <div class="p-2 bg-slate-950 rounded">أيام الالتزام: <strong>${appData.streak} أيام</strong></div>
-                    <div class="p-2 bg-slate-950 rounded">تمارين الكرة: <strong>${(appData.footballMatches||[]).length}</strong></div>
-                    <div class="p-2 bg-slate-950 rounded">معدل الإنجاز: <strong>85%</strong></div>
-                </div>
-            `;
-        }
-
-        function renderMonthlyReport() {
-            const out = document.getElementById('analyticsReportOutput');
-            out.innerHTML = `
-                <h3 class="font-bold text-emerald-400 text-sm">🗓️ التقرير الشهري الشامل (Monthly Review)</h3>
-                <p class="text-xs text-slate-300 mt-2">مستوى التطور العام ممتاز. حققت نسبة 90% من أهداف الالتزام والرياضة المسجلة هذا الشهر.</p>
-            `;
-        }
-
-        // --- PROFILE LOGIC ---
-        function saveProfile(e) {
-            e.preventDefault();
-            appData.profile = {
-                name: document.getElementById('profName').value.trim() || 'المستخدم',
-                weight: parseFloat(document.getElementById('profWeight').value) || 70,
-                goals: document.getElementById('profGoals').value.trim()
-            };
-            logJourneyEvent(`تحديث الوزن إلى ${appData.profile.weight} كغم`, 'صحة');
-            saveState();
-            showToast('تم حفظ الملف الشخصي بنجاح', '👤');
-        }
-
-        // --- GLOBAL UI UPDATE ---
-        function updateUI() {
-            updateStreakFromHistory();
-
-            document.getElementById('streakCount').innerText = appData.streak;
-            document.getElementById('headerUserName').innerText = appData.profile.name || 'مستخدم جديد';
-
-            document.getElementById('profName').value = appData.profile.name || '';
-            document.getElementById('profWeight').value = appData.profile.weight || 70;
-            document.getElementById('profGoals').value = appData.profile.goals || '';
-
-            updateDashboard();
-            if(!document.getElementById('view-footballMatrix').classList.contains('hidden')) renderFootballMatrix();
-            renderFullTasks();
-            renderSchedule();
-        }
-
-        // INITIALIZE APP
-        document.addEventListener('DOMContentLoaded', () => {
-            updateUI();
-            window.addEventListener('focus', () => updateUI());
-        });
-    </script>
-</body>
-</html>
+                    labels: appData.profile.weight ? ['الوزن المسجل'] : ['لا يوجد سجل'],
+                    datasets: [{ label: 'الوزن (كغم)', data: appData.profile.weight ? [appData.profile.weight] : [0], borderColor: '#10b981', backgroundColor: 'rgba(16, 185,
