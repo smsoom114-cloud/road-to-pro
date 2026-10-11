@@ -353,7 +353,10 @@
                         <div class="h-56 relative"><canvas id="xpHistoryChart"></canvas></div>
                     </div>
                     <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800">
-                        <h3 class="text-xs font-bold text-slate-300 mb-3">سجل الوزن والانضباط</h3>
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xs font-bold text-slate-300">سجل الوزن والانضباط</h3>
+                            <span id="weightDiffBadge" class="text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-slate-800 text-slate-400">لا توجد بيانات كافية</span>
+                        </div>
                         <div class="h-56 relative"><canvas id="weightHistoryChart"></canvas></div>
                     </div>
                 </div>
@@ -544,6 +547,7 @@
             audioEnabled: true,
             currentTaskFilter: 'ALL',
             profile: { name: '', weight: null, goals: '' },
+            weightLog: [], // Array of { date: 'YYYY-MM-DD', weight: number }
             tasks: [],
             schedule: [],
             footballMatches: [],
@@ -723,7 +727,7 @@
             }
         }
 
-        // --- TASKS (Create, Edit, Delete, Toggle) ---
+        // --- TASKS ---
         function saveTask() {
             const editId = document.getElementById('editTaskId').value;
             const title = document.getElementById('taskTitleInput').value.trim();
@@ -869,7 +873,7 @@
             document.getElementById('currentDateText').innerText = new Date().toLocaleDateString('ar-EG', options);
         }
 
-        // --- FOOTBALL MATRIX & RADAR CHART ---
+        // --- FOOTBALL MATRIX ---
         function renderFootballMatrix() {
             const container = document.getElementById('footballRecordsContainer');
             const criteriaGrid = document.getElementById('matrixCriteriaGrid');
@@ -1049,7 +1053,7 @@
             saveState();
         }
 
-        // --- ANALYTICS ---
+        // --- ANALYTICS PAGE & WEIGHT TRACKER ---
         function renderAnalyticsPage() {
             const out = document.getElementById('analyticsReportOutput');
             out.innerHTML = `<p class="text-xs text-slate-300">تقرير الالتزام التراكمي: إجمالي النقاط <strong>${appData.xp} XP</strong> والسلسلة <strong>${appData.streak} أيام</strong>.</p>`;
@@ -1091,23 +1095,55 @@
 
         function renderWeightAnalyticsChart() {
             const canvas = document.getElementById('weightHistoryChart');
+            const badge = document.getElementById('weightDiffBadge');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             if (weightChartInstance) weightChartInstance.destroy();
 
-            const weightVal = appData.profile.weight || 0;
+            if (!Array.isArray(appData.weightLog)) appData.weightLog = [];
+
+            // If log is empty but profile has weight, initialize it
+            if (appData.weightLog.length === 0 && appData.profile.weight) {
+                appData.weightLog.push({ date: getLocalDateString(), weight: appData.profile.weight });
+            }
+
+            const labels = appData.weightLog.map(item => item.date);
+            const weights = appData.weightLog.map(item => item.weight);
+
+            // Calculate Difference
+            if (appData.weightLog.length >= 2) {
+                const initialWeight = appData.weightLog[0].weight;
+                const currentWeight = appData.weightLog[appData.weightLog.length - 1].weight;
+                const diff = (currentWeight - initialWeight).toFixed(1);
+
+                if (diff < 0) {
+                    badge.innerText = `نزول: ${diff} كغم 📉`;
+                    badge.className = "text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+                } else if (diff > 0) {
+                    badge.innerText = `زيادة: +${diff} كغم 📈`;
+                    badge.className = "text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30";
+                } else {
+                    badge.innerText = `الوزن ثابت (0 كغم)`;
+                    badge.className = "text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30";
+                }
+            } else if (appData.weightLog.length === 1) {
+                badge.innerText = `الوزن الحالي: ${appData.weightLog[0].weight} كغم`;
+                badge.className = "text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-slate-800 text-slate-300";
+            }
 
             weightChartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['اليوم'],
+                    labels: labels.length > 0 ? labels : ['اليوم'],
                     datasets: [{
                         label: 'الوزن (كغم)',
-                        data: [weightVal],
+                        data: weights.length > 0 ? weights : [0],
                         borderColor: '#38bdf8',
                         backgroundColor: 'rgba(56, 189, 248, 0.1)',
                         fill: true,
-                        tension: 0.3
+                        tension: 0.3,
+                        pointBackgroundColor: '#38bdf8',
+                        pointRadius: 4
                     }]
                 },
                 options: {
@@ -1156,14 +1192,34 @@
             saveState();
         }
 
-        // --- PROFILE ---
+        // --- PROFILE & WEIGHT LOGGING ---
         function saveProfile(e) {
             e.preventDefault();
-            appData.profile.name = document.getElementById('profName').value.trim();
-            appData.profile.weight = parseFloat(document.getElementById('profWeight').value) || null;
-            appData.profile.goals = document.getElementById('profGoals').value.trim();
+            const name = document.getElementById('profName').value.trim();
+            const newWeight = parseFloat(document.getElementById('profWeight').value) || null;
+            const goals = document.getElementById('profGoals').value.trim();
+
+            appData.profile.name = name;
+            appData.profile.goals = goals;
+
+            if (newWeight !== null) {
+                appData.profile.weight = newWeight;
+                if (!Array.isArray(appData.weightLog)) appData.weightLog = [];
+
+                const todayStr = getLocalDateString();
+                const lastEntry = appData.weightLog[appData.weightLog.length - 1];
+
+                // Check if recorded today, update it; otherwise add new date entry
+                if (lastEntry && lastEntry.date === todayStr) {
+                    lastEntry.weight = newWeight;
+                } else {
+                    appData.weightLog.push({ date: todayStr, weight: newWeight });
+                }
+                logJourneyEvent(`تحديث الوزن إلى ${newWeight} كغم`, 'تتبع الوزن');
+            }
+
             saveState();
-            showToast('تم حفظ البيانات الشخصية بنجاح 👤', '👤');
+            showToast('تم حفظ البيانات وسجل الوزن بنجاح 👤', '⚖️');
         }
 
         function loadProfileData() {
