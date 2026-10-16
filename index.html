@@ -608,12 +608,14 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        function addXP(amount) {
-            appData.xp += amount;
+        function updateXP(amount) {
+            appData.xp = Math.max(0, appData.xp + amount);
             const newLevel = Math.floor(appData.xp / 100) + 1;
             if (newLevel > appData.level) {
                 appData.level = newLevel;
                 showToast(`ترقية مستوى جديدة! المستوى ${newLevel} 🚀`, '🎉');
+            } else if (newLevel < appData.level) {
+                appData.level = newLevel;
             }
         }
 
@@ -669,7 +671,6 @@
             if (completedTodayCount >= 3) {
                 if (index === -1) {
                     appData.activityDates.push(todayStr);
-                    addXP(20);
                     logJourneyEvent('إنجاز 3 مهام وتحقيق الستريك اليومي 🔥', 'انضباط');
                     showToast('تم تفعيل الستريك اليومي بنجاح! 🔥 (أنجزت 3 مهام)', '🔥');
                 }
@@ -837,7 +838,7 @@
             });
         }
 
-        // --- TASKS & STREAK TOGGLE ---
+        // --- TASKS & STREAK & XP TOGGLE ---
         function saveTask() {
             const editId = document.getElementById('editTaskId').value;
             const title = document.getElementById('taskTitleInput').value.trim();
@@ -879,6 +880,11 @@
         }
 
         function deleteTask(id) {
+            const todayStr = getLocalDateString();
+            const task = appData.tasks.find(t => String(t.id) === String(id));
+            if (task && isTaskCompletedToday(task)) {
+                updateXP(-10);
+            }
             appData.tasks = appData.tasks.filter(t => String(t.id) !== String(id));
             recalculateDailyStreak();
             saveState();
@@ -893,10 +899,12 @@
                 const index = t.completedDates.indexOf(todayStr);
                 if (index > -1) {
                     t.completedDates.splice(index, 1);
-                    showToast('تم إلغاء إنجاز المهمة ↩️', '↩️');
+                    updateXP(-10);
+                    showToast('تم إلغاء إنجاز المهمة (-10 XP) ↩️', '↩️');
                 } else {
                     t.completedDates.push(todayStr);
-                    showToast('تم إنجاز المهمة! أحسنت ⭐', '🎉');
+                    updateXP(10);
+                    showToast('تم إنجاز المهمة! (+10 XP) ⭐', '🎉');
                 }
                 recalculateDailyStreak();
                 saveState();
