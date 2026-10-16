@@ -138,7 +138,7 @@
 
                 <div class="bg-slate-900/90 p-4 rounded-2xl border border-slate-800 mb-6">
                     <div class="flex justify-between text-xs sm:text-sm font-bold text-slate-200 mb-2">
-                        <span>نسبة إنجاز مهام اليوم</span>
+                        <span>نسبة إنجاز مهام اليوم (يجب إنجاز 3 مهام لتفعيل الستريك 🔥)</span>
                         <span id="progressText">(0/0) 0%</span>
                     </div>
                     <div class="w-full bg-slate-800 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-700/60">
@@ -157,7 +157,7 @@
                     </div>
                     <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
                         <span class="text-xs text-slate-400 block mb-1">التوقعات الذكية</span>
-                        <span id="statPrediction" class="text-xs font-bold text-cyan-400 block mt-1">ابدأ بأول إنجاز تفعيلي اليوم 🚀</span>
+                        <span id="statPrediction" class="text-xs font-bold text-cyan-400 block mt-1">أنجز 3 مهام لتأكيد الستريك اليومي 🚀</span>
                     </div>
                     <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl">
                         <span class="text-xs text-slate-400 block mb-1">إجمالي نقاط XP الكلية</span>
@@ -657,13 +657,27 @@
             return consecutiveCount;
         }
 
-        function registerMeaningfulActivity() {
+        // --- STREAK & 3 TASKS RULE ---
+        function recalculateDailyStreak() {
             const todayStr = getLocalDateString();
             if (!Array.isArray(appData.activityDates)) appData.activityDates = [];
-            if (!appData.activityDates.includes(todayStr)) {
-                appData.activityDates.push(todayStr);
-                addXP(20);
-                logJourneyEvent('إنجاز نشاط يومي معتمد', 'انضباط');
+            
+            // Count completed tasks today
+            const completedTodayCount = appData.tasks.filter(t => Array.isArray(t.completedDates) && t.completedDates.includes(todayStr)).length;
+            
+            const index = appData.activityDates.indexOf(todayStr);
+            if (completedTodayCount >= 3) {
+                if (index === -1) {
+                    appData.activityDates.push(todayStr);
+                    addXP(20);
+                    logJourneyEvent('إنجاز 3 مهام وتحقيق الستريك اليومي 🔥', 'انضباط');
+                    showToast('تم تفعيل الستريك اليومي بنجاح! 🔥 (أنجزت 3 مهام)', '🔥');
+                }
+            } else {
+                if (index > -1) {
+                    appData.activityDates.splice(index, 1);
+                    showToast('تم إلغاء الستريك اليومي لأن عدد المهام أقل من 3 ⚠️', '⚠️');
+                }
             }
             updateStreakFromHistory();
         }
@@ -823,7 +837,7 @@
             });
         }
 
-        // --- TASKS ---
+        // --- TASKS & STREAK TOGGLE ---
         function saveTask() {
             const editId = document.getElementById('editTaskId').value;
             const title = document.getElementById('taskTitleInput').value.trim();
@@ -866,6 +880,7 @@
 
         function deleteTask(id) {
             appData.tasks = appData.tasks.filter(t => String(t.id) !== String(id));
+            recalculateDailyStreak();
             saveState();
             showToast('تم حذف المهمة 🗑️', '🗑️');
         }
@@ -878,11 +893,12 @@
                 const index = t.completedDates.indexOf(todayStr);
                 if (index > -1) {
                     t.completedDates.splice(index, 1);
+                    showToast('تم إلغاء إنجاز المهمة ↩️', '↩️');
                 } else {
                     t.completedDates.push(todayStr);
-                    registerMeaningfulActivity();
                     showToast('تم إنجاز المهمة! أحسنت ⭐', '🎉');
                 }
+                recalculateDailyStreak();
                 saveState();
             }
         }
@@ -932,7 +948,7 @@
 
         // --- DASHBOARD ---
         function updateDashboard() {
-            updateStreakFromHistory();
+            recalculateDailyStreak();
             const total = appData.tasks.length;
             const completedToday = appData.tasks.filter(t => isTaskCompletedToday(t)).length;
             const pct = total ? Math.round((completedToday / total) * 100) : 0;
@@ -1074,7 +1090,6 @@
             if (!Array.isArray(appData.footballMatches)) appData.footballMatches = [];
             appData.footballMatches.push({ id: Date.now().toString(), opponent, minutes, rating, date: getLocalDateString() });
 
-            registerMeaningfulActivity();
             closeModal('matchModal');
             saveState();
             showToast('تم تسجيل المباراة والتحليل بنجاح ⚽', '⚽');
@@ -1097,12 +1112,12 @@
 
             if (totalTasks === 0 && appData.streak === 0) {
                 habits.innerHTML = `<p class="text-slate-400">👋 أهلاً بك! اضغط على "+ مهمة جديدة" وابدأ رحلتك لتفعيل التحليل التلقائي.</p>`;
-                predictions.innerHTML = `<p class="text-slate-400">🚀 أنجز أول مهمة اليوم لتوقع المستويات السريعة القادمة.</p>`;
-                insights.innerHTML = `<div class="p-3 bg-slate-950 rounded-xl border border-slate-800 col-span-3 text-center"><p class="text-slate-400">ستظهر الرؤى السلوكية هنا فور تسجيل أول نشاط.</p></div>`;
+                predictions.innerHTML = `<p class="text-slate-400">🚀 أنجز 3 مهام اليوم لتفعيل الستريك.</p>`;
+                insights.innerHTML = `<div class="p-3 bg-slate-950 rounded-xl border border-slate-800 col-span-3 text-center"><p class="text-slate-400">ستظهر الرؤى السلوكية هنا فور إنجاز مهامك.</p></div>`;
                 return;
             }
 
-            habits.innerHTML = `<p>• الالتزام الحالي: <strong>${appData.streak} أيام متتالية 🔥</strong></p><p>• نسبة إنجاز اليوم: <strong>${completionPct}%</strong></p>`;
+            habits.innerHTML = `<p>• الالتزام الحالي: <strong>${appData.streak} أيام متتالية 🔥</strong></p><p>• نسبة إنجاز اليوم: <strong>${completionPct}% (${completedToday}/3 مهام مطلوبة للستريك)</strong></p>`;
             predictions.innerHTML = `<p>• الترقية للمستوى التالي تحتاج: <strong>${100 - (appData.xp % 100)} XP</strong></p>`;
             insights.innerHTML = `
                 <div class="p-3 bg-slate-950 rounded-xl border border-slate-800"><p class="text-amber-400 font-bold">💡 الاستمرارية</p><p class="text-slate-300 mt-1">محافظة ممتازة على الالتزام لمدة ${appData.streak} أيام.</p></div>
