@@ -107,7 +107,7 @@
         <div class="flex items-center justify-between gap-2 bg-slate-900/90 p-2 rounded-2xl border border-slate-800 w-full min-w-[1100px]">
             <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📊 الرئيسية</button>
             <button onclick="switchTab('aiCoach')" id="tab-aiCoach" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">🤖 المدرب الذكي 2.0</button>
-            <button onclick="switchTab('focusSession')" id="tab-focusSession" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">⏱️ نمط التركيز</button>
+            <button onclick="switchTab('workout')" id="tab-workout" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">🏋️ جدول التمرين</button>
             <button onclick="switchTab('roadToDream')" id="tab-roadToDream" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">🗺️ خارطة الحلم</button>
             <button onclick="switchTab('footballMatrix')" id="tab-footballMatrix" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">⚽ مصفوفة الكرة</button>
             <button onclick="switchTab('tasks')" id="tab-tasks" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📋 إدارة المهام</button>
@@ -212,22 +212,20 @@
             </section>
         </div>
 
-        <!-- TAB 3: FOCUS SESSION MODE -->
-        <div id="view-focusSession" class="tab-view hidden space-y-6">
-            <section class="card-premium rounded-3xl p-6 text-center space-y-6 max-w-2xl mx-auto">
-                <div>
-                    <span class="text-xs bg-yellow-500/10 text-yellow-400 px-3 py-1 rounded-full font-bold border border-yellow-500/30">نمط التركيز العميق (Distraction-Free)</span>
-                    <h2 class="text-2xl font-black text-white mt-3" id="focusTaskTitle">جلسة تركيز</h2>
+        <!-- TAB 3: WORKOUT SCHEDULE (Replaces Focus Session) -->
+        <div id="view-workout" class="tab-view hidden space-y-6">
+            <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-6">
+                <div class="flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>🏋️</span> جدول التمرين والتمارين الرياضية</h2>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">إدارة جدول تمارينك البدنية وكرة القدم والتمارين الذاتية.</p>
+                    </div>
+                    <button onclick="openModal('workoutModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-4 py-2.5 rounded-xl text-xs sm:text-sm shadow-lg shadow-yellow-500/20">
+                        + إضافة تمرين جديد للجدول
+                    </button>
                 </div>
 
-                <div class="w-48 h-48 rounded-full border-4 border-yellow-500/40 mx-auto flex items-center justify-center bg-slate-950/80 shadow-2xl">
-                    <span id="focusTimerDisplay" class="text-4xl font-black text-white tracking-widest">25:00</span>
-                </div>
-
-                <div class="flex justify-center gap-3">
-                    <button id="focusStartBtn" onclick="toggleFocusTimer()" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-8 py-3 rounded-2xl shadow-lg transition">بدء الجلسة</button>
-                    <button onclick="resetFocusTimer()" class="bg-slate-800 text-slate-300 font-bold px-6 py-3 rounded-2xl transition">إعادة ضبط</button>
-                </div>
+                <div id="workoutTableContainer" class="space-y-3"></div>
             </section>
         </div>
 
@@ -466,6 +464,29 @@
         </div>
     </div>
 
+    <!-- Workout Modal -->
+    <div id="workoutModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 space-y-3.5 text-xs sm:text-sm">
+            <h3 class="text-lg font-bold text-white">🏋️ إضافة تمرين لجدولك</h3>
+            <div>
+                <label class="text-slate-300 block mb-1">اليوم / التوقيت *</label>
+                <input type="text" id="wDay" placeholder="مثال: السبت / الأثنين / الأربعاء" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+            </div>
+            <div>
+                <label class="text-slate-300 block mb-1">عنوان التمرين أو الروتين *</label>
+                <input type="text" id="wTitle" placeholder="مثال: تمارين الوزن الذاتي والبطن" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+            </div>
+            <div>
+                <label class="text-slate-300 block mb-1">التفاصيل والحركات (مثال: مجموعات وتكرارات)</label>
+                <textarea id="wDetails" rows="3" placeholder="تسلق الجبل، بلانك، ترايسيبس..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white"></textarea>
+            </div>
+            <div class="flex gap-2 pt-2">
+                <button onclick="saveWorkoutItem()" class="flex-1 bg-yellow-500 text-slate-950 font-extrabold py-3 rounded-xl">حفظ التمرين</button>
+                <button onclick="closeModal('workoutModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Match Modal -->
     <div id="matchModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative">
@@ -547,7 +568,11 @@
             audioEnabled: true,
             currentTaskFilter: 'ALL',
             profile: { name: '', weight: null, goals: '' },
-            weightLog: [], // Array of { date: 'YYYY-MM-DD', weight: number }
+            weightLog: [],
+            workoutSchedule: [
+                { id: '1', day: 'السبت / الإثنين / الأربعاء', title: 'تمارين الوزن الذاتي واللياقة', details: 'تسلق الجبل (Mountain Climbers) - بلانك مع لمس الكتف (Shoulder Taps) - غوص الترايسيبس (Triceps Dips)' },
+                { id: '2', day: 'الأحد / الثلاثاء / الخميس', title: 'تدريبات كرة القدم والمرونة', details: 'تحكم بالكرة - إطالات وتهدئة - رفع الذراعين الأماميين بالدمبل' }
+            ],
             tasks: [],
             schedule: [],
             footballMatches: [],
@@ -694,6 +719,7 @@
 
             if (tabId === 'dashboard') updateDashboard();
             if (tabId === 'aiCoach') renderAICoach();
+            if (tabId === 'workout') renderWorkoutTable();
             if (tabId === 'roadToDream') renderRoadToDream();
             if (tabId === 'footballMatrix') renderFootballMatrix();
             if (tabId === 'tasks') renderFullTasks();
@@ -713,6 +739,11 @@
                     document.getElementById('taskDescInput').value = '';
                     document.getElementById('taskTimeInput').value = '';
                 }
+                if(id === 'workoutModal') {
+                    document.getElementById('wDay').value = '';
+                    document.getElementById('wTitle').value = '';
+                    document.getElementById('wDetails').value = '';
+                }
                 m.classList.remove('hidden'); 
                 m.classList.add('flex'); 
             }
@@ -725,6 +756,51 @@
                 m.classList.remove('flex'); 
                 if(id === 'taskModal') document.getElementById('editTaskId').value = '';
             }
+        }
+
+        // --- WORKOUT SCHEDULE MANAGEMENT ---
+        function saveWorkoutItem() {
+            const day = document.getElementById('wDay').value.trim();
+            const title = document.getElementById('wTitle').value.trim();
+            const details = document.getElementById('wDetails').value.trim();
+
+            if (!day || !title) { alert('أدخل اليوم وعنوان التمرين'); return; }
+
+            if (!Array.isArray(appData.workoutSchedule)) appData.workoutSchedule = [];
+            appData.workoutSchedule.push({ id: Date.now().toString(), day, title, details });
+            
+            closeModal('workoutModal');
+            saveState();
+            showToast('تمت إضافة التمرين للجدول بنجاح 🏋️', '🏋️');
+        }
+
+        function deleteWorkoutItem(id) {
+            appData.workoutSchedule = appData.workoutSchedule.filter(w => String(w.id) !== String(id));
+            saveState();
+            showToast('تم حذف التمرين من الجدول 🗑️', '🗑️');
+        }
+
+        function renderWorkoutTable() {
+            const container = document.getElementById('workoutTableContainer');
+            container.innerHTML = '';
+            if (!Array.isArray(appData.workoutSchedule) || appData.workoutSchedule.length === 0) {
+                container.innerHTML = `<p class="text-center py-6 text-slate-500 text-xs">لا توجد تمارين مسجلة في الجدول بعد.</p>`;
+                return;
+            }
+
+            appData.workoutSchedule.forEach(w => {
+                const div = document.createElement('div');
+                div.className = "p-4 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs sm:text-sm";
+                div.innerHTML = `
+                    <div class="space-y-1">
+                        <span class="px-2.5 py-1 bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 rounded-lg font-bold text-xs inline-block">${w.day}</span>
+                        <h4 class="font-extrabold text-white text-base mt-1">${w.title}</h4>
+                        ${w.details ? `<p class="text-slate-300 text-xs leading-relaxed">${w.details}</p>` : ''}
+                    </div>
+                    <button onclick="deleteWorkoutItem('${w.id}')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-red-400 font-bold rounded-xl transition text-xs shrink-0">حذف</button>
+                `;
+                container.appendChild(div);
+            });
         }
 
         // --- TASKS ---
@@ -1053,7 +1129,7 @@
             saveState();
         }
 
-        // --- ANALYTICS PAGE & WEIGHT TRACKER ---
+        // --- ANALYTICS ---
         function renderAnalyticsPage() {
             const out = document.getElementById('analyticsReportOutput');
             out.innerHTML = `<p class="text-xs text-slate-300">تقرير الالتزام التراكمي: إجمالي النقاط <strong>${appData.xp} XP</strong> والسلسلة <strong>${appData.streak} أيام</strong>.</p>`;
@@ -1101,8 +1177,6 @@
             if (weightChartInstance) weightChartInstance.destroy();
 
             if (!Array.isArray(appData.weightLog)) appData.weightLog = [];
-
-            // If log is empty but profile has weight, initialize it
             if (appData.weightLog.length === 0 && appData.profile.weight) {
                 appData.weightLog.push({ date: getLocalDateString(), weight: appData.profile.weight });
             }
@@ -1110,7 +1184,6 @@
             const labels = appData.weightLog.map(item => item.date);
             const weights = appData.weightLog.map(item => item.weight);
 
-            // Calculate Difference
             if (appData.weightLog.length >= 2) {
                 const initialWeight = appData.weightLog[0].weight;
                 const currentWeight = appData.weightLog[appData.weightLog.length - 1].weight;
@@ -1209,7 +1282,6 @@
                 const todayStr = getLocalDateString();
                 const lastEntry = appData.weightLog[appData.weightLog.length - 1];
 
-                // Check if recorded today, update it; otherwise add new date entry
                 if (lastEntry && lastEntry.date === todayStr) {
                     lastEntry.weight = newWeight;
                 } else {
