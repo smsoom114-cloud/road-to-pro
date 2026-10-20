@@ -10,7 +10,7 @@
     <link rel="icon" type="image/png" href="icon.png">
     <meta name="theme-color" content="#090d16">
     
-    <!-- Tailwind CSS & Chart.js CDNs -->
+    <!-- Tailwind CSS & CDNs -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -78,7 +78,7 @@
     <!-- Header & Top Navigation Bar -->
     <header class="max-w-7xl mx-auto mb-6 flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
         <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
-            <button onclick="requestNotificationPermission()" class="px-3.5 py-2 bg-amber-500/25 hover:bg-amber-500/35 border border-yellow-500/40 rounded-2xl transition text-xs sm:text-sm font-bold text-yellow-300 flex items-center gap-1.5 shadow-lg">🔔 تفعيل التنبيهات (3 مرات)</button>
+            <button onclick="requestNotificationPermission()" class="px-3.5 py-2 bg-amber-500/25 hover:bg-amber-500/35 border border-yellow-500/40 rounded-2xl transition text-xs sm:text-sm font-bold text-yellow-300 flex items-center gap-1.5 shadow-lg">🔔 تفعيل التنبيهات</button>
             <button onclick="openModal('searchModal')" class="px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5">🔍 بحث شامل</button>
             <button onclick="openModal('exportModal')" class="px-3.5 py-2 bg-slate-800/90 hover:bg-slate-700 rounded-2xl border border-slate-700 transition text-xs sm:text-sm font-bold text-slate-200 flex items-center gap-1.5">📥 التصدير</button>
 
@@ -107,7 +107,7 @@
             <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn active px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📊 الرئيسية</button>
             <button onclick="switchTab('aiCoach')" id="tab-aiCoach" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">🤖 المدرب الذكي 3.0</button>
             <button onclick="switchTab('rewards')" id="tab-rewards" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">🎁 المتجر والمكافآت</button>
-            <button onclick="switchTab('bodyMeasurements')" id="tab-bodyMeasurements" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📐 قياسات الجسم</button>
+            <button onclick="switchTab('bodyMeasurements')" id="tab-bodyMeasurements" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">📐 قياسات الجسم والمقارنة</button>
             <button onclick="switchTab('cleanStreak')" id="tab-cleanStreak" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">🛡️ سلسلة النقاء</button>
             <button onclick="switchTab('workout')" id="tab-workout" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">🏋️ جدول التمرين</button>
             <button onclick="switchTab('footballMatrix')" id="tab-footballMatrix" class="tab-btn px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-300 hover:text-white flex-1 text-center">⚽ مصفوفة الكرة</button>
@@ -240,20 +240,96 @@
             </section>
         </div>
 
-        <!-- TAB 4: BODY MEASUREMENTS -->
+        <!-- TAB 4: BODY MEASUREMENTS & VISUAL BODY MAP (NEW SPLIT DESIGN) -->
         <div id="view-bodyMeasurements" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-6">
                 <div class="flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
                     <div>
-                        <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📐</span> قياسات الجسم (البطن، الذراع، الأرجل)</h2>
-                        <p class="text-xs sm:text-sm text-slate-300 mt-1">تتبع التغيرات الحقيقية في قياساتك بدقة ووضوح.</p>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📐</span> تتبع قياسات الجسم والمقارنة الشهرية</h2>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">عرض بصري ومقارنات بالأرقام للتغير في حجم البطن والأطراف.</p>
                     </div>
                     <button onclick="openModal('measureModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-4 py-2.5 rounded-xl text-xs sm:text-sm shadow-lg shadow-yellow-500/20">
-                        + تسجيل قياس جديد
+                        + تسجيل قياس شهري جديد
                     </button>
                 </div>
 
-                <div id="bodyMeasurementsContainer" class="space-y-3"></div>
+                <!-- Two Part Layout -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    
+                    <!-- Part 1: Visual Body Model Display -->
+                    <div class="lg:col-span-5 bg-slate-900/90 border border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center relative min-h-[460px]">
+                        <h3 class="text-xs sm:text-sm font-bold text-amber-400 mb-4 flex items-center gap-2"><span>🧍</span> خريطة القياسات البصرية الحالية</h3>
+                        
+                        <!-- SVG Human Silhouette with Measurement Overlay Indicators -->
+                        <div class="relative w-64 h-96 flex items-center justify-center">
+                            <!-- Simple Human Silhouette SVG -->
+                            <svg viewBox="0 0 200 400" class="w-full h-full opacity-35 text-slate-400 fill-current">
+                                <!-- Head -->
+                                <circle cx="100" cy="35" r="22" />
+                                <!-- Neck -->
+                                <rect x="93" y="58" width="14" height="12" rx="3" />
+                                <!-- Torso / Belly -->
+                                <path d="M 65 70 L 135 70 L 128 190 L 72 190 Z" rx="10" />
+                                <!-- Right Arm -->
+                                <path d="M 58 72 L 35 180 L 48 185 L 68 85 Z" />
+                                <!-- Left Arm -->
+                                <path d="M 142 72 L 165 180 L 152 185 L 132 85 Z" />
+                                <!-- Right Leg -->
+                                <path d="M 73 195 L 65 370 L 85 370 L 96 195 Z" />
+                                <!-- Left Leg -->
+                                <path d="M 104 195 L 115 370 L 135 370 L 127 195 Z" />
+                            </svg>
+
+                            <!-- Overlay Indicators (Values dynamically mapped) -->
+                            <!-- Arm Right -->
+                            <div class="absolute top-[28%] right-[-10px] bg-slate-950/90 border border-amber-500/50 px-2 py-1 rounded-xl text-[10px] font-bold text-amber-300 text-center shadow-lg">
+                                ذراع أيمن<br><span id="bodyMapArmR" class="text-xs text-white">--</span>
+                            </div>
+
+                            <!-- Arm Left -->
+                            <div class="absolute top-[28%] left-[-10px] bg-slate-950/90 border border-amber-500/50 px-2 py-1 rounded-xl text-[10px] font-bold text-amber-300 text-center shadow-lg">
+                                ذراع أيسر<br><span id="bodyMapArmL" class="text-xs text-white">--</span>
+                            </div>
+
+                            <!-- Belly -->
+                            <div class="absolute top-[42%] left-[28%] -translate-x-1/2 bg-slate-950/95 border border-cyan-500/60 px-3 py-1.5 rounded-2xl text-[11px] font-extrabold text-cyan-300 text-center shadow-2xl z-10">
+                                الخصر / البطن<br><span id="bodyMapBelly" class="text-sm text-white font-black">--</span>
+                            </div>
+
+                            <!-- Leg Right -->
+                            <div class="absolute top-[68%] right-[-10px] bg-slate-950/90 border border-emerald-500/50 px-2 py-1 rounded-xl text-[10px] font-bold text-emerald-300 text-center shadow-lg">
+                                ساق يمنى<br><span id="bodyMapLegR" class="text-xs text-white">--</span>
+                            </div>
+
+                            <!-- Leg Left -->
+                            <div class="absolute top-[68%] left-[-10px] bg-slate-950/90 border border-emerald-500/50 px-2 py-1 rounded-xl text-[10px] font-bold text-emerald-300 text-center shadow-lg">
+                                ساق يسرى<br><span id="bodyMapLegL" class="text-xs text-white">--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 2: Monthly Number Comparisons & Historical Table -->
+                    <div class="lg:col-span-7 space-y-5">
+                        <!-- Quick Stats Diff Cards -->
+                        <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-3xl space-y-3">
+                            <h3 class="text-xs sm:text-sm font-bold text-slate-200 flex justify-between items-center">
+                                <span>📊 التحليل والمقارنة التلقائية بأرقام القياسات:</span>
+                                <span id="lastMeasureDateBadge" class="text-[10px] text-yellow-400 bg-yellow-500/10 px-2 py-0.5 rounded-full border border-yellow-500/20">آخر تسجيل: --</span>
+                            </h3>
+
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="measureDiffCardsGrid">
+                                <!-- Cards dynamically created in JS -->
+                            </div>
+                        </div>
+
+                        <!-- Full History Table -->
+                        <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-3xl space-y-3">
+                            <h3 class="text-xs sm:text-sm font-bold text-slate-200">📜 السجل الشهري المباشر للقياسات:</h3>
+                            <div id="bodyMeasurementsContainer" class="space-y-2 max-h-60 overflow-y-auto"></div>
+                        </div>
+                    </div>
+
+                </div>
             </section>
         </div>
 
@@ -471,6 +547,45 @@
 
     <!-- MODALS SECTION -->
 
+    <!-- Body Measurement Modal (Updated for Detailed Limbs) -->
+    <div id="measureModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-3xl p-6 relative space-y-3.5 text-xs sm:text-sm">
+            <h3 class="text-lg font-bold text-white">📐 تسجيل القياسات الشهرية التفصيلية (سم)</h3>
+            
+            <div>
+                <label class="text-slate-300 block mb-1 font-bold">حجم الخصر / البطن (سم)</label>
+                <input type="number" step="0.1" id="mBelly" placeholder="مثال: 80" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="text-slate-300 block mb-1 font-bold">الذراع الأيمن (سم)</label>
+                    <input type="number" step="0.1" id="mArmR" placeholder="مثال: 32" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+                </div>
+                <div>
+                    <label class="text-slate-300 block mb-1 font-bold">الذراع الأيسر (سم)</label>
+                    <input type="number" step="0.1" id="mArmL" placeholder="مثال: 32" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="text-slate-300 block mb-1 font-bold">الساق اليمنى (سم)</label>
+                    <input type="number" step="0.1" id="mLegR" placeholder="مثال: 50" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+                </div>
+                <div>
+                    <label class="text-slate-300 block mb-1 font-bold">الساق اليسرى (سم)</label>
+                    <input type="number" step="0.1" id="mLegL" placeholder="مثال: 50" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
+                </div>
+            </div>
+
+            <div class="flex gap-2 pt-2">
+                <button onclick="saveBodyMeasurement()" class="flex-1 bg-yellow-500 text-slate-950 font-extrabold py-3 rounded-xl">حفظ القياس الشهري</button>
+                <button onclick="closeModal('measureModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Search Modal -->
     <div id="searchModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-xl rounded-3xl p-6 space-y-4">
@@ -496,29 +611,6 @@
             <div class="flex gap-2 pt-2">
                 <button onclick="saveRewardItem()" class="flex-1 bg-yellow-500 text-slate-950 font-extrabold py-3 rounded-xl">حفظ المكافأة</button>
                 <button onclick="closeModal('rewardModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl">إلغاء</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Body Measurement Modal -->
-    <div id="measureModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-3xl p-6 relative space-y-3.5 text-xs sm:text-sm">
-            <h3 class="text-lg font-bold text-white">📐 تسجيل قياسات الجسم</h3>
-            <div>
-                <label class="text-slate-300 block mb-1 font-bold">حجم البطن / الخصر (سم)</label>
-                <input type="number" step="0.1" id="mBelly" placeholder="مثال: 80" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-            </div>
-            <div>
-                <label class="text-slate-300 block mb-1 font-bold">حجم الذراع (سم)</label>
-                <input type="number" step="0.1" id="mArms" placeholder="مثال: 32" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-            </div>
-            <div>
-                <label class="text-slate-300 block mb-1 font-bold">حجم الأرجل / الفخذ (سم)</label>
-                <input type="number" step="0.1" id="mLegs" placeholder="مثال: 50" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white">
-            </div>
-            <div class="flex gap-2 pt-2">
-                <button onclick="saveBodyMeasurement()" class="flex-1 bg-yellow-500 text-slate-950 font-extrabold py-3 rounded-xl">حفظ القياسات</button>
-                <button onclick="closeModal('measureModal')" class="px-5 bg-slate-800 text-slate-300 font-bold py-3 rounded-xl">إلغاء</button>
             </div>
         </div>
     </div>
@@ -763,14 +855,16 @@
             updateStreakFromHistory();
         }
 
-        // --- BODY MEASUREMENTS LOGIC ---
+        // --- BODY MEASUREMENTS & VISUAL BODY MAP ---
         function saveBodyMeasurement() {
-            const belly = document.getElementById('mBelly').value.trim();
-            const arms = document.getElementById('mArms').value.trim();
-            const legs = document.getElementById('mLegs').value.trim();
+            const belly = parseFloat(document.getElementById('mBelly').value) || null;
+            const armR = parseFloat(document.getElementById('mArmR').value) || null;
+            const armL = parseFloat(document.getElementById('mArmL').value) || null;
+            const legR = parseFloat(document.getElementById('mLegR').value) || null;
+            const legL = parseFloat(document.getElementById('mLegL').value) || null;
 
-            if (!belly && !arms && !legs) {
-                alert('يرجى أدخل قياس واحد على الأقل (سم)');
+            if (!belly && !armR && !armL && !legR && !legL) {
+                alert('يرجى إدخال قياس واحد على الأقل');
                 return;
             }
 
@@ -779,43 +873,100 @@
                 id: Date.now().toString(),
                 date: getLocalDateString(),
                 belly: belly || '-',
-                arms: arms || '-',
-                legs: legs || '-'
+                armR: armR || '-',
+                armL: armL || '-',
+                legR: legR || '-',
+                legL: legL || '-'
             });
 
             closeModal('measureModal');
             saveState();
-            showToast('تم تسجيل القياسات بنجاح 📐', '📐');
+            showToast('تم تسجيل القياس الشهري والمقارنة بنجاح 📐', '📐');
         }
 
         function deleteBodyMeasurement(id) {
             appData.bodyMeasurements = appData.bodyMeasurements.filter(m => String(m.id) !== String(id));
             saveState();
-            showToast('تم حذف السجل 🗑️', '🗑️');
+            showToast('تم حذف سجل القياس 🗑️', '🗑️');
         }
 
         function renderBodyMeasurements() {
             const container = document.getElementById('bodyMeasurementsContainer');
+            const diffGrid = document.getElementById('measureDiffCardsGrid');
             container.innerHTML = '';
+            diffGrid.innerHTML = '';
 
             if (!Array.isArray(appData.bodyMeasurements) || appData.bodyMeasurements.length === 0) {
-                container.innerHTML = `<p class="text-center py-6 text-slate-500 text-xs">لا توجد قياسات مسجلة بعد. اضغط على "+ تسجيل قياس جديد" للبدء.</p>`;
+                document.getElementById('bodyMapBelly').innerText = '--';
+                document.getElementById('bodyMapArmR').innerText = '--';
+                document.getElementById('bodyMapArmL').innerText = '--';
+                document.getElementById('bodyMapLegR').innerText = '--';
+                document.getElementById('bodyMapLegL').innerText = '--';
+                document.getElementById('lastMeasureDateBadge').innerText = 'آخر تسجيل: لا يوجد';
+
+                container.innerHTML = `<p class="text-center py-6 text-slate-500 text-xs">لا توجد قياسات مسجلة بعد. اضغط على "+ تسجيل قياس شهري جديد".</p>`;
+                diffGrid.innerHTML = `<p class="col-span-full text-slate-500 text-xs text-center py-2">سجل أول قياسين لتفعيل مقارنة الأرقام والتغيرات الشهرية.</p>`;
                 return;
             }
 
+            // Update Visual Body Map with latest values
+            const latest = appData.bodyMeasurements[0];
+            document.getElementById('bodyMapBelly').innerText = latest.belly !== '-' ? `${latest.belly} سم` : '--';
+            document.getElementById('bodyMapArmR').innerText = latest.armR !== '-' ? `${latest.armR} سم` : '--';
+            document.getElementById('bodyMapArmL').innerText = latest.armL !== '-' ? `${latest.armL} سم` : '--';
+            document.getElementById('bodyMapLegR').innerText = latest.legR !== '-' ? `${latest.legR} سم` : '--';
+            document.getElementById('bodyMapLegL').innerText = latest.legL !== '-' ? `${latest.legL} سم` : '--';
+            document.getElementById('lastMeasureDateBadge').innerText = `آخر تسجيل: ${latest.date}`;
+
+            // Compute Difference with Previous Entry (Numeric Diff)
+            const prev = appData.bodyMeasurements.length > 1 ? appData.bodyMeasurements[1] : null;
+
+            const fields = [
+                { key: 'belly', label: 'الخصر / البطن' },
+                { key: 'armR', label: 'الذراع الأيمن' },
+                { key: 'armL', label: 'الذراع الأيسر' },
+                { key: 'legR', label: 'الساق اليمنى' },
+                { key: 'legL', label: 'الساق اليسرى' }
+            ];
+
+            fields.forEach(f => {
+                const currentVal = latest[f.key];
+                let diffBadge = `<span class="text-slate-500 font-bold">لا توجد مقارنة</span>`;
+
+                if (prev && currentVal !== '-' && prev[f.key] !== '-') {
+                    const diff = (parseFloat(currentVal) - parseFloat(prev[f.key])).toFixed(1);
+                    if (diff > 0) {
+                        diffBadge = `<span class="text-amber-400 font-black">+${diff} سم 📈</span>`;
+                    } else if (diff < 0) {
+                        diffBadge = `<span class="text-emerald-400 font-black">${diff} سم 📉</span>`;
+                    } else {
+                        diffBadge = `<span class="text-cyan-400 font-black">ثابت (0 سم) ➖</span>`;
+                    }
+                }
+
+                diffGrid.innerHTML += `
+                    <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 text-center">
+                        <span class="text-[11px] text-slate-400 block mb-1">${f.label}</span>
+                        <span class="text-sm font-black text-white block">${currentVal !== '-' ? currentVal + ' سم' : '--'}</span>
+                        <div class="text-[10px] mt-1">${diffBadge}</div>
+                    </div>
+                `;
+            });
+
+            // Populate Historical List Table
             appData.bodyMeasurements.forEach(m => {
                 const div = document.createElement('div');
-                div.className = "p-4 bg-slate-900 border border-slate-800 rounded-2xl flex flex-wrap justify-between items-center text-xs sm:text-sm gap-3";
+                div.className = "p-3 bg-slate-950 border border-slate-800 rounded-2xl flex flex-wrap justify-between items-center text-xs gap-2";
                 div.innerHTML = `
-                    <div class="space-y-1">
-                        <span class="text-xs font-bold text-yellow-400 block">${m.date}</span>
-                        <div class="flex gap-4 text-slate-200 flex-wrap">
-                            <span>البطن/الخصر: <strong class="text-white">${m.belly} سم</strong></span>
-                            <span>الذراع: <strong class="text-white">${m.arms} سم</strong></span>
-                            <span>الأرجل/الفخذ: <strong class="text-white">${m.legs} سم</strong></span>
+                    <div>
+                        <span class="text-yellow-400 font-bold block mb-0.5">${m.date}</span>
+                        <div class="flex gap-3 text-slate-300 flex-wrap text-[11px]">
+                            <span>البطن: <strong>${m.belly} سم</strong></span>
+                            <span>ذراع (يمين/يسار): <strong>${m.armR} / ${m.armL} سم</strong></span>
+                            <span>ساق (يمين/يسار): <strong>${m.legR} / ${m.legL} سم</strong></span>
                         </div>
                     </div>
-                    <button onclick="deleteBodyMeasurement('${m.id}')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-red-400 font-bold rounded-xl transition text-xs">🗑️ حذف</button>
+                    <button onclick="deleteBodyMeasurement('${m.id}')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-red-400 font-bold rounded-xl text-xs">حذف</button>
                 `;
                 container.appendChild(div);
             });
@@ -967,8 +1118,10 @@
                 }
                 if(id === 'measureModal') {
                     document.getElementById('mBelly').value = '';
-                    document.getElementById('mArms').value = '';
-                    document.getElementById('mLegs').value = '';
+                    document.getElementById('mArmR').value = '';
+                    document.getElementById('mArmL').value = '';
+                    document.getElementById('mLegR').value = '';
+                    document.getElementById('mLegL').value = '';
                 }
                 m.classList.remove('hidden'); 
                 m.classList.add('flex'); 
