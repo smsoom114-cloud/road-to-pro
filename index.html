@@ -240,13 +240,13 @@
             </section>
         </div>
 
-        <!-- TAB 4: BODY MEASUREMENTS & VISUAL BODY MAP (NEW SPLIT DESIGN) -->
+        <!-- TAB 4: BODY MEASUREMENTS & VISUAL BODY MAP -->
         <div id="view-bodyMeasurements" class="tab-view hidden space-y-6">
             <section class="card-premium rounded-3xl p-5 sm:p-6 space-y-6">
                 <div class="flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
                     <div>
                         <h2 class="text-xl font-bold text-white flex items-center gap-2"><span>📐</span> تتبع قياسات الجسم والمقارنة الشهرية</h2>
-                        <p class="text-xs sm:text-sm text-slate-300 mt-1">عرض بصري ومقارنات بالأرقام للتغير في حجم البطن والأطراف.</p>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">عرض بصري انسيابي ومقارنات بالأرقام للتغير في حجم البطن والأطراف.</p>
                     </div>
                     <button onclick="openModal('measureModal')" class="bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-extrabold px-4 py-2.5 rounded-xl text-xs sm:text-sm shadow-lg shadow-yellow-500/20">
                         + تسجيل قياس شهري جديد
@@ -260,49 +260,46 @@
                     <div class="lg:col-span-5 bg-slate-900/90 border border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center relative min-h-[460px]">
                         <h3 class="text-xs sm:text-sm font-bold text-amber-400 mb-4 flex items-center gap-2"><span>🧍</span> خريطة القياسات البصرية الحالية</h3>
                         
-                        <!-- SVG Human Silhouette with Measurement Overlay Indicators -->
+                        <!-- Smooth Anatomical Human Silhouette SVG -->
                         <div class="relative w-64 h-96 flex items-center justify-center">
-                            <!-- Simple Human Silhouette SVG -->
-                            <svg viewBox="0 0 200 400" class="w-full h-full opacity-35 text-slate-400 fill-current">
-                                <!-- Head -->
-                                <circle cx="100" cy="35" r="22" />
-                                <!-- Neck -->
-                                <rect x="93" y="58" width="14" height="12" rx="3" />
-                                <!-- Torso / Belly -->
-                                <path d="M 65 70 L 135 70 L 128 190 L 72 190 Z" rx="10" />
-                                <!-- Right Arm -->
-                                <path d="M 58 72 L 35 180 L 48 185 L 68 85 Z" />
-                                <!-- Left Arm -->
-                                <path d="M 142 72 L 165 180 L 152 185 L 132 85 Z" />
-                                <!-- Right Leg -->
-                                <path d="M 73 195 L 65 370 L 85 370 L 96 195 Z" />
-                                <!-- Left Leg -->
-                                <path d="M 104 195 L 115 370 L 135 370 L 127 195 Z" />
+                            
+                            <svg viewBox="0 0 200 410" class="w-full h-full text-amber-400/80 drop-shadow-[0_0_10px_rgba(250,204,21,0.2)]">
+                                <path d="
+                                    M 100 15 
+                                    C 112 15, 118 25, 118 40 
+                                    C 118 55, 112 65, 100 65 
+                                    C 88 65, 82 55, 82 40 
+                                    C 82 25, 88 15, 100 15 Z 
+                                    M 94 65 L 106 65 L 108 78 C 125 78, 142 82, 155 95 C 160 100, 162 110, 158 125 C 155 140, 150 170, 152 200 C 153 215, 155 225, 156 235 C 157 242, 155 248, 152 252 C 148 250, 144 242, 143 230 C 142 215, 145 185, 146 150 C 142 165, 137 190, 134 220 L 132 235 L 118 235 C 114 260, 110 300, 112 340 C 113 360, 115 375, 118 385 C 120 388, 122 390, 120 393 C 115 395, 102 395, 98 393 L 100 330 L 102 245 L 98 245 L 100 330 L 102 393 C 98 395, 85 395, 80 393 C 78 390, 80 388, 82 385 C 85 375, 87 360, 88 340 C 90 300, 86 260, 82 235 L 68 235 L 66 220 C 63 190, 58 165, 54 150 C 55 185, 58 215, 57 230 C 56 242, 52 250, 48 252 C 45 248, 43 242, 44 235 C 45 225, 47 215, 48 200 C 50 170, 45 140, 42 125 C 38 110, 40 100, 45 95 C 58 82, 75 78, 92 78 Z" 
+                                    fill="none" 
+                                    stroke="currentColor" 
+                                    stroke-width="2" 
+                                    stroke-linecap="round" 
+                                    stroke-linejoin="round"
+                                />
+                                <path d="M 82 105 C 92 110, 100 110, 100 110 C 100 110, 108 110, 118 105" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.5" />
+                                <path d="M 100 110 L 100 175" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.4" stroke-dasharray="2 2" />
+                                <path d="M 85 175 C 95 180, 100 180, 100 180 C 100 180, 105 180, 115 175" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.5" />
                             </svg>
 
-                            <!-- Overlay Indicators (Values dynamically mapped) -->
-                            <!-- Arm Right -->
-                            <div class="absolute top-[28%] right-[-10px] bg-slate-950/90 border border-amber-500/50 px-2 py-1 rounded-xl text-[10px] font-bold text-amber-300 text-center shadow-lg">
+                            <!-- Overlay Indicators -->
+                            <div class="absolute top-[28%] right-[-12px] bg-slate-950/90 border border-amber-500/50 px-2 py-1 rounded-xl text-[10px] font-bold text-amber-300 text-center shadow-lg">
                                 ذراع أيمن<br><span id="bodyMapArmR" class="text-xs text-white">--</span>
                             </div>
 
-                            <!-- Arm Left -->
-                            <div class="absolute top-[28%] left-[-10px] bg-slate-950/90 border border-amber-500/50 px-2 py-1 rounded-xl text-[10px] font-bold text-amber-300 text-center shadow-lg">
+                            <div class="absolute top-[28%] left-[-12px] bg-slate-950/90 border border-amber-500/50 px-2 py-1 rounded-xl text-[10px] font-bold text-amber-300 text-center shadow-lg">
                                 ذراع أيسر<br><span id="bodyMapArmL" class="text-xs text-white">--</span>
                             </div>
 
-                            <!-- Belly -->
-                            <div class="absolute top-[42%] left-[28%] -translate-x-1/2 bg-slate-950/95 border border-cyan-500/60 px-3 py-1.5 rounded-2xl text-[11px] font-extrabold text-cyan-300 text-center shadow-2xl z-10">
+                            <div class="absolute top-[42%] left-[30%] -translate-x-1/2 bg-slate-950/95 border border-cyan-500/60 px-3 py-1.5 rounded-2xl text-[11px] font-extrabold text-cyan-300 text-center shadow-2xl z-10">
                                 الخصر / البطن<br><span id="bodyMapBelly" class="text-sm text-white font-black">--</span>
                             </div>
 
-                            <!-- Leg Right -->
-                            <div class="absolute top-[68%] right-[-10px] bg-slate-950/90 border border-emerald-500/50 px-2 py-1 rounded-xl text-[10px] font-bold text-emerald-300 text-center shadow-lg">
+                            <div class="absolute top-[68%] right-[-12px] bg-slate-950/90 border border-emerald-500/50 px-2 py-1 rounded-xl text-[10px] font-bold text-emerald-300 text-center shadow-lg">
                                 ساق يمنى<br><span id="bodyMapLegR" class="text-xs text-white">--</span>
                             </div>
 
-                            <!-- Leg Left -->
-                            <div class="absolute top-[68%] left-[-10px] bg-slate-950/90 border border-emerald-500/50 px-2 py-1 rounded-xl text-[10px] font-bold text-emerald-300 text-center shadow-lg">
+                            <div class="absolute top-[68%] left-[-12px] bg-slate-950/90 border border-emerald-500/50 px-2 py-1 rounded-xl text-[10px] font-bold text-emerald-300 text-center shadow-lg">
                                 ساق يسرى<br><span id="bodyMapLegL" class="text-xs text-white">--</span>
                             </div>
                         </div>
@@ -310,19 +307,15 @@
 
                     <!-- Part 2: Monthly Number Comparisons & Historical Table -->
                     <div class="lg:col-span-7 space-y-5">
-                        <!-- Quick Stats Diff Cards -->
                         <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-3xl space-y-3">
                             <h3 class="text-xs sm:text-sm font-bold text-slate-200 flex justify-between items-center">
                                 <span>📊 التحليل والمقارنة التلقائية بأرقام القياسات:</span>
                                 <span id="lastMeasureDateBadge" class="text-[10px] text-yellow-400 bg-yellow-500/10 px-2 py-0.5 rounded-full border border-yellow-500/20">آخر تسجيل: --</span>
                             </h3>
 
-                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="measureDiffCardsGrid">
-                                <!-- Cards dynamically created in JS -->
-                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="measureDiffCardsGrid"></div>
                         </div>
 
-                        <!-- Full History Table -->
                         <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-3xl space-y-3">
                             <h3 class="text-xs sm:text-sm font-bold text-slate-200">📜 السجل الشهري المباشر للقياسات:</h3>
                             <div id="bodyMeasurementsContainer" class="space-y-2 max-h-60 overflow-y-auto"></div>
@@ -547,7 +540,7 @@
 
     <!-- MODALS SECTION -->
 
-    <!-- Body Measurement Modal (Updated for Detailed Limbs) -->
+    <!-- Body Measurement Modal -->
     <div id="measureModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-3xl p-6 relative space-y-3.5 text-xs sm:text-sm">
             <h3 class="text-lg font-bold text-white">📐 تسجيل القياسات الشهرية التفصيلية (سم)</h3>
@@ -909,7 +902,6 @@
                 return;
             }
 
-            // Update Visual Body Map with latest values
             const latest = appData.bodyMeasurements[0];
             document.getElementById('bodyMapBelly').innerText = latest.belly !== '-' ? `${latest.belly} سم` : '--';
             document.getElementById('bodyMapArmR').innerText = latest.armR !== '-' ? `${latest.armR} سم` : '--';
@@ -918,7 +910,6 @@
             document.getElementById('bodyMapLegL').innerText = latest.legL !== '-' ? `${latest.legL} سم` : '--';
             document.getElementById('lastMeasureDateBadge').innerText = `آخر تسجيل: ${latest.date}`;
 
-            // Compute Difference with Previous Entry (Numeric Diff)
             const prev = appData.bodyMeasurements.length > 1 ? appData.bodyMeasurements[1] : null;
 
             const fields = [
@@ -953,7 +944,6 @@
                 `;
             });
 
-            // Populate Historical List Table
             appData.bodyMeasurements.forEach(m => {
                 const div = document.createElement('div');
                 div.className = "p-3 bg-slate-950 border border-slate-800 rounded-2xl flex flex-wrap justify-between items-center text-xs gap-2";
